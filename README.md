@@ -89,7 +89,7 @@ An interactive guitar learning and practice application inspired by **Simply Gui
 1. **Microphone Setup**: Allow microphone permissions when prompted. Position your acoustic guitar or amplifier near your microphone for optimal pitch tracking.
 2. **Tuning First**: Switch to the **Tuner** tab to ensure your guitar is in standard $440\text{ Hz}$ tuning before starting songs.
 3. **Pacing**: Use the **BPM Stepper** (`-5 / +5 BPM`) or playback rate buttons (`0.75x`, `1.0x`) to master challenging riffs slowly before playing at full speed.
-4. **Count-In**: Every song gives you a **4-second count-in** when you press Play so you have time to position your fingers.
+4. **Preview Delay**: Every song gives you a **4-second preview delay** when you press Play so you can inspect upcoming notes statically on the runway and position your fingers with zero pressure. An instant "Start Now" button is also provided.
 
 ---
 

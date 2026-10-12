@@ -49,6 +49,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
   onSongComplete,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   // Playback state
   const [isPlaying, setIsPlaying] = useState(false);
@@ -58,6 +59,10 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
   const [customBpm, setCustomBpm] = useState<number>(song.bpm);
   const [activeBeatInBar, setActiveBeatInBar] = useState<number>(0);
   const [displayScale, setDisplayScale] = useState<'standard' | 'large' | 'tablet'>('large');
+  const [canvasSize, setCanvasSize] = useState<{ width: number; height: number }>({
+    width: 1200,
+    height: 430,
+  });
   const [isMetronomeEnabled, setIsMetronomeEnabled] = useState(false);
   const [isBackingEnabled, setIsBackingEnabled] = useState(false);
   const [isGuideMelodyEnabled, setIsGuideMelodyEnabled] = useState(false);
@@ -128,6 +133,50 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
       }
     };
   }, []);
+
+  // Responsive Canvas Sizing (Distortion-Free on All Screens and Resolutions)
+  // Dynamically measures the container element and adapts logical width & height 1:1
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const updateSize = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const containerWidth = Math.floor(rect.width);
+      if (containerWidth <= 0) return;
+
+      let baseHeight = 420;
+      if (song.mode === 'lead') {
+        baseHeight = displayScale === 'tablet' ? 490 : displayScale === 'large' ? 430 : 360;
+      } else {
+        baseHeight = displayScale === 'tablet' ? 390 : displayScale === 'large' ? 340 : 280;
+      }
+
+      // Responsive bounds: Keep proportionate and comfortable on small mobile screens
+      const finalHeight =
+        containerWidth < 500
+          ? Math.max(song.mode === 'lead' ? 310 : 230, Math.min(baseHeight, Math.round(containerWidth * 0.78)))
+          : baseHeight;
+
+      setCanvasSize((prev) => {
+        if (prev.width === containerWidth && prev.height === finalHeight) return prev;
+        return { width: containerWidth, height: finalHeight };
+      });
+    };
+
+    updateSize();
+
+    const ro = new ResizeObserver(() => {
+      updateSize();
+    });
+    ro.observe(containerRef.current);
+    window.addEventListener('resize', updateSize);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', updateSize);
+    };
+  }, [song.mode, displayScale]);
 
   // 4-Second Preparation Delay before music starts scrolling
   // Allows user to see upcoming notes statically on the runway and position fingers
@@ -201,13 +250,15 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
 
     // Spawn canvas particles at hit line
     if (canvasRef.current) {
-      const canvas = canvasRef.current;
-      const hitX = 140;
-      let hitY = canvas.height / 2;
+      const hitX = Math.max(90, Math.min(170, Math.round(canvasSize.width * 0.16)));
+      let hitY = canvasSize.height / 2;
 
       if (mode === 'lead' && leadNotesRef.current[index]) {
         const strIdx = leadNotesRef.current[index].stringIndex;
-        hitY = 40 + strIdx * ((canvas.height - 70) / 6) + 16;
+        const trackTop = 44;
+        const trackBottom = canvasSize.height - 20;
+        const trackHeight = (trackBottom - trackTop) / 6;
+        hitY = trackTop + strIdx * trackHeight + trackHeight / 2;
       }
 
       for (let i = 0; i < 18; i++) {
@@ -417,18 +468,32 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
     song,
   ]);
 
-  // Canvas Drawing Routine
+  // Canvas Drawing Routine (Strictly distortion-free across all aspect ratios & screen sizes)
   const drawRunway = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const width = canvas.width;
-    const height = canvas.height;
-    const hitX = 170; // Target strike line with comfortable left margin for tablet badges
+    const width = canvasSize.width;
+    const height = canvasSize.height;
+
+    // Retina / HiDPI sharp rendering: internal bitmap matches physical pixels
+    const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+    const targetW = Math.max(300, Math.round(width * dpr));
+    const targetH = Math.max(200, Math.round(height * dpr));
+
+    if (canvas.width !== targetW || canvas.height !== targetH) {
+      canvas.width = targetW;
+      canvas.height = targetH;
+    }
+
+    ctx.save();
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const hitX = Math.max(90, Math.min(170, Math.round(width * 0.16)));
     // Scale scrolling speed directly by effective song BPM so slow ballads glide calmly and fast songs rush with urgency
-    const pixelsPerBeat = 120;
+    const pixelsPerBeat = Math.max(80, Math.min(125, Math.round(width * 0.11)));
     const pixelsPerSecond = (effectiveBpm / 60) * pixelsPerBeat;
     const t = currentTimeRef.current;
 
@@ -463,13 +528,17 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
 
     if (song.mode === 'lead') {
       // ----------------------------------------------------
-      // LEAD MODE: 6 Guitar String Tracks (Generous Tablet Height)
+      // LEAD MODE: 6 Guitar String Tracks (Adaptive Height, Guaranteed Round Pucks)
       // ----------------------------------------------------
-      const trackTop = 48;
-      const trackBottom = height - 24;
+      const trackTop = 44;
+      const trackBottom = height - 20;
       const trackHeight = (trackBottom - trackTop) / 6;
-      const puckRadius = Math.min(27, Math.max(22, Math.round(trackHeight * 0.38)));
-      const fretFontSize = Math.round(puckRadius * 0.85);
+      const puckRadius = Math.min(27, Math.max(16, Math.round(trackHeight * 0.38)));
+      const fretFontSize = Math.round(puckRadius * 0.88);
+
+      const badgeWidth = Math.max(46, Math.min(74, hitX - 20));
+      const badgeLeft = 8;
+      const badgeCenterX = badgeLeft + badgeWidth / 2;
 
       // Draw 6 horizontal string tracks (0=High E at top, 5=Low E at bottom)
       for (let s = 0; s < 6; s++) {
@@ -488,20 +557,23 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
         ctx.lineTo(width, y);
         ctx.stroke();
 
-        // String badge on far left (clear and bold for tablets)
+        // String badge on far left (clear and bold, dynamically sized so it never collides with hit line)
         ctx.fillStyle = '#0F172A';
         ctx.beginPath();
-        ctx.roundRect(8, y - 18, 76, 36, 8);
+        ctx.roundRect(badgeLeft, y - 18, badgeWidth, 36, 8);
         ctx.fill();
         ctx.strokeStyle = color;
         ctx.lineWidth = 2.0;
         ctx.stroke();
 
         ctx.fillStyle = color;
-        ctx.font = 'bold 14px JetBrains Mono';
+        ctx.font = `bold ${badgeWidth < 60 ? '11px' : '13px'} JetBrains Mono`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(['1 (e)', '2 (B)', '3 (G)', '4 (D)', '5 (A)', '6 (E)'][s], 46, y);
+        const stringLabel = badgeWidth < 60
+          ? ['1e', '2B', '3G', '4D', '5A', '6E'][s]
+          : ['1 (e)', '2 (B)', '3 (G)', '4 (D)', '5 (A)', '6 (E)'][s];
+        ctx.fillText(stringLabel, badgeCenterX, y);
       }
 
       // Draw Target Strike Line (Hit Zone)
@@ -522,7 +594,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
       ctx.textBaseline = 'bottom';
       ctx.fillText('TARGET', hitX, trackTop - 10);
 
-      // Lead Note Pucks (Large, crisp font for tablet distance reading)
+      // Lead Note Pucks (True Circles, zero stretch/compress)
       const notes = leadNotesRef.current;
       for (let i = 0; i < notes.length; i++) {
         const note = notes[i];
@@ -561,7 +633,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
           ctx.arc(x, y, Math.round(puckRadius * 0.72), 0, Math.PI * 2);
           ctx.fill();
 
-          // Fret text (bold large font - easily legible on tablet)
+          // Fret text (bold large font - easily legible)
           ctx.fillStyle = '#FFFFFF';
           ctx.font = `bold ${fretFontSize}px JetBrains Mono`;
           ctx.textAlign = 'center';
@@ -586,10 +658,10 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
       }
     } else {
       // ----------------------------------------------------
-      // CHORD MODE: Rhythm Runway (Expanded for Tablet)
+      // CHORD MODE: Rhythm Runway (Adaptive & Clear)
       // ----------------------------------------------------
-      const laneTop = 48;
-      const laneBottom = height - 28;
+      const laneTop = 44;
+      const laneBottom = height - 24;
       const laneHeight = laneBottom - laneTop;
 
       // Draw Highway background
@@ -619,7 +691,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
       for (let i = 0; i < chords.length; i++) {
         const chord = chords[i];
         const x = hitX + (chord.time - t) * pixelsPerSecond;
-        const blockWidth = Math.max(105, chord.duration * pixelsPerSecond * 0.45);
+        const blockWidth = Math.max(90, Math.min(180, chord.duration * pixelsPerSecond * 0.45));
 
         if (x + blockWidth < 0 || x > width + 60) continue;
 
@@ -636,20 +708,22 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
         ctx.lineWidth = 2.8;
 
         ctx.beginPath();
-        ctx.roundRect(x, laneTop + 14, blockWidth, laneHeight - 28, 12);
+        ctx.roundRect(x, laneTop + 12, blockWidth, laneHeight - 24, 12);
         ctx.fill();
         ctx.stroke();
 
-        // Chord Name (large 30px font)
+        // Chord Name
+        const chordFontSize = Math.min(32, Math.max(20, Math.round(laneHeight * 0.11)));
         ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 30px JetBrains Mono';
+        ctx.font = `bold ${chordFontSize}px JetBrains Mono`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(chord.name, x + blockWidth / 2, laneTop + laneHeight / 2 - 14);
 
         // Strum arrow & direction
+        const strumFontSize = Math.min(18, Math.max(13, Math.round(laneHeight * 0.065)));
         ctx.fillStyle = '#F59E0B';
-        ctx.font = 'bold 19px Plus Jakarta Sans';
+        ctx.font = `bold ${strumFontSize}px Plus Jakarta Sans`;
         ctx.fillText(
           chord.strumDirection === 'down' ? '↓ STRUM' : '↑ UP',
           x + blockWidth / 2,
@@ -679,9 +753,10 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
       ctx.globalAlpha = 1.0;
     }
 
-    // Reset ctx alignment
+    // Reset ctx alignment and restore transforms
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
+    ctx.restore();
   };
 
   // Virtual Pluck fallback handler (allows testing on computer without guitar)
@@ -761,33 +836,6 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
   const accuracy = totalNotes > 0 ? Math.round((hitsCount / totalNotes) * 100) : 0;
   const starsEarned = accuracy >= 90 ? 3 : accuracy >= 70 ? 2 : accuracy >= 40 ? 1 : 0;
 
-  // Responsive Canvas Dimensions for Tablets and Laptops
-  const canvasWidth = 1400;
-  const canvasHeight =
-    song.mode === 'lead'
-      ? displayScale === 'tablet'
-        ? 490
-        : displayScale === 'large'
-        ? 440
-        : 380
-      : displayScale === 'tablet'
-      ? 390
-      : displayScale === 'large'
-      ? 340
-      : 290;
-
-  const canvasCssHeight =
-    song.mode === 'lead'
-      ? displayScale === 'tablet'
-        ? 'h-[440px] sm:h-[480px] md:h-[520px]'
-        : displayScale === 'large'
-        ? 'h-[390px] sm:h-[430px] md:h-[470px]'
-        : 'h-[330px] sm:h-[360px] md:h-[390px]'
-      : displayScale === 'tablet'
-      ? 'h-[350px] sm:h-[390px] md:h-[430px]'
-      : displayScale === 'large'
-      ? 'h-[300px] sm:h-[330px] md:h-[360px]'
-      : 'h-[260px] sm:h-[280px] md:h-[310px]';
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -911,13 +959,16 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
         </div>
       </div>
 
-      {/* Interactive Canvas Runway (Tablet-Optimized Large Height) */}
-      <div className="relative w-full bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
+      {/* Interactive Canvas Runway (Adaptive & Distortion-Free on All Screens) */}
+      <div
+        ref={containerRef}
+        className="relative w-full bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl transition-all"
+        style={{ height: `${canvasSize.height}px` }}
+      >
         <canvas
           ref={canvasRef}
-          width={canvasWidth}
-          height={canvasHeight}
-          className={`w-full block cursor-pointer transition-all ${canvasCssHeight}`}
+          className="block cursor-pointer select-none"
+          style={{ width: `${canvasSize.width}px`, height: `${canvasSize.height}px` }}
           onClick={handleVirtualPluck}
         />
 
