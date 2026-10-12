@@ -1,0 +1,6 @@
+{
+  "name": "StringMaster Guitar Trainer",
+  "description": "Interactive guitar learning app with real-time mic note listening, built-in guitar tuner, interactive tab runway, lead and chord modes, and 5 difficulty levels.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

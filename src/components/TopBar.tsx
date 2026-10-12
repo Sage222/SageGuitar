@@ -1,0 +1,103 @@
+import React from 'react';
+import { Mic, MicOff } from 'lucide-react';
+
+export type ActiveTab = 'catalog' | 'studio' | 'dashboard' | 'tuner' | 'chords';
+
+interface TopBarProps {
+  activeTab: ActiveTab;
+  onTabChange: (tab: ActiveTab) => void;
+  isMicActive: boolean;
+  onToggleMic: () => void;
+}
+
+export const TopBar: React.FC<TopBarProps> = ({
+  activeTab,
+  onTabChange,
+  isMicActive,
+  onToggleMic,
+}) => {
+  return (
+    <header className="flex items-center justify-between gap-8 px-6 py-4 border-b border-slate-800 bg-slate-950/95 sticky top-0 z-40 backdrop-blur-md">
+      {/* Zone 1: Single text element wordmark */}
+      <a
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          onTabChange('catalog');
+        }}
+        className="text-lg font-extrabold tracking-tight text-white whitespace-nowrap shrink-0 hover:text-amber-400 transition-colors"
+      >
+        StringMaster
+      </a>
+
+      {/* Zone 2: 5 concise single-line navigation links */}
+      <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
+        <button
+          onClick={() => onTabChange('catalog')}
+          className={`hover:text-white transition-colors whitespace-nowrap shrink-0 ${
+            activeTab === 'catalog' ? 'text-amber-400 font-bold' : ''
+          }`}
+        >
+          Songs
+        </button>
+        <button
+          onClick={() => onTabChange('studio')}
+          className={`hover:text-white transition-colors whitespace-nowrap shrink-0 ${
+            activeTab === 'studio' ? 'text-amber-400 font-bold' : ''
+          }`}
+        >
+          Runway
+        </button>
+        <button
+          onClick={() => onTabChange('dashboard')}
+          className={`hover:text-white transition-colors whitespace-nowrap shrink-0 ${
+            activeTab === 'dashboard' ? 'text-amber-400 font-bold' : ''
+          }`}
+        >
+          Dashboard
+        </button>
+        <button
+          onClick={() => onTabChange('tuner')}
+          className={`hover:text-white transition-colors whitespace-nowrap shrink-0 ${
+            activeTab === 'tuner' ? 'text-amber-400 font-bold' : ''
+          }`}
+        >
+          Tuner
+        </button>
+        <button
+          onClick={() => onTabChange('chords')}
+          className={`hover:text-white transition-colors whitespace-nowrap shrink-0 ${
+            activeTab === 'chords' ? 'text-amber-400 font-bold' : ''
+          }`}
+        >
+          Chords
+        </button>
+      </nav>
+
+      {/* Zone 3: 1 primary action */}
+      <div className="flex items-center gap-3 shrink-0">
+        <button
+          onClick={onToggleMic}
+          className={`px-4 py-2 text-xs font-bold rounded-lg flex items-center gap-2 transition-all whitespace-nowrap shrink-0 ${
+            isMicActive
+              ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40 hover:bg-rose-500/30'
+              : 'bg-amber-500 text-slate-950 hover:bg-amber-400 shadow-md shadow-amber-500/20'
+          }`}
+        >
+          {isMicActive ? (
+            <>
+              <MicOff className="w-3.5 h-3.5" />
+              <span>Mic Listening</span>
+            </>
+          ) : (
+            <>
+              <Mic className="w-3.5 h-3.5" />
+              <span>Listen To My Guitar</span>
+            </>
+          )}
+        </button>
+      </div>
+    </header>
+  );
+};
+
