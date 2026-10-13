@@ -365,20 +365,22 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
           const next = prev + deltaSec;
           currentTimeRef.current = next;
 
-          // Metronome & Backing Beat generator calculated from current effective BPM
-          const secondsPerBeat = 60 / effectiveBpm;
-          const currentBeat = Math.floor(next / secondsPerBeat);
+          // Metronome & Backing Beat generator calculated strictly from song time and song BPM
+          const beatsPerSec = song.bpm / 60;
+          const currentBeat = Math.floor(next * beatsPerSec);
 
-          if (currentBeat !== lastBeatRef.current && next > 0.1) {
+          if (currentBeat !== lastBeatRef.current && next >= 0) {
             lastBeatRef.current = currentBeat;
-            const beatInBar = currentBeat % (song.timeSignature[0] || 4);
+            const beatsPerBar = song.timeSignature[0] || 4;
+            const beatInBar = currentBeat % beatsPerBar;
             setActiveBeatInBar(beatInBar);
 
-            if (isMetronomeEnabled) {
+            // In-tempo count-in clicks during Measure 1 (currentBeat < beatsPerBar), or regular metronome
+            if (isMetronomeEnabled || currentBeat < beatsPerBar) {
               audioEngine.playMetronomeClick(beatInBar === 0);
             }
 
-            if (isBackingEnabled) {
+            if (isBackingEnabled && currentBeat >= beatsPerBar) {
               // Find active chord or root for this measure
               let activeRoot = song.key.split(' ')[0] || 'E';
               let activeFrets: number[] | undefined = undefined;
@@ -405,25 +407,23 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
                 rootNote: activeRoot,
                 chordFrets: activeFrets,
                 genre: song.genre,
-                isBarStart: beatInBar === 0 && currentBeat % ((song.timeSignature[0] || 4) * 4) === 0,
+                isBarStart: beatInBar === 0 && currentBeat % (beatsPerBar * 4) === 0,
               });
             }
           }
 
-          // Guide Melody Playback (plays original track note/chord preview softly)
+          // Guide Melody Playback (plays note/chord with authentic duration)
           if (isGuideMelodyEnabled) {
             if (song.mode === 'lead') {
               for (const n of leadNotesRef.current) {
                 if (n.time >= prev && n.time < next) {
-                  audioEngine.playGuitarPluck(n.frequency, 0.9, 0.22);
-                  break;
+                  audioEngine.playGuitarPluck(n.frequency, 0.9, Math.max(0.2, n.duration));
                 }
               }
             } else {
               for (const ch of chordEventsRef.current) {
                 if (ch.time >= prev && ch.time < next) {
-                  audioEngine.playGuitarChord(ch.frets, ch.strumDirection, 1.6);
-                  break;
+                  audioEngine.playGuitarChord(ch.frets, ch.strumDirection, Math.max(0.5, ch.duration));
                 }
               }
             }
@@ -524,38 +524,61 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
       ? Math.max(72, Math.min(92, Math.round(width * 0.2)))
       : Math.max(90, Math.min(170, Math.round(width * 0.16)));
 
-    // Scale scrolling speed directly by effective song BPM so slow ballads glide calmly and fast songs rush with urgency
+    // Linear scrolling speed based strictly on song BPM and display scale
+    // 1 beat = pixelsPerBeat pixels. 1 second of song time = (song.bpm / 60) * pixelsPerBeat
     const pixelsPerBeat = isNarrow
       ? Math.max(68, Math.min(95, Math.round(width * 0.18)))
       : Math.max(80, Math.min(125, Math.round(width * 0.11)));
-    const pixelsPerSecond = (effectiveBpm / 60) * pixelsPerBeat;
+    const pixelsPerSongSecond = (song.bpm / 60) * pixelsPerBeat;
     const t = currentTimeRef.current;
 
     // Clear background
     ctx.fillStyle = '#090D16';
     ctx.fillRect(0, 0, width, height);
 
-    // Draw Vertical Beat Guide Lines
+    // Draw Vertical Measure, Beat, and 8th-note Subdivision Guide Lines
+    const beatsPerBar = song.timeSignature[0] || 4;
     const secondsPerBeat = 60 / song.bpm;
-    const minBeat = Math.floor((t - 1) / secondsPerBeat);
-    const maxBeat = Math.ceil((t + (width - hitX) / pixelsPerSecond) / secondsPerBeat);
+    const minSubBeat = Math.floor((t - 1) / (secondsPerBeat / 2));
+    const maxSubBeat = Math.ceil((t + (width - hitX) / pixelsPerSongSecond) / (secondsPerBeat / 2));
 
-    for (let b = minBeat; b <= maxBeat; b++) {
-      const beatTime = b * secondsPerBeat;
-      const x = hitX + (beatTime - t) * pixelsPerSecond;
+    for (let sb = minSubBeat; sb <= maxSubBeat; sb++) {
+      const subTime = sb * (secondsPerBeat / 2);
+      const x = hitX + (subTime - t) * pixelsPerSongSecond;
       if (x >= hitX && x <= width) {
-        const isBar = b % song.timeSignature[0] === 0;
-        ctx.strokeStyle = isBar ? 'rgba(148, 163, 184, 0.45)' : 'rgba(51, 65, 85, 0.25)';
-        ctx.lineWidth = isBar ? 2.5 : 1;
-        ctx.beginPath();
-        ctx.moveTo(x, isNarrow ? 20 : 28);
-        ctx.lineTo(x, height - 10);
-        ctx.stroke();
+        const isWholeBeat = sb % 2 === 0;
+        const b = Math.floor(sb / 2);
+        const isBar = isWholeBeat && b % beatsPerBar === 0;
 
         if (isBar) {
+          ctx.strokeStyle = 'rgba(148, 163, 184, 0.45)';
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(x, isNarrow ? 20 : 28);
+          ctx.lineTo(x, height - 10);
+          ctx.stroke();
+
+          const barNum = Math.floor(b / beatsPerBar) + 1;
           ctx.fillStyle = '#94A3B8';
           ctx.font = `bold ${isNarrow ? '10px' : '12px'} JetBrains Mono`;
-          ctx.fillText(`M${Math.floor(b / song.timeSignature[0]) + 1}`, x + 4, isNarrow ? 15 : 20);
+          ctx.fillText(`M${barNum}`, x + 4, isNarrow ? 15 : 20);
+        } else if (isWholeBeat) {
+          ctx.strokeStyle = 'rgba(51, 65, 85, 0.3)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(x, isNarrow ? 22 : 30);
+          ctx.lineTo(x, height - 12);
+          ctx.stroke();
+        } else {
+          // Half-beat (8th note) subdivision tick
+          ctx.strokeStyle = 'rgba(51, 65, 85, 0.16)';
+          ctx.lineWidth = 1;
+          ctx.setLineDash([4, 4]);
+          ctx.beginPath();
+          ctx.moveTo(x, isNarrow ? 26 : 34);
+          ctx.lineTo(x, height - 14);
+          ctx.stroke();
+          ctx.setLineDash([]);
         }
       }
     }
@@ -626,28 +649,62 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
       ctx.stroke();
       ctx.shadowBlur = 0;
 
-      // Target Header Label
-      ctx.fillStyle = '#F59E0B';
-      ctx.font = `bold ${isNarrow ? '9px' : '12px'} JetBrains Mono`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(isNarrow ? 'HIT' : 'TARGET', hitX, trackTop - (isNarrow ? 4 : 8));
+      // Target Header Label / Count-In Indicator
+      const countInTotalSec = (beatsPerBar * 60) / song.bpm;
+      if (t < countInTotalSec) {
+        const countBeat = Math.min(beatsPerBar, Math.max(1, Math.floor(t * (song.bpm / 60)) + 1));
+        ctx.fillStyle = '#F59E0B';
+        ctx.font = `bold ${isNarrow ? '10px' : '12px'} JetBrains Mono`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(`COUNT IN: ${countBeat}/${beatsPerBar}`, hitX, trackTop - (isNarrow ? 4 : 8));
+      } else {
+        ctx.fillStyle = '#F59E0B';
+        ctx.font = `bold ${isNarrow ? '9px' : '12px'} JetBrains Mono`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(isNarrow ? 'HIT' : 'TARGET', hitX, trackTop - (isNarrow ? 4 : 8));
+      }
 
-      // Lead Note Pucks (True Circles, zero stretch/compress)
+      // Lead Note Pucks & Sustain Tails (True Circles, zero stretch/compress)
       const notes = leadNotesRef.current;
       for (let i = 0; i < notes.length; i++) {
         const note = notes[i];
-        const x = hitX + (note.time - t) * pixelsPerSecond;
+        const x = hitX + (note.time - t) * pixelsPerSongSecond;
+        const tailWidth = (note.duration || 0.6) * pixelsPerSongSecond;
 
         // Skip off-screen notes
-        if (x < -50 || x > width + 50) continue;
+        if (x + tailWidth < -50 || x > width + 50) continue;
 
         const y = trackTop + note.stringIndex * trackHeight + trackHeight / 2;
         const color = STRING_COLORS[note.stringIndex];
 
+        // Draw Sustain Ribbon / Tail for held notes
+        if (tailWidth > puckRadius * 1.3 && note.hitState !== 'miss') {
+          const tailHeight = Math.max(8, Math.round(puckRadius * 0.68));
+          const tailStartX = Math.max(x, hitX - 4);
+          const currentTailWidth = Math.max(0, x + tailWidth - tailStartX);
+
+          if (currentTailWidth > 4) {
+            ctx.fillStyle = color;
+            ctx.globalAlpha = note.hitState === 'perfect' || note.hitState === 'great' ? 0.65 : 0.35;
+            ctx.beginPath();
+            ctx.roundRect(tailStartX, y - tailHeight / 2, currentTailWidth, tailHeight, tailHeight / 2);
+            ctx.fill();
+
+            // Luminous center core
+            ctx.fillStyle = '#FFFFFF';
+            ctx.globalAlpha = 0.5;
+            ctx.beginPath();
+            ctx.roundRect(tailStartX + 2, y - 2, Math.max(2, currentTailWidth - 4), 4, 2);
+            ctx.fill();
+            ctx.globalAlpha = 1.0;
+          }
+        }
+
         // Hit effect fade out
         if (note.hitState === 'perfect' || note.hitState === 'great') {
-          ctx.fillStyle = 'rgba(16, 185, 129, 0.4)';
+          ctx.fillStyle = 'rgba(16, 185, 129, 0.45)';
           ctx.beginPath();
           ctx.arc(x, y, puckRadius + 6, 0, Math.PI * 2);
           ctx.fill();
@@ -722,19 +779,29 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
       ctx.stroke();
       ctx.shadowBlur = 0;
 
-      // Strike Zone Header Badge
-      ctx.fillStyle = '#10B981';
-      ctx.font = `bold ${isNarrow ? '9px' : '12px'} JetBrains Mono`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('STRUM', hitX, laneTop - (isNarrow ? 4 : 8));
+      // Strike Zone Header Badge / Count-In Indicator
+      const countInTotalSec = (beatsPerBar * 60) / song.bpm;
+      if (t < countInTotalSec) {
+        const countBeat = Math.min(beatsPerBar, Math.max(1, Math.floor(t * (song.bpm / 60)) + 1));
+        ctx.fillStyle = '#10B981';
+        ctx.font = `bold ${isNarrow ? '10px' : '12px'} JetBrains Mono`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(`COUNT IN: ${countBeat}/${beatsPerBar}`, hitX, laneTop - (isNarrow ? 4 : 8));
+      } else {
+        ctx.fillStyle = '#10B981';
+        ctx.font = `bold ${isNarrow ? '9px' : '12px'} JetBrains Mono`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('STRUM', hitX, laneTop - (isNarrow ? 4 : 8));
+      }
 
-      // Chord blocks
+      // Chord blocks with true musical duration widths
       const chords = chordEventsRef.current;
       for (let i = 0; i < chords.length; i++) {
         const chord = chords[i];
-        const x = hitX + (chord.time - t) * pixelsPerSecond;
-        const blockWidth = Math.max(90, Math.min(180, chord.duration * pixelsPerSecond * 0.45));
+        const x = hitX + (chord.time - t) * pixelsPerSongSecond;
+        const blockWidth = Math.max(72, chord.duration * pixelsPerSongSecond - 6);
 
         if (x + blockWidth < 0 || x > width + 60) continue;
 
