@@ -99,7 +99,7 @@ function assembleLeadSong(
 
   const lastNote = notes[notes.length - 1];
   const lastTime = lastNote ? lastNote.time + lastNote.duration : beatOffset * (60 / bpm);
-  const duration = Math.max(60, Math.ceil(lastTime + 2.5));
+  const duration = Math.ceil(lastTime + 2.0);
   return { notes, duration };
 }
 
@@ -133,7 +133,7 @@ function assembleChordSong(
 
   const lastChord = chords[chords.length - 1];
   const lastTime = lastChord ? lastChord.time + lastChord.duration : beatOffset * (60 / bpm);
-  const duration = Math.max(60, Math.ceil(lastTime + 2.5));
+  const duration = Math.ceil(lastTime + 2.0);
   return { chords, duration };
 }
 
@@ -1620,48 +1620,89 @@ const s_twinkle = assembleLeadSong(84, [
 ]);
 
 // Happy Birthday to You (88 BPM - Level 1: Novice)
+// Features full melody and repeats once for a complete celebratory performance
 const s_happy_birthday = assembleLeadSong(88, [
   {
-    name: "Phrase 1 & 2",
-    beats: 12,
+    name: "Verse 1 (Happy Birthday to You)",
+    beats: 16,
     notes: [
-      { beat: 0, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
-      { beat: 0.8, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      // Measure 1 & 2: Hap-py birth-day to you
+      { beat: 0.0, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
       { beat: 1.5, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
-      { beat: 3, stringIndex: 2, fret: 0, durationBeats: 1.0, finger: 0 },
-      { beat: 4.5, stringIndex: 1, fret: 1, durationBeats: 1.0, finger: 1 },
-      { beat: 6, stringIndex: 1, fret: 0, durationBeats: 2.5, finger: 0 },
-      { beat: 8, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
-      { beat: 8.8, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 2.75, stringIndex: 2, fret: 0, durationBeats: 1.0, finger: 0 },
+      { beat: 4.0, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 5.5, stringIndex: 1, fret: 0, durationBeats: 2.0, finger: 0 },
+      // Measure 3 & 4: Hap-py birth-day to you
+      { beat: 8.0, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 8.75, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
       { beat: 9.5, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
-      { beat: 10.5, stringIndex: 2, fret: 0, durationBeats: 1.0, finger: 0 },
+      { beat: 10.75, stringIndex: 2, fret: 0, durationBeats: 1.0, finger: 0 },
+      { beat: 12.0, stringIndex: 1, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 13.5, stringIndex: 1, fret: 1, durationBeats: 2.5, finger: 1 },
     ],
   },
   {
-    name: "Phrase 3 & 4 (High Climax)",
-    beats: 12,
+    name: "Verse 1 Climax (Happy Birthday Dear Friend)",
+    beats: 18,
     notes: [
-      { beat: 0, stringIndex: 1, fret: 3, durationBeats: 1.0, finger: 3 },
-      { beat: 1.5, stringIndex: 1, fret: 1, durationBeats: 2.5, finger: 1 },
-      { beat: 3.5, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
-      { beat: 4.2, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
-      { beat: 5, stringIndex: 0, fret: 3, durationBeats: 1.2, finger: 3 },
-      { beat: 6.5, stringIndex: 0, fret: 0, durationBeats: 1.0, finger: 0 },
-      { beat: 8, stringIndex: 1, fret: 1, durationBeats: 1.0, finger: 1 },
-      { beat: 9.5, stringIndex: 1, fret: 0, durationBeats: 1.0, finger: 0 },
-      { beat: 10.5, stringIndex: 2, fret: 2, durationBeats: 2.0, finger: 2 },
+      // Measure 5 & 6: Hap-py birth-day dear friend
+      { beat: 0.0, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 0, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 3.25, stringIndex: 0, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 4.75, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 6.25, stringIndex: 1, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 7.75, stringIndex: 2, fret: 2, durationBeats: 2.0, finger: 2 },
+      // Measure 7 & 8: Hap-py birth-day to you!
+      { beat: 10.0, stringIndex: 0, fret: 1, durationBeats: 0.6, finger: 1 },
+      { beat: 10.75, stringIndex: 0, fret: 1, durationBeats: 0.6, finger: 1 },
+      { beat: 11.5, stringIndex: 0, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 13.0, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 14.5, stringIndex: 1, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 16.0, stringIndex: 1, fret: 1, durationBeats: 2.5, finger: 1 },
     ],
   },
   {
-    name: "Grand Finale & Birthday Fanfare",
-    beats: 12,
+    name: "Verse 2 Repeat (Sing-Along Second Round)",
+    beats: 16,
     notes: [
-      { beat: 0, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 1, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 2, stringIndex: 0, fret: 0, durationBeats: 1.2, finger: 0 },
-      { beat: 3.5, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
-      { beat: 5, stringIndex: 1, fret: 3, durationBeats: 1.2, finger: 3 },
-      { beat: 6.5, stringIndex: 1, fret: 1, durationBeats: 3.5, finger: 1 },
+      // Measure 1 & 2: Hap-py birth-day to you
+      { beat: 0.0, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
+      { beat: 2.75, stringIndex: 2, fret: 0, durationBeats: 1.0, finger: 0 },
+      { beat: 4.0, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 5.5, stringIndex: 1, fret: 0, durationBeats: 2.0, finger: 0 },
+      // Measure 3 & 4: Hap-py birth-day to you
+      { beat: 8.0, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 8.75, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 9.5, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
+      { beat: 10.75, stringIndex: 2, fret: 0, durationBeats: 1.0, finger: 0 },
+      { beat: 12.0, stringIndex: 1, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 13.5, stringIndex: 1, fret: 1, durationBeats: 2.5, finger: 1 },
+    ],
+  },
+  {
+    name: "Grand Birthday Finale & Celebration Outro",
+    beats: 20,
+    notes: [
+      // Measure 5 & 6: Hap-py birth-day dear friend
+      { beat: 0.0, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 0, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 3.25, stringIndex: 0, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 4.75, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 6.25, stringIndex: 1, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 7.75, stringIndex: 2, fret: 2, durationBeats: 2.0, finger: 2 },
+      // Measure 7 & 8: Hap-py birth-day to you! And many more!
+      { beat: 10.0, stringIndex: 0, fret: 1, durationBeats: 0.6, finger: 1 },
+      { beat: 10.75, stringIndex: 0, fret: 1, durationBeats: 0.6, finger: 1 },
+      { beat: 11.5, stringIndex: 0, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 13.0, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 14.5, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 16.5, stringIndex: 1, fret: 1, durationBeats: 2.5, finger: 1 },
+      { beat: 18.5, stringIndex: 1, fret: 1, durationBeats: 3.0, finger: 1 },
     ],
   },
 ]);
@@ -1801,74 +1842,104 @@ const s_brahms_lullaby = assembleLeadSong(70, [
   },
 ]);
 
-// Greensleeves (Novice Melodic) (82 BPM - Level 1: Novice)
+// Greensleeves (Authentic Traditional Melodic) (82 BPM - Level 1: Novice)
 const s_greensleeves = assembleLeadSong(82, [
   {
-    name: "Verse 1 (Alas my love)",
+    name: "Verse 1 (Alas my love, that you do me wrong)",
     beats: 18,
     notes: [
-      { beat: 0, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
+      // Pickup: A
+      { beat: 0.0, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
+      // Measure 1: C - D - E
       { beat: 1.5, stringIndex: 1, fret: 1, durationBeats: 1.5, finger: 1 },
-      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 1.0, finger: 3 },
-      { beat: 4.5, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
-      { beat: 6, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 7, stringIndex: 0, fret: 0, durationBeats: 1.0, finger: 0 },
-      { beat: 8.5, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
-      { beat: 10, stringIndex: 1, fret: 1, durationBeats: 1.8, finger: 1 },
-      { beat: 12, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
-      { beat: 13.5, stringIndex: 2, fret: 0, durationBeats: 1.5, finger: 0 },
-      { beat: 15, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
-      { beat: 16.5, stringIndex: 1, fret: 0, durationBeats: 2.0, finger: 0 },
+      { beat: 3.0, stringIndex: 1, fret: 3, durationBeats: 0.75, finger: 3 },
+      { beat: 3.75, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
+      // Measure 2: F - E - D
+      { beat: 5.5, stringIndex: 0, fret: 1, durationBeats: 1.0, finger: 1 },
+      { beat: 6.5, stringIndex: 0, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 7.25, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      // Measure 3: B - G - A - B
+      { beat: 9.0, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 10.5, stringIndex: 2, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 11.25, stringIndex: 2, fret: 2, durationBeats: 0.75, finger: 2 },
+      { beat: 12.0, stringIndex: 1, fret: 0, durationBeats: 1.0, finger: 0 },
+      // Measure 4: C - A - A (To cast me off discourteously)
+      { beat: 13.0, stringIndex: 1, fret: 1, durationBeats: 1.0, finger: 1 },
+      { beat: 14.25, stringIndex: 2, fret: 2, durationBeats: 0.75, finger: 2 },
+      { beat: 15.0, stringIndex: 2, fret: 2, durationBeats: 2.5, finger: 2 },
+    ],
+  },
+  {
+    name: "Verse 2 (For I have loved you well and long)",
+    beats: 18,
+    notes: [
+      // Pickup: A
+      { beat: 0.0, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
+      // Measure 1: C - D - E
+      { beat: 1.5, stringIndex: 1, fret: 1, durationBeats: 1.5, finger: 1 },
+      { beat: 3.0, stringIndex: 1, fret: 3, durationBeats: 0.75, finger: 3 },
+      { beat: 3.75, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
+      // Measure 2: F - E - D
+      { beat: 5.5, stringIndex: 0, fret: 1, durationBeats: 1.0, finger: 1 },
+      { beat: 6.5, stringIndex: 0, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 7.25, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      // Measure 3: B - G - A - B
+      { beat: 9.0, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 10.5, stringIndex: 2, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 11.25, stringIndex: 2, fret: 2, durationBeats: 0.75, finger: 2 },
+      { beat: 12.0, stringIndex: 1, fret: 0, durationBeats: 1.0, finger: 0 },
+      // Measure 4: C - B - A - G# - A (Harmonic Minor Cadence)
+      { beat: 13.0, stringIndex: 1, fret: 1, durationBeats: 0.75, finger: 1 },
+      { beat: 13.75, stringIndex: 1, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 14.5, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
+      { beat: 15.5, stringIndex: 2, fret: 1, durationBeats: 1.0, finger: 1 },
+      { beat: 16.5, stringIndex: 2, fret: 2, durationBeats: 3.0, finger: 2 },
     ],
   },
   {
     name: "Chorus (Greensleeves was all my joy)",
     beats: 18,
     notes: [
-      { beat: 0, stringIndex: 0, fret: 3, durationBeats: 2.0, finger: 3 },
-      { beat: 2.5, stringIndex: 0, fret: 3, durationBeats: 1.0, finger: 3 },
-      { beat: 4, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 1.0, finger: 0 },
-      { beat: 6.5, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
-      { beat: 8, stringIndex: 1, fret: 1, durationBeats: 1.8, finger: 1 },
-      { beat: 10, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
-      { beat: 11.5, stringIndex: 2, fret: 0, durationBeats: 1.5, finger: 0 },
-      { beat: 13, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
-      { beat: 14.5, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
-      { beat: 16, stringIndex: 2, fret: 2, durationBeats: 2.5, finger: 2 },
-    ],
-  },
-  {
-    name: "Verse 2 (Ornamented Variation)",
-    beats: 18,
-    notes: [
-      { beat: 0, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
-      { beat: 1.5, stringIndex: 1, fret: 1, durationBeats: 1.5, finger: 1 },
-      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 1.0, finger: 3 },
-      { beat: 4.5, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
-      { beat: 6, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 7, stringIndex: 0, fret: 0, durationBeats: 1.0, finger: 0 },
-      { beat: 8.5, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
-      { beat: 10, stringIndex: 1, fret: 1, durationBeats: 1.8, finger: 1 },
-      { beat: 12, stringIndex: 1, fret: 0, durationBeats: 1.0, finger: 0 },
-      { beat: 13.5, stringIndex: 2, fret: 1, durationBeats: 1.5, finger: 1 },
-      { beat: 15, stringIndex: 2, fret: 2, durationBeats: 3.0, finger: 2 },
+      // High G - G
+      { beat: 0.0, stringIndex: 0, fret: 3, durationBeats: 2.0, finger: 3 },
+      { beat: 2.0, stringIndex: 0, fret: 3, durationBeats: 1.0, finger: 3 },
+      // F - E - D
+      { beat: 3.0, stringIndex: 0, fret: 1, durationBeats: 1.0, finger: 1 },
+      { beat: 4.0, stringIndex: 0, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 4.75, stringIndex: 1, fret: 3, durationBeats: 1.75, finger: 3 },
+      // B - G - A - B
+      { beat: 6.5, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 8.0, stringIndex: 2, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 8.75, stringIndex: 2, fret: 2, durationBeats: 0.75, finger: 2 },
+      { beat: 9.5, stringIndex: 1, fret: 0, durationBeats: 1.0, finger: 0 },
+      // C - A - A
+      { beat: 10.5, stringIndex: 1, fret: 1, durationBeats: 1.0, finger: 1 },
+      { beat: 11.75, stringIndex: 2, fret: 2, durationBeats: 0.75, finger: 2 },
+      { beat: 12.5, stringIndex: 2, fret: 2, durationBeats: 2.5, finger: 2 },
     ],
   },
   {
     name: "Chorus Reprise & Renaissance Cadence",
     beats: 20,
     notes: [
-      { beat: 0, stringIndex: 0, fret: 3, durationBeats: 2.0, finger: 3 },
-      { beat: 2.5, stringIndex: 0, fret: 3, durationBeats: 1.0, finger: 3 },
-      { beat: 4, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 1.0, finger: 0 },
-      { beat: 6.5, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
-      { beat: 8, stringIndex: 1, fret: 1, durationBeats: 1.8, finger: 1 },
-      { beat: 10, stringIndex: 1, fret: 0, durationBeats: 1.0, finger: 0 },
-      { beat: 12, stringIndex: 2, fret: 2, durationBeats: 1.5, finger: 2 },
-      { beat: 14, stringIndex: 2, fret: 1, durationBeats: 1.5, finger: 1 },
-      { beat: 16, stringIndex: 2, fret: 2, durationBeats: 4.0, finger: 2 },
+      // High G - G
+      { beat: 0.0, stringIndex: 0, fret: 3, durationBeats: 2.0, finger: 3 },
+      { beat: 2.0, stringIndex: 0, fret: 3, durationBeats: 1.0, finger: 3 },
+      // F - E - D
+      { beat: 3.0, stringIndex: 0, fret: 1, durationBeats: 1.0, finger: 1 },
+      { beat: 4.0, stringIndex: 0, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 4.75, stringIndex: 1, fret: 3, durationBeats: 1.75, finger: 3 },
+      // B - G - A - B
+      { beat: 6.5, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 8.0, stringIndex: 2, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 8.75, stringIndex: 2, fret: 2, durationBeats: 0.75, finger: 2 },
+      { beat: 9.5, stringIndex: 1, fret: 0, durationBeats: 1.0, finger: 0 },
+      // C - B - A - G# - A
+      { beat: 10.5, stringIndex: 1, fret: 1, durationBeats: 0.75, finger: 1 },
+      { beat: 11.25, stringIndex: 1, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 12.0, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
+      { beat: 13.0, stringIndex: 2, fret: 1, durationBeats: 1.0, finger: 1 },
+      { beat: 14.0, stringIndex: 2, fret: 2, durationBeats: 4.0, finger: 2 },
     ],
   },
 ]);
@@ -1950,103 +2021,166 @@ const s_sunshine = assembleLeadSong(100, [
 ]);
 
 // Come As You Are (120 BPM - Level 2: Elementary)
+// Authentic Nirvana arrangement: Chorus-drenched signature riff, heavy pre-chorus, and hypnotic guitar solo
 const s_come_as_you_are = assembleLeadSong(120, [
   {
-    name: "Chorus Pedal Intro",
+    name: "Iconic Chorus Riff (Intro)",
     beats: 16,
     notes: [
-      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 1, stringIndex: 5, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 2, stringIndex: 5, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 3, stringIndex: 5, fret: 2, durationBeats: 1.2, finger: 2 },
-      { beat: 4.5, stringIndex: 4, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 5.5, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
-      { beat: 6.5, stringIndex: 4, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 7.5, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
-      { beat: 8.5, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
-      { beat: 9.5, stringIndex: 5, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 10.5, stringIndex: 5, fret: 0, durationBeats: 1.2, finger: 0 },
-      { beat: 12, stringIndex: 5, fret: 0, durationBeats: 1.0, finger: 0 },
-      { beat: 13, stringIndex: 5, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 14, stringIndex: 5, fret: 2, durationBeats: 1.8, finger: 2 },
+      // Cycle 1 (Measure 1 & 2): 0 - 0 - 1 - 2 - A0 - 2 - A0 - 2 - 2 - 1 - 0 - A0
+      { beat: 0.0, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 2.0, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3.0, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 3.75, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 4.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 5.25, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 5.75, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 6.25, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 6.75, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 7.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      // Cycle 2 (Measure 3 & 4)
+      { beat: 8.0, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 8.75, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 9.5, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 10.0, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 11.0, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 11.75, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 12.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 13.25, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 13.75, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 14.25, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 14.75, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 15.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
     ],
   },
   {
     name: "Verse 1 (Come as you are, as you were)",
     beats: 16,
     notes: [
-      { beat: 0, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 2 },
-      { beat: 1, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 2 },
-      { beat: 2, stringIndex: 4, fret: 0, durationBeats: 1.0, finger: 0 },
-      { beat: 3.5, stringIndex: 5, fret: 2, durationBeats: 1.5, finger: 2 },
-      { beat: 5.5, stringIndex: 5, fret: 0, durationBeats: 1.0, finger: 0 },
-      { beat: 7, stringIndex: 5, fret: 2, durationBeats: 1.0, finger: 2 },
-      { beat: 8.5, stringIndex: 4, fret: 0, durationBeats: 1.0, finger: 0 },
-      { beat: 10, stringIndex: 4, fret: 2, durationBeats: 1.5, finger: 2 },
-      { beat: 12, stringIndex: 4, fret: 0, durationBeats: 1.0, finger: 0 },
-      { beat: 13.5, stringIndex: 5, fret: 2, durationBeats: 2.0, finger: 2 },
+      // Kurt plays the hypnotic riff underneath the vocals
+      { beat: 0.0, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 2.0, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3.0, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 3.75, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 4.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 5.25, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 5.75, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 6.25, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 6.75, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 7.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      // Second half of Verse 1 ("As I want you to be")
+      { beat: 8.0, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 8.75, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 9.5, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 10.0, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 11.0, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 11.75, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 12.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 13.25, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 13.75, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 14.25, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 14.75, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 15.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
     ],
   },
   {
-    name: "Chorus (Memoria, Memoria)",
+    name: "Pre-Chorus (Memoria, Memoria)",
     beats: 16,
     notes: [
-      { beat: 0, stringIndex: 3, fret: 2, durationBeats: 1.5, finger: 2 },
-      { beat: 2, stringIndex: 3, fret: 2, durationBeats: 1.0, finger: 2 },
-      { beat: 3.5, stringIndex: 3, fret: 0, durationBeats: 1.5, finger: 0 },
-      { beat: 5.5, stringIndex: 4, fret: 3, durationBeats: 2.0, finger: 3 },
-      { beat: 8, stringIndex: 3, fret: 2, durationBeats: 1.5, finger: 2 },
-      { beat: 10, stringIndex: 3, fret: 2, durationBeats: 1.0, finger: 2 },
-      { beat: 11.5, stringIndex: 3, fret: 0, durationBeats: 1.5, finger: 0 },
-      { beat: 13.5, stringIndex: 4, fret: 3, durationBeats: 2.5, finger: 3 },
+      // F#5 Power Chord Stabs
+      { beat: 0.0, stringIndex: 5, fret: 2, durationBeats: 1.0, finger: 1 },
+      { beat: 1.5, stringIndex: 4, fret: 4, durationBeats: 1.0, finger: 3 },
+      { beat: 2.75, stringIndex: 5, fret: 2, durationBeats: 1.0, finger: 1 },
+      // A5 Power Chord Stabs
+      { beat: 4.0, stringIndex: 5, fret: 0, durationBeats: 1.0, finger: 0 },
+      { beat: 5.5, stringIndex: 4, fret: 2, durationBeats: 1.0, finger: 2 },
+      { beat: 6.75, stringIndex: 5, fret: 0, durationBeats: 1.0, finger: 0 },
+      // F#5 Power Chord Stabs Reprise
+      { beat: 8.0, stringIndex: 5, fret: 2, durationBeats: 1.0, finger: 1 },
+      { beat: 9.5, stringIndex: 4, fret: 4, durationBeats: 1.0, finger: 3 },
+      { beat: 10.75, stringIndex: 5, fret: 2, durationBeats: 1.0, finger: 1 },
+      // A5 Power Chord Stabs Reprise
+      { beat: 12.0, stringIndex: 5, fret: 0, durationBeats: 1.0, finger: 0 },
+      { beat: 13.5, stringIndex: 4, fret: 2, durationBeats: 1.0, finger: 2 },
+      { beat: 14.75, stringIndex: 5, fret: 0, durationBeats: 1.2, finger: 0 },
     ],
   },
   {
     name: "Verse 2 (Take your time, hurry up)",
     beats: 16,
     notes: [
-      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 1, stringIndex: 5, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 2, stringIndex: 5, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 3, stringIndex: 5, fret: 2, durationBeats: 1.2, finger: 2 },
-      { beat: 4.5, stringIndex: 4, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 5.5, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
-      { beat: 6.5, stringIndex: 4, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 7.5, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
-      { beat: 8.5, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
-      { beat: 9.5, stringIndex: 5, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 10.5, stringIndex: 5, fret: 0, durationBeats: 1.2, finger: 0 },
-      { beat: 12, stringIndex: 4, fret: 2, durationBeats: 2.0, finger: 2 },
+      { beat: 0.0, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 2.0, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3.0, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 3.75, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 4.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 5.25, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 5.75, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 6.25, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 6.75, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 7.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 8.0, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 8.75, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 9.5, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 10.0, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 11.0, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 11.75, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 12.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 13.25, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 13.75, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 14.25, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 14.75, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 15.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
     ],
   },
   {
-    name: "Guitar Solo (Bends on G String)",
+    name: "Guitar Solo (Kurt's Hypnotic G-String Solo)",
     beats: 16,
     notes: [
-      { beat: 0, stringIndex: 2, fret: 6, durationBeats: 1.2, finger: 2 },
-      { beat: 2, stringIndex: 2, fret: 9, durationBeats: 1.5, finger: 4 },
-      { beat: 4, stringIndex: 2, fret: 6, durationBeats: 1.2, finger: 2 },
-      { beat: 6, stringIndex: 2, fret: 9, durationBeats: 1.8, finger: 4 },
-      { beat: 8.5, stringIndex: 2, fret: 11, durationBeats: 1.5, finger: 4 },
-      { beat: 10.5, stringIndex: 2, fret: 9, durationBeats: 1.0, finger: 2 },
-      { beat: 12, stringIndex: 2, fret: 6, durationBeats: 1.5, finger: 1 },
-      { beat: 14, stringIndex: 2, fret: 9, durationBeats: 2.0, finger: 4 },
+      // Measure 1 & 2: 6 - 9 - 6 - 9 - 11 - 9
+      { beat: 0.0, stringIndex: 2, fret: 6, durationBeats: 1.2, finger: 1 },
+      { beat: 1.5, stringIndex: 2, fret: 9, durationBeats: 1.2, finger: 3 },
+      { beat: 3.0, stringIndex: 2, fret: 6, durationBeats: 1.2, finger: 1 },
+      { beat: 4.5, stringIndex: 2, fret: 9, durationBeats: 1.2, finger: 3 },
+      { beat: 6.0, stringIndex: 2, fret: 11, durationBeats: 1.2, finger: 4 },
+      { beat: 7.25, stringIndex: 2, fret: 9, durationBeats: 0.7, finger: 3 },
+      // Measure 3 & 4: 6 - 9 - 6 - 9 - 11 with expressive sustain
+      { beat: 8.0, stringIndex: 2, fret: 6, durationBeats: 1.2, finger: 1 },
+      { beat: 9.5, stringIndex: 2, fret: 9, durationBeats: 1.2, finger: 3 },
+      { beat: 11.0, stringIndex: 2, fret: 6, durationBeats: 1.2, finger: 1 },
+      { beat: 12.5, stringIndex: 2, fret: 9, durationBeats: 1.5, finger: 3 },
+      { beat: 14.25, stringIndex: 2, fret: 11, durationBeats: 1.7, finger: 4 },
     ],
   },
   {
-    name: "Final Chorus & Outro",
-    beats: 20,
+    name: "Outro Riff & Final Ring",
+    beats: 18,
     notes: [
-      { beat: 0, stringIndex: 3, fret: 2, durationBeats: 1.5, finger: 2 },
-      { beat: 2, stringIndex: 3, fret: 0, durationBeats: 1.5, finger: 0 },
-      { beat: 4, stringIndex: 4, fret: 3, durationBeats: 2.0, finger: 3 },
-      { beat: 8, stringIndex: 5, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 9, stringIndex: 5, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 10, stringIndex: 5, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 11, stringIndex: 5, fret: 2, durationBeats: 1.5, finger: 2 },
-      { beat: 13, stringIndex: 4, fret: 0, durationBeats: 1.0, finger: 0 },
-      { beat: 14.5, stringIndex: 5, fret: 2, durationBeats: 1.5, finger: 2 },
-      { beat: 16.5, stringIndex: 5, fret: 0, durationBeats: 3.5, finger: 0 },
+      { beat: 0.0, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 2.0, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3.0, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 3.75, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 4.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 5.25, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 5.75, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 6.25, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 6.75, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 7.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      // Final slow fade riff
+      { beat: 8.5, stringIndex: 5, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 9.5, stringIndex: 5, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10.5, stringIndex: 5, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 11.5, stringIndex: 5, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 13.0, stringIndex: 4, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 14.5, stringIndex: 5, fret: 0, durationBeats: 3.5, finger: 0 },
     ],
   },
 ]);
