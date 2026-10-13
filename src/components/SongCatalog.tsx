@@ -15,6 +15,7 @@ interface SongCatalogProps {
   songs: Song[];
   onSelectSong: (song: Song) => void;
   selectedSongId?: string;
+  onNavigateToPractice?: () => void;
 }
 
 const DIFFICULTY_LEVELS: { level: DifficultyLevel; name: string; desc: string }[] = [
@@ -29,6 +30,7 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
   songs,
   onSelectSong,
   selectedSongId,
+  onNavigateToPractice,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel | 'all'>('all');
@@ -210,6 +212,36 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Practice Tools Quick Access Banner */}
+      {onNavigateToPractice && (
+        <div className="bg-gradient-to-r from-indigo-950/40 via-slate-900 to-amber-950/30 border border-indigo-500/30 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-lg">
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center shrink-0 text-lg">
+              🕷️
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-white">Beginner Practice Tools & Scales</span>
+                <span className="text-[10px] font-mono bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40 font-bold">
+                  NEW
+                </span>
+              </div>
+              <p className="text-xs text-slate-300 mt-0.5">
+                Warm up with the 1-2-3-4 Spider Walk, master the A Minor Pentatonic & Blues Scales, or train with the Metronome Speed Ramp!
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={onNavigateToPractice}
+            className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-xs font-bold font-sans flex items-center gap-2 transition shrink-0 shadow-md shadow-amber-500/20"
+          >
+            <Sparkles className="w-3.5 h-3.5 fill-slate-950" />
+            <span>Open Practice Studio</span>
+          </button>
+        </div>
+      )}
 
       {/* List-Based Song Catalog View */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">

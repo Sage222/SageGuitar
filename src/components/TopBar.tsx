@@ -1,7 +1,7 @@
 import React from 'react';
 import { Mic, MicOff } from 'lucide-react';
 
-export type ActiveTab = 'catalog' | 'studio' | 'dashboard' | 'tuner' | 'chords';
+export type ActiveTab = 'catalog' | 'studio' | 'practice' | 'dashboard' | 'tuner' | 'chords';
 
 interface TopBarProps {
   activeTab: ActiveTab;
@@ -30,7 +30,7 @@ export const TopBar: React.FC<TopBarProps> = ({
         StringMaster
       </a>
 
-      {/* Zone 2: 5 concise single-line navigation links */}
+      {/* Zone 2: Concise single-line navigation links */}
       <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
         <button
           onClick={() => onTabChange('catalog')}
@@ -47,6 +47,17 @@ export const TopBar: React.FC<TopBarProps> = ({
           }`}
         >
           Runway
+        </button>
+        <button
+          onClick={() => onTabChange('practice')}
+          className={`hover:text-white transition-colors whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
+            activeTab === 'practice' ? 'text-amber-400 font-bold' : ''
+          }`}
+        >
+          <span>Practice</span>
+          <span className="text-[10px] font-mono bg-amber-500/20 text-amber-300 px-1.5 py-0.2 rounded border border-amber-500/40">
+            Scales
+          </span>
         </button>
         <button
           onClick={() => onTabChange('dashboard')}

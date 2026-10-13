@@ -25,11 +25,12 @@ import { SongCatalog } from './components/SongCatalog';
 import { ChordLibrary } from './components/ChordLibrary';
 import { Fretboard } from './components/Fretboard';
 import { ProgressDashboard } from './components/ProgressDashboard';
+import { PracticeStudio } from './components/PracticeStudio';
 
 import { SONGS_CATALOG } from './data/songs';
 import { Song, DetectedPitch, UserProgressData } from './types/guitar';
 import { audioEngine } from './utils/audioEngine';
-import { loadUserProgress, recordSongCompletion } from './utils/progressStorage';
+import { loadUserProgress, recordSongCompletion, recordPracticeMinutes } from './utils/progressStorage';
 
 // Generated image asset
 import rockAnthemCover from './assets/images/song_cover_rock_anthem_1791762641359.jpg';
@@ -99,6 +100,16 @@ export default function App() {
     setUserProgress(updated);
   };
 
+  const handlePlayDrillOnRunway = (drillSong: Song) => {
+    setSelectedSong(drillSong);
+    setActiveTab('studio');
+  };
+
+  const handleLogPracticeMinutes = (minutes: number) => {
+    const updated = recordPracticeMinutes(userProgress, minutes);
+    setUserProgress(updated);
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
       {/* 3-Zone Navigation Header */}
@@ -163,6 +174,14 @@ export default function App() {
                 </button>
 
                 <button
+                  onClick={() => setActiveTab('practice')}
+                  className="px-4 py-2.5 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-300 font-bold text-xs hover:bg-amber-500/25 transition flex items-center gap-2 shadow-sm"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Practice Scales & Drills</span>
+                </button>
+
+                <button
                   onClick={() => setActiveTab('dashboard')}
                   className="px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 font-bold text-xs hover:bg-slate-750 transition"
                 >
@@ -201,6 +220,7 @@ export default function App() {
             songs={SONGS_CATALOG}
             onSelectSong={handleSelectSong}
             selectedSongId={selectedSong.id}
+            onNavigateToPractice={() => setActiveTab('practice')}
           />
         )}
 
@@ -222,6 +242,15 @@ export default function App() {
               selectedChordName={selectedSong.mode === 'chord' ? 'Em' : null}
             />
           </div>
+        )}
+
+        {activeTab === 'practice' && (
+          <PracticeStudio
+            detectedPitch={detectedPitch}
+            isMicActive={isMicActive}
+            onPlayOnRunway={handlePlayDrillOnRunway}
+            onLogPracticeMinutes={handleLogPracticeMinutes}
+          />
         )}
 
         {activeTab === 'dashboard' && (

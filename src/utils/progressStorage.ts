@@ -182,3 +182,36 @@ export function recordSongCompletion(
   saveUserProgress(updated);
   return updated;
 }
+
+export function recordPracticeMinutes(
+  current: UserProgressData,
+  minutes: number
+): UserProgressData {
+  const today = getTodayString();
+  const yesterday = getYesterdayString();
+
+  let newCurrentStreak = current.currentDailyStreak;
+  if (!current.lastPracticeDate) {
+    newCurrentStreak = 1;
+  } else if (current.lastPracticeDate === today) {
+    // Already practiced today
+  } else if (current.lastPracticeDate === yesterday) {
+    newCurrentStreak += 1;
+  } else {
+    newCurrentStreak = 1;
+  }
+
+  const newLongestStreak = Math.max(current.longestDailyStreak, newCurrentStreak);
+
+  const updated: UserProgressData = {
+    ...current,
+    practiceSessionsCount: current.practiceSessionsCount + 1,
+    totalSecondsPracticed: current.totalSecondsPracticed + minutes * 60,
+    currentDailyStreak: newCurrentStreak,
+    longestDailyStreak: newLongestStreak,
+    lastPracticeDate: today,
+  };
+
+  saveUserProgress(updated);
+  return updated;
+}
