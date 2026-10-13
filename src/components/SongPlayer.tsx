@@ -59,9 +59,14 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
   const [customBpm, setCustomBpm] = useState<number>(song.bpm);
   const [activeBeatInBar, setActiveBeatInBar] = useState<number>(0);
   const [displayScale, setDisplayScale] = useState<'standard' | 'large' | 'tablet'>('large');
-  const [canvasSize, setCanvasSize] = useState<{ width: number; height: number }>({
-    width: 1200,
-    height: 430,
+  const [canvasSize, setCanvasSize] = useState<{ width: number; height: number }>(() => {
+    if (typeof window !== 'undefined') {
+      const w = window.innerWidth ? Math.min(1200, Math.max(320, window.innerWidth - 32)) : 800;
+      const isLandscape = window.innerWidth > window.innerHeight && window.innerHeight < 550;
+      const h = isLandscape ? 290 : w < 460 ? 340 : 420;
+      return { width: w, height: h };
+    }
+    return { width: 800, height: 380 };
   });
   const [isMetronomeEnabled, setIsMetronomeEnabled] = useState(false);
   const [isBackingEnabled, setIsBackingEnabled] = useState(false);
@@ -135,7 +140,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
   }, []);
 
   // Responsive Canvas Sizing (Distortion-Free on All Screens and Resolutions)
-  // Dynamically measures the container element and adapts logical width & height 1:1
+  // Dynamically measures container width and screen viewport geometry (supports Pixel 10 XL portrait & landscape)
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -145,22 +150,37 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
       const containerWidth = Math.floor(rect.width);
       if (containerWidth <= 0) return;
 
-      let baseHeight = 420;
-      if (song.mode === 'lead') {
-        baseHeight = displayScale === 'tablet' ? 490 : displayScale === 'large' ? 430 : 360;
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const isLandscape = viewportWidth > viewportHeight && viewportHeight < 550;
+
+      let calculatedHeight: number;
+
+      if (isLandscape) {
+        // Landscape mode on mobile devices (e.g. Pixel 10 XL landscape ~920x412):
+        // Runway needs to fit comfortably without consuming entire screen or clipping strings
+        calculatedHeight = song.mode === 'lead' ? 290 : 220;
+      } else if (containerWidth < 460) {
+        // Mobile portrait mode (e.g. Pixel 10 XL portrait ~412x920):
+        // Lead mode needs at least 340px so all 6 guitar strings and round fret pucks have ample breathing room
+        calculatedHeight = song.mode === 'lead'
+          ? (displayScale === 'tablet' ? 390 : displayScale === 'large' ? 360 : 340)
+          : (displayScale === 'tablet' ? 280 : displayScale === 'large' ? 250 : 220);
+      } else if (containerWidth < 768) {
+        // Large phones and mini tablets
+        calculatedHeight = song.mode === 'lead'
+          ? (displayScale === 'tablet' ? 440 : displayScale === 'large' ? 400 : 360)
+          : (displayScale === 'tablet' ? 340 : displayScale === 'large' ? 300 : 260);
       } else {
-        baseHeight = displayScale === 'tablet' ? 390 : displayScale === 'large' ? 340 : 280;
+        // Tablets, laptops, desktops
+        calculatedHeight = song.mode === 'lead'
+          ? (displayScale === 'tablet' ? 500 : displayScale === 'large' ? 440 : 380)
+          : (displayScale === 'tablet' ? 400 : displayScale === 'large' ? 340 : 280);
       }
 
-      // Responsive bounds: Keep proportionate and comfortable on small mobile screens
-      const finalHeight =
-        containerWidth < 500
-          ? Math.max(song.mode === 'lead' ? 310 : 230, Math.min(baseHeight, Math.round(containerWidth * 0.78)))
-          : baseHeight;
-
       setCanvasSize((prev) => {
-        if (prev.width === containerWidth && prev.height === finalHeight) return prev;
-        return { width: containerWidth, height: finalHeight };
+        if (prev.width === containerWidth && prev.height === calculatedHeight) return prev;
+        return { width: containerWidth, height: calculatedHeight };
       });
     };
 
@@ -171,10 +191,12 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
     });
     ro.observe(containerRef.current);
     window.addEventListener('resize', updateSize);
+    window.addEventListener('orientationchange', updateSize);
 
     return () => {
       ro.disconnect();
       window.removeEventListener('resize', updateSize);
+      window.removeEventListener('orientationchange', updateSize);
     };
   }, [song.mode, displayScale]);
 
@@ -250,13 +272,16 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
 
     // Spawn canvas particles at hit line
     if (canvasRef.current) {
-      const hitX = Math.max(90, Math.min(170, Math.round(canvasSize.width * 0.16)));
+      const isNarrow = canvasSize.width < 500;
+      const hitX = isNarrow
+        ? Math.max(72, Math.min(92, Math.round(canvasSize.width * 0.2)))
+        : Math.max(90, Math.min(170, Math.round(canvasSize.width * 0.16)));
       let hitY = canvasSize.height / 2;
 
       if (mode === 'lead' && leadNotesRef.current[index]) {
         const strIdx = leadNotesRef.current[index].stringIndex;
-        const trackTop = 44;
-        const trackBottom = canvasSize.height - 20;
+        const trackTop = isNarrow ? 28 : (canvasSize.height < 320 ? 32 : 44);
+        const trackBottom = canvasSize.height - (isNarrow ? 12 : 20);
         const trackHeight = (trackBottom - trackTop) / 6;
         hitY = trackTop + strIdx * trackHeight + trackHeight / 2;
       }
@@ -491,9 +516,18 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
     ctx.save();
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    const hitX = Math.max(90, Math.min(170, Math.round(width * 0.16)));
+    // Target Strike Line position:
+    // On narrow screens (e.g. Pixel 10 XL portrait 380-412px), hitX at 72-84px leaves 300px+ of upcoming runway.
+    // On landscape / wide screens, hitX scales smoothly.
+    const isNarrow = width < 500;
+    const hitX = isNarrow
+      ? Math.max(72, Math.min(92, Math.round(width * 0.2)))
+      : Math.max(90, Math.min(170, Math.round(width * 0.16)));
+
     // Scale scrolling speed directly by effective song BPM so slow ballads glide calmly and fast songs rush with urgency
-    const pixelsPerBeat = Math.max(80, Math.min(125, Math.round(width * 0.11)));
+    const pixelsPerBeat = isNarrow
+      ? Math.max(68, Math.min(95, Math.round(width * 0.18)))
+      : Math.max(80, Math.min(125, Math.round(width * 0.11)));
     const pixelsPerSecond = (effectiveBpm / 60) * pixelsPerBeat;
     const t = currentTimeRef.current;
 
@@ -514,14 +548,14 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
         ctx.strokeStyle = isBar ? 'rgba(148, 163, 184, 0.45)' : 'rgba(51, 65, 85, 0.25)';
         ctx.lineWidth = isBar ? 2.5 : 1;
         ctx.beginPath();
-        ctx.moveTo(x, 28);
-        ctx.lineTo(x, height - 12);
+        ctx.moveTo(x, isNarrow ? 20 : 28);
+        ctx.lineTo(x, height - 10);
         ctx.stroke();
 
         if (isBar) {
           ctx.fillStyle = '#94A3B8';
-          ctx.font = 'bold 12px JetBrains Mono';
-          ctx.fillText(`M${Math.floor(b / song.timeSignature[0]) + 1}`, x + 5, 20);
+          ctx.font = `bold ${isNarrow ? '10px' : '12px'} JetBrains Mono`;
+          ctx.fillText(`M${Math.floor(b / song.timeSignature[0]) + 1}`, x + 4, isNarrow ? 15 : 20);
         }
       }
     }
@@ -530,15 +564,18 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
       // ----------------------------------------------------
       // LEAD MODE: 6 Guitar String Tracks (Adaptive Height, Guaranteed Round Pucks)
       // ----------------------------------------------------
-      const trackTop = 44;
-      const trackBottom = height - 20;
+      const trackTop = isNarrow ? 28 : (height < 320 ? 32 : 44);
+      const trackBottom = height - (isNarrow ? 12 : 20);
       const trackHeight = (trackBottom - trackTop) / 6;
-      const puckRadius = Math.min(27, Math.max(16, Math.round(trackHeight * 0.38)));
-      const fretFontSize = Math.round(puckRadius * 0.88);
+      const puckRadius = Math.min(27, Math.max(14, Math.round(trackHeight * 0.38)));
+      const fretFontSize = Math.round(puckRadius * 0.9);
 
-      const badgeWidth = Math.max(46, Math.min(74, hitX - 20));
-      const badgeLeft = 8;
+      // Compact badges on mobile so they never collide with the target hit line
+      const badgeMarginRight = 10;
+      const badgeWidth = Math.max(34, Math.min(isNarrow ? 48 : 74, hitX - badgeMarginRight - 4));
+      const badgeLeft = 4;
       const badgeCenterX = badgeLeft + badgeWidth / 2;
+      const badgeHeight = Math.min(34, Math.max(22, Math.round(trackHeight * 0.74)));
 
       // Draw 6 horizontal string tracks (0=High E at top, 5=Low E at bottom)
       for (let s = 0; s < 6; s++) {
@@ -551,26 +588,28 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
 
         // String wire with realistic gauge thickness
         ctx.strokeStyle = color;
-        ctx.lineWidth = 2.4 + (5 - s) * 0.6;
+        ctx.lineWidth = isNarrow ? 1.8 + (5 - s) * 0.4 : 2.4 + (5 - s) * 0.6;
         ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(width, y);
         ctx.stroke();
 
-        // String badge on far left (clear and bold, dynamically sized so it never collides with hit line)
+        // String badge on far left (clear and bold, guaranteed clearance before hit line)
         ctx.fillStyle = '#0F172A';
         ctx.beginPath();
-        ctx.roundRect(badgeLeft, y - 18, badgeWidth, 36, 8);
+        ctx.roundRect(badgeLeft, y - badgeHeight / 2, badgeWidth, badgeHeight, 6);
         ctx.fill();
         ctx.strokeStyle = color;
-        ctx.lineWidth = 2.0;
+        ctx.lineWidth = 1.8;
         ctx.stroke();
 
         ctx.fillStyle = color;
-        ctx.font = `bold ${badgeWidth < 60 ? '11px' : '13px'} JetBrains Mono`;
+        ctx.font = `bold ${badgeWidth < 52 ? '10px' : '13px'} JetBrains Mono`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        const stringLabel = badgeWidth < 60
+        const stringLabel = badgeWidth < 52
+          ? ['e', 'B', 'G', 'D', 'A', 'E'][s]
+          : badgeWidth < 65
           ? ['1e', '2B', '3G', '4D', '5A', '6E'][s]
           : ['1 (e)', '2 (B)', '3 (G)', '4 (D)', '5 (A)', '6 (E)'][s];
         ctx.fillText(stringLabel, badgeCenterX, y);
@@ -578,21 +617,21 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
 
       // Draw Target Strike Line (Hit Zone)
       ctx.strokeStyle = '#F59E0B';
-      ctx.lineWidth = 5;
+      ctx.lineWidth = isNarrow ? 3.5 : 5;
       ctx.shadowColor = '#F59E0B';
-      ctx.shadowBlur = 18;
+      ctx.shadowBlur = isNarrow ? 10 : 18;
       ctx.beginPath();
-      ctx.moveTo(hitX, trackTop - 8);
-      ctx.lineTo(hitX, trackBottom + 8);
+      ctx.moveTo(hitX, trackTop - 6);
+      ctx.lineTo(hitX, trackBottom + 6);
       ctx.stroke();
       ctx.shadowBlur = 0;
 
       // Target Header Label
       ctx.fillStyle = '#F59E0B';
-      ctx.font = 'bold 12px JetBrains Mono';
+      ctx.font = `bold ${isNarrow ? '9px' : '12px'} JetBrains Mono`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
-      ctx.fillText('TARGET', hitX, trackTop - 10);
+      ctx.fillText(isNarrow ? 'HIT' : 'TARGET', hitX, trackTop - (isNarrow ? 4 : 8));
 
       // Lead Note Pucks (True Circles, zero stretch/compress)
       const notes = leadNotesRef.current;
@@ -640,28 +679,32 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
           ctx.textBaseline = 'middle';
           ctx.fillText(`${note.fret}`, x, y);
 
-          // Note Name tag above note
+          // Note Name tag above note (or below if top string to avoid clipping canvas edge)
+          const tagAbove = y - puckRadius - 22 >= 4;
+          const tagY = tagAbove ? y - puckRadius - 22 : y + puckRadius + 4;
+          const textY = tagAbove ? y - puckRadius - 13 : y + puckRadius + 13;
+
           ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
           ctx.beginPath();
-          ctx.roundRect(x - 18, y - puckRadius - 22, 36, 18, 4);
+          ctx.roundRect(x - 18, tagY, 36, 18, 4);
           ctx.fill();
           ctx.strokeStyle = color;
           ctx.lineWidth = 1.2;
           ctx.stroke();
 
           ctx.fillStyle = '#F8FAFC';
-          ctx.font = 'bold 12px Plus Jakarta Sans';
+          ctx.font = 'bold 11px Plus Jakarta Sans';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillText(note.noteName, x, y - puckRadius - 13);
+          ctx.fillText(note.noteName, x, textY);
         }
       }
     } else {
       // ----------------------------------------------------
       // CHORD MODE: Rhythm Runway (Adaptive & Clear)
       // ----------------------------------------------------
-      const laneTop = 44;
-      const laneBottom = height - 24;
+      const laneTop = isNarrow ? 28 : (height < 300 ? 32 : 44);
+      const laneBottom = height - (isNarrow ? 14 : 24);
       const laneHeight = laneBottom - laneTop;
 
       // Draw Highway background
@@ -670,21 +713,21 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
 
       // Target Strum Line
       ctx.strokeStyle = '#10B981';
-      ctx.lineWidth = 5;
+      ctx.lineWidth = isNarrow ? 3.5 : 5;
       ctx.shadowColor = '#10B981';
-      ctx.shadowBlur = 18;
+      ctx.shadowBlur = isNarrow ? 10 : 18;
       ctx.beginPath();
-      ctx.moveTo(hitX, laneTop - 8);
-      ctx.lineTo(hitX, laneBottom + 8);
+      ctx.moveTo(hitX, laneTop - 6);
+      ctx.lineTo(hitX, laneBottom + 6);
       ctx.stroke();
       ctx.shadowBlur = 0;
 
       // Strike Zone Header Badge
       ctx.fillStyle = '#10B981';
-      ctx.font = 'bold 12px JetBrains Mono';
+      ctx.font = `bold ${isNarrow ? '9px' : '12px'} JetBrains Mono`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
-      ctx.fillText('STRUM', hitX, laneTop - 10);
+      ctx.fillText('STRUM', hitX, laneTop - (isNarrow ? 4 : 8));
 
       // Chord blocks
       const chords = chordEventsRef.current;
@@ -838,56 +881,51 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
 
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-3 md:gap-4">
       {/* Top Song Stage Header */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3 md:p-4 shadow-xl flex flex-wrap items-center justify-between gap-3">
         {/* Left: Song Meta */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             onClick={onBackToCatalog}
-            className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-950 border border-slate-800 text-slate-300 hover:text-white transition"
+            className="px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-950 border border-slate-800 text-slate-300 hover:text-white transition shrink-0"
           >
             ← Back
           </button>
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-bold text-white tracking-tight">{song.title}</h2>
-              <span className="text-xs font-semibold text-amber-400 font-mono">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="text-base md:text-lg font-bold text-white tracking-tight">{song.title}</h2>
+              <span className="text-[11px] font-semibold text-amber-400 font-mono">
                 {song.difficultyLabel}
               </span>
             </div>
-            <div className="text-xs text-slate-400 flex items-center gap-2 mt-0.5 font-mono">
+            <div className="text-[11px] md:text-xs text-slate-400 flex items-center gap-1.5 md:gap-2 mt-0.5 font-mono flex-wrap">
               <span>{song.artist}</span>
               <span>·</span>
-              <span>{song.genre}</span>
-              <span>·</span>
               <span className="text-amber-300 font-bold">{effectiveBpm} BPM</span>
-              {effectiveBpm !== song.bpm && (
-                <span className="text-[10px] text-slate-500">({song.bpm} default)</span>
-              )}
               <span>·</span>
-              <span className="capitalize">{song.mode} Mode</span>
+              <span className="capitalize">{song.mode}</span>
             </div>
           </div>
         </div>
 
         {/* Center: Live Stats HUD */}
-        <div className="flex items-center gap-5 px-4 py-1.5 bg-slate-950/80 border border-slate-800 rounded-xl">
+        <div className="flex items-center gap-3 md:gap-5 px-3 md:px-4 py-1.5 bg-slate-950/80 border border-slate-800 rounded-xl">
           <div className="flex flex-col items-center">
-            <span className="text-[10px] text-slate-400 font-mono">SCORE</span>
-            <span className="text-base font-black text-amber-400 font-mono tabular-nums">
+            <span className="text-[9px] md:text-[10px] text-slate-400 font-mono">SCORE</span>
+            <span className="text-sm md:text-base font-black text-amber-400 font-mono tabular-nums">
               {score}
             </span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] text-slate-400 font-mono">STREAK</span>
-            <span className="text-base font-black text-emerald-400 font-mono tabular-nums">
+            <span className="text-[9px] md:text-[10px] text-slate-400 font-mono">STREAK</span>
+            <span className="text-sm md:text-base font-black text-emerald-400 font-mono tabular-nums">
               {streak}x
             </span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-[10px] text-slate-400 font-mono">ACCURACY</span>
-            <span className="text-base font-black text-white font-mono tabular-nums">
+            <span className="text-[9px] md:text-[10px] text-slate-400 font-mono">ACCURACY</span>
+            <span className="text-sm md:text-base font-black text-white font-mono tabular-nums">
               {accuracy}%
             </span>
           </div>
@@ -899,7 +937,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
               {[0, 1, 2, 3].slice(0, song.timeSignature[0] || 4).map((b) => (
                 <div
                   key={b}
-                  className={`w-4 h-4 rounded text-[9px] font-mono font-bold flex items-center justify-center transition-all duration-75 ${
+                  className={`w-3.5 h-3.5 md:w-4 md:h-4 rounded text-[8px] md:text-[9px] font-mono font-bold flex items-center justify-center transition-all duration-75 ${
                     activeBeatInBar === b && isPlaying
                       ? b === 0
                         ? 'bg-emerald-400 text-slate-950 scale-125 shadow-md shadow-emerald-400/60 font-black'
@@ -928,33 +966,33 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
         {/* Right: Size Toggle & Mic Listening Status */}
         <div className="flex items-center gap-2">
           {/* View Size Selector for Tablets and Laptops */}
-          <div className="flex items-center gap-1 bg-slate-950 border border-slate-800 p-1 rounded-lg">
+          <div className="flex items-center gap-1 bg-slate-950 border border-slate-800 p-0.5 md:p-1 rounded-lg">
             {(['standard', 'large', 'tablet'] as const).map((s) => (
               <button
                 key={s}
                 onClick={() => setDisplayScale(s)}
-                className={`px-2 py-1 text-[11px] font-mono font-bold rounded transition ${
+                className={`px-2 py-0.5 md:py-1 text-[10px] md:text-[11px] font-mono font-bold rounded transition ${
                   displayScale === s
                     ? 'bg-amber-500 text-slate-950'
                     : 'text-slate-400 hover:text-white'
                 }`}
                 title={s === 'tablet' ? 'Tablet XL view (Largest strings & frets)' : `${s} view`}
               >
-                {s === 'tablet' ? 'Tablet XL' : s === 'large' ? 'Large' : 'Normal'}
+                {s === 'tablet' ? 'Tablet' : s === 'large' ? 'Large' : 'Normal'}
               </button>
             ))}
           </div>
 
           <button
             onClick={onToggleMic}
-            className={`px-3.5 py-2 text-xs font-semibold rounded-lg flex items-center gap-2 border transition-all ${
+            className={`px-2.5 md:px-3.5 py-1.5 md:py-2 text-[11px] md:text-xs font-semibold rounded-lg flex items-center gap-1.5 md:gap-2 border transition-all ${
               isMicActive
                 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
                 : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-white'
             }`}
           >
             <Mic className="w-3.5 h-3.5" />
-            <span>{isMicActive ? 'Mic Listening' : 'Enable Mic'}</span>
+            <span>{isMicActive ? 'Listening' : 'Mic'}</span>
           </button>
         </div>
       </div>
@@ -974,34 +1012,34 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
 
         {/* 4-Second Preparation Delay Calm Banner (No loud countdown numbers, peaceful preview of upcoming notes) */}
         {prepDelay !== null && (
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3 px-5 py-2 rounded-full bg-slate-900/95 border border-amber-500/50 shadow-2xl backdrop-blur-md">
-            <div className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
-            <div className="flex flex-col text-left">
-              <span className="text-xs font-bold text-white tracking-wide flex items-center gap-1.5">
-                <span>Previewing upcoming notes · Starts in <span className="text-amber-400 font-mono">{prepDelay}s</span></span>
+          <div className="absolute top-2 md:top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 md:gap-3 px-3 md:px-5 py-1.5 md:py-2 rounded-full bg-slate-900/95 border border-amber-500/50 shadow-2xl backdrop-blur-md max-w-[95%]">
+            <div className="w-2 md:w-2.5 h-2 md:h-2.5 rounded-full bg-amber-400 animate-ping shrink-0" />
+            <div className="flex flex-col text-left truncate">
+              <span className="text-[11px] md:text-xs font-bold text-white tracking-wide flex items-center gap-1.5">
+                <span>Previewing notes · Starts in <span className="text-amber-400 font-mono">{prepDelay}s</span></span>
               </span>
-              <span className="text-[11px] text-slate-400 font-mono">
+              <span className="text-[9px] md:text-[11px] text-slate-400 font-mono hidden sm:inline">
                 Inspect frets & strings ahead · Place fingers ready
               </span>
             </div>
             <button
               onClick={skipDelay}
-              className="ml-2 px-3 py-1 text-xs font-bold rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 transition shadow font-mono"
+              className="ml-1 md:ml-2 px-2.5 md:px-3 py-1 text-[11px] md:text-xs font-bold rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 transition shadow font-mono shrink-0"
             >
-              Start Now →
+              Start →
             </button>
           </div>
         )}
 
         {/* Clean floating Start / Resume control when paused - runway and upcoming notes remain fully visible */}
         {!isPlaying && !isFinished && prepDelay === null && (
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
+          <div className="absolute bottom-3 md:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
             <button
               onClick={startWithDelay}
-              className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs md:text-sm flex items-center gap-2 transition-all shadow-xl shadow-amber-500/40 hover:scale-105 active:scale-95 cursor-pointer border border-amber-300/40"
+              className="px-4 md:px-6 py-2 md:py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs md:text-sm flex items-center gap-2 transition-all shadow-xl shadow-amber-500/40 hover:scale-105 active:scale-95 cursor-pointer border border-amber-300/40"
             >
-              <Play className="w-4 h-4 fill-slate-950" />
-              <span>{currentTime === 0 ? 'Start Song (4s Preview Delay)' : 'Resume Playback'}</span>
+              <Play className="w-3.5 h-3.5 md:w-4 md:h-4 fill-slate-950" />
+              <span>{currentTime === 0 ? 'Start Song (4s Delay)' : 'Resume'}</span>
             </button>
           </div>
         )}
