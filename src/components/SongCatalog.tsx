@@ -19,11 +19,11 @@ interface SongCatalogProps {
 }
 
 const DIFFICULTY_LEVELS: { level: DifficultyLevel; name: string; desc: string }[] = [
-  { level: 1, name: 'Lvl 1: Novice', desc: 'Open strings & 1-finger notes' },
-  { level: 2, name: 'Lvl 2: Elementary', desc: 'First position open chords & melodies' },
-  { level: 3, name: 'Lvl 3: Intermediate', desc: 'Pentatonic riffs & syncopated strumming' },
-  { level: 4, name: 'Lvl 4: Advanced', desc: 'Barre chords, 7ths & fast lead fills' },
-  { level: 5, name: 'Lvl 5: Master', desc: 'High-speed solos & polyphonic fingerstyle' },
+  { level: 1, name: 'Lvl 1: Novice', desc: 'Open strings & frets 1–4 (First position)' },
+  { level: 2, name: 'Lvl 2: Elementary', desc: 'Open strings & frets 1–8' },
+  { level: 3, name: 'Lvl 3: Intermediate', desc: 'Frets 1–8 with complex rhythms & variety' },
+  { level: 4, name: 'Lvl 4: Advanced', desc: 'Frets 9+ (Upper neck & expressive lead)' },
+  { level: 5, name: 'Lvl 5: Master', desc: 'Frets 9+ (Full neck virtuoso & speed solos)' },
 ];
 
 export const SongCatalog: React.FC<SongCatalogProps> = ({

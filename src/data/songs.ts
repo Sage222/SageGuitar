@@ -141,7 +141,7 @@ function assembleChordSong(
 // SONG DATA DEFINITIONS (AUTHENTIC MULTI-SECTION ARRANGEMENTS)
 // =========================================================================
 
-// Smoke on the Water (112 BPM - Level 1: Novice)
+// Smoke on the Water (112 BPM - Level 2: Elementary)
 const s_smoke = assembleLeadSong(112, [
   {
     name: "Intro Riff",
@@ -242,7 +242,7 @@ const s_smoke = assembleLeadSong(112, [
   },
 ]);
 
-// Seven Nation Army (124 BPM - Level 1: Novice)
+// Seven Nation Army (124 BPM - Level 4: Advanced)
 const s_seven_nation = assembleLeadSong(124, [
   {
     name: "Intro Bass Riff",
@@ -466,7 +466,7 @@ const s_knockin = assembleChordSong(68, [
   },
 ]);
 
-// Iron Man (74 BPM - Level 1: Novice)
+// Iron Man (74 BPM - Level 4: Advanced)
 const s_iron_man = assembleLeadSong(74, [
   {
     name: "Intro Bends",
@@ -542,7 +542,7 @@ const s_iron_man = assembleLeadSong(74, [
   },
 ]);
 
-// Peter Gunn Theme (132 BPM - Level 1: Novice)
+// Peter Gunn Theme (132 BPM - Level 2: Elementary)
 const s_peter_gunn = assembleLeadSong(132, [
   {
     name: "Intro Driving Bass Riff",
@@ -663,7 +663,7 @@ const s_peter_gunn = assembleLeadSong(132, [
   },
 ]);
 
-// Wipe Out (144 BPM - Level 1: Novice)
+// Wipe Out (144 BPM - Level 3: Intermediate)
 const s_wipe_out = assembleLeadSong(144, [
   {
     name: "Surf Triplet Intro",
@@ -746,7 +746,7 @@ const s_wipe_out = assembleLeadSong(144, [
   },
 ]);
 
-// (I Can't Get No) Satisfaction (136 BPM - Level 1: Novice)
+// (I Can't Get No) Satisfaction (136 BPM - Level 2: Elementary)
 const s_satisfaction = assembleLeadSong(136, [
   {
     name: "Iconic Fuzz Riff Intro",
@@ -1544,77 +1544,78 @@ const s_mary_lamb = assembleLeadSong(90, [
 ]);
 
 // Twinkle Twinkle Little Star (84 BPM - Level 1: Novice)
+// Arranged on open strings and frets 1-3 (First Position)
 const s_twinkle = assembleLeadSong(84, [
   {
     name: "Theme A1 (Twinkle twinkle little star)",
     beats: 8,
     notes: [
-      { beat: 0, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 1, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 2, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 3, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 4, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 4 },
-      { beat: 5, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 4 },
-      { beat: 6, stringIndex: 0, fret: 3, durationBeats: 1.8, finger: 3 },
+      { beat: 0, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 1, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 2, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 1, fret: 3, durationBeats: 1.8, finger: 3 },
     ],
   },
   {
     name: "Theme A2 (How I wonder what you are)",
     beats: 8,
     notes: [
-      { beat: 0, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 1, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 2, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 3, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 4, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 5, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 6, stringIndex: 1, fret: 1, durationBeats: 1.8, finger: 1 },
+      { beat: 0, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 1, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 2, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 3, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 4, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 5, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 6, stringIndex: 2, fret: 0, durationBeats: 1.8, finger: 0 },
     ],
   },
   {
     name: "Middle Theme B (Up above the world so high)",
     beats: 8,
     notes: [
-      { beat: 0, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 1, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 2, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 3, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 6, stringIndex: 1, fret: 3, durationBeats: 1.8, finger: 3 },
+      { beat: 0, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 1, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 3, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 4, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 5, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 2, fret: 2, durationBeats: 1.8, finger: 2 },
     ],
   },
   {
     name: "Middle Theme B Reprise (Like a diamond in the sky)",
     beats: 8,
     notes: [
-      { beat: 0, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 1, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 2, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 3, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 6, stringIndex: 1, fret: 3, durationBeats: 1.8, finger: 3 },
+      { beat: 0, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 1, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 3, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 4, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 5, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 2, fret: 2, durationBeats: 1.8, finger: 2 },
     ],
   },
   {
     name: "Recapitulation & Finale",
     beats: 16,
     notes: [
-      { beat: 0, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 1, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 2, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 3, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 4, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 4 },
-      { beat: 5, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 4 },
-      { beat: 6, stringIndex: 0, fret: 3, durationBeats: 1.8, finger: 3 },
-      { beat: 8, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 9, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 10, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 11, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 12, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 13, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 14, stringIndex: 1, fret: 1, durationBeats: 2.5, finger: 1 },
+      { beat: 0, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 1, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 2, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 1, fret: 3, durationBeats: 1.8, finger: 3 },
+      { beat: 8, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 9, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 10, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 11, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 12, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 13, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 14, stringIndex: 2, fret: 0, durationBeats: 2.5, finger: 0 },
     ],
   },
 ]);
@@ -1781,7 +1782,7 @@ const s_jingle_bells = assembleLeadSong(120, [
   },
 ]);
 
-// Brahms’ Lullaby (Wiegenlied) (70 BPM - Level 1: Novice)
+// Brahms’ Lullaby (Wiegenlied) (70 BPM - Level 2: Elementary)
 const s_brahms_lullaby = assembleLeadSong(70, [
   {
     name: "Verse Theme 1",
@@ -1945,82 +1946,83 @@ const s_greensleeves = assembleLeadSong(82, [
 ]);
 
 // You Are My Sunshine (100 BPM - Level 1: Novice)
+// Arranged on open strings and frets 1-3 (First Position)
 const s_sunshine = assembleLeadSong(100, [
   {
     name: "Verse 1 (The other night dear)",
     beats: 16,
     notes: [
-      { beat: 0, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 1, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 2, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 3, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
-      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 6, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 7, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
-      { beat: 9, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 11, stringIndex: 1, fret: 1, durationBeats: 1.0, finger: 1 },
-      { beat: 12, stringIndex: 1, fret: 1, durationBeats: 1.0, finger: 1 },
-      { beat: 13.5, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 14.5, stringIndex: 0, fret: 0, durationBeats: 1.8, finger: 0 },
+      { beat: 0, stringIndex: 3, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 1, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 2, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 5, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 7, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 9, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 11, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
+      { beat: 12, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
+      { beat: 13.5, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 14.5, stringIndex: 2, fret: 0, durationBeats: 1.8, finger: 0 },
     ],
   },
   {
     name: "Chorus (You are my sunshine)",
     beats: 16,
     notes: [
-      { beat: 0, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 1, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 2, stringIndex: 0, fret: 5, durationBeats: 1.8, finger: 4 },
-      { beat: 4.5, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 4 },
-      { beat: 5.5, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 6.5, stringIndex: 0, fret: 1, durationBeats: 1.8, finger: 1 },
-      { beat: 9, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 11, stringIndex: 1, fret: 1, durationBeats: 1.0, finger: 1 },
-      { beat: 12.5, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 13.5, stringIndex: 1, fret: 1, durationBeats: 2.5, finger: 1 },
+      { beat: 0, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 1, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 0, durationBeats: 1.8, finger: 0 },
+      { beat: 4.5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 5.5, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 6.5, stringIndex: 1, fret: 1, durationBeats: 1.8, finger: 1 },
+      { beat: 9, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 11, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
+      { beat: 12.5, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 13.5, stringIndex: 2, fret: 0, durationBeats: 2.5, finger: 0 },
     ],
   },
   {
     name: "Verse 2 (I'll always love you)",
     beats: 16,
     notes: [
-      { beat: 0, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 1, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 2, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 3, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
-      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 6, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 7, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
-      { beat: 9, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 11, stringIndex: 1, fret: 1, durationBeats: 1.0, finger: 1 },
-      { beat: 12, stringIndex: 1, fret: 1, durationBeats: 1.0, finger: 1 },
-      { beat: 13.5, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 14.5, stringIndex: 0, fret: 0, durationBeats: 1.8, finger: 0 },
+      { beat: 0, stringIndex: 3, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 1, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 2, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 5, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 7, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 9, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 11, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
+      { beat: 12, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
+      { beat: 13.5, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 14.5, stringIndex: 2, fret: 0, durationBeats: 1.8, finger: 0 },
     ],
   },
   {
     name: "Chorus 2 & Sweet Outro",
     beats: 18,
     notes: [
-      { beat: 0, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
-      { beat: 1, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 2, stringIndex: 0, fret: 5, durationBeats: 1.8, finger: 4 },
-      { beat: 4.5, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 4 },
-      { beat: 5.5, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 6.5, stringIndex: 0, fret: 1, durationBeats: 1.8, finger: 1 },
-      { beat: 9, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
-      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
-      { beat: 11, stringIndex: 1, fret: 1, durationBeats: 1.0, finger: 1 },
-      { beat: 13, stringIndex: 2, fret: 0, durationBeats: 1.2, finger: 0 },
-      { beat: 14.5, stringIndex: 1, fret: 1, durationBeats: 3.5, finger: 1 },
+      { beat: 0, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 1, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 0, durationBeats: 1.8, finger: 0 },
+      { beat: 4.5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 5.5, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 6.5, stringIndex: 1, fret: 1, durationBeats: 1.8, finger: 1 },
+      { beat: 9, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 11, stringIndex: 2, fret: 2, durationBeats: 1.0, finger: 2 },
+      { beat: 13, stringIndex: 1, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 14.5, stringIndex: 2, fret: 0, durationBeats: 3.5, finger: 0 },
     ],
   },
 ]);
 
-// Come As You Are (120 BPM - Level 2: Elementary)
+// Come As You Are (120 BPM - Level 4: Advanced)
 // Authentic Nirvana arrangement: Chorus-drenched signature riff, heavy pre-chorus, and hypnotic guitar solo
 const s_come_as_you_are = assembleLeadSong(120, [
   {
@@ -2470,7 +2472,7 @@ const s_bach_cello = assembleLeadSong(86, [
   },
 ]);
 
-// Spanish Romance (Romance Anónimo) (96 BPM - Level 2: Elementary)
+// Spanish Romance (Romance Anónimo) (96 BPM - Level 4: Advanced)
 const s_spanish_romance = assembleLeadSong(96, [
   {
     name: "Part 1 (E Minor High Melody)",
@@ -4064,7 +4066,7 @@ const s_wish_chords = assembleChordSong(64, [
   },
 ]);
 
-// Californication (96 BPM - Level 3: Intermediate)
+// Californication (96 BPM - Level 4: Advanced)
 const s_californication = assembleLeadSong(96, [
   {
     name: "Frusciante Am-F Picking Intro",
@@ -4484,7 +4486,7 @@ const s_black_pearl_jam = assembleChordSong(72, [
   },
 ]);
 
-// Alive (75 BPM - Level 3: Intermediate)
+// Alive (75 BPM - Level 4: Advanced)
 const s_alive_riff = assembleLeadSong(75, [
   {
     name: "Intro Riff",
@@ -4637,7 +4639,7 @@ const s_tush = assembleLeadSong(144, [
   },
 ]);
 
-// You Shook Me All Night Long (128 BPM - Level 3: Intermediate)
+// You Shook Me All Night Long (128 BPM - Level 4: Advanced)
 const s_you_shook_me = assembleLeadSong(128, [
   {
     name: "Angus Open Position Intro Riff",
@@ -4796,7 +4798,7 @@ const s_watchtower = assembleChordSong(114, [
   },
 ]);
 
-// Nothing Else Matters (142 BPM - Level 3: Intermediate)
+// Nothing Else Matters (142 BPM - Level 4: Advanced)
 const s_nothing_else_matters = assembleLeadSong(142, [
   {
     name: "Open String 6/8 Arpeggio Intro",
@@ -4926,7 +4928,7 @@ const s_dont_stop_believin = assembleChordSong(118, [
   },
 ]);
 
-// Crazy Train (138 BPM - Level 3: Intermediate)
+// Crazy Train (138 BPM - Level 5: Master)
 const s_crazy_train = assembleLeadSong(138, [
   {
     name: "Randy Rhoads F#m Pedal Intro",
@@ -5013,7 +5015,7 @@ const s_crazy_train = assembleLeadSong(138, [
   },
 ]);
 
-// Back in Black (94 BPM - Level 3: Intermediate)
+// Back in Black (94 BPM - Level 4: Advanced)
 const s_back_in_black = assembleLeadSong(94, [
   {
     name: "Power Chord & Pentatonic Rake Intro",
@@ -5101,7 +5103,7 @@ const s_back_in_black = assembleLeadSong(94, [
   },
 ]);
 
-// Spring (The Four Seasons) (106 BPM - Level 3: Intermediate)
+// Spring (The Four Seasons) (106 BPM - Level 4: Advanced)
 const s_vivaldi_spring = assembleLeadSong(106, [
   {
     name: "Allegro Theme A (Spring has arrived)",
@@ -5178,7 +5180,7 @@ const s_vivaldi_spring = assembleLeadSong(106, [
   },
 ]);
 
-// Turkish March (Rondo alla Turca) (128 BPM - Level 3: Intermediate)
+// Turkish March (Rondo alla Turca) (128 BPM - Level 4: Advanced)
 const s_mozart_turkish_march = assembleLeadSong(128, [
   {
     name: "Theme A1 (Rondo Alla Turca Opening)",
@@ -5326,7 +5328,7 @@ const s_black_magic_woman = assembleLeadSong(126, [
   },
 ]);
 
-// Pride and Joy (124 BPM - Level 4: Advanced)
+// Pride and Joy (124 BPM - Level 3: Intermediate)
 const s_pride_and_joy = assembleLeadSong(124, [
   {
     name: "SRV Texas Shuffle Bass & Rakes",
@@ -5530,7 +5532,7 @@ const s_little_wing = assembleLeadSong(71, [
   },
 ]);
 
-// Canon Rock (132 BPM - Level 4: Advanced)
+// Canon Rock (132 BPM - Level 5: Master)
 const s_canon_rock = assembleLeadSong(132, [
   {
     name: "Classical Ballad Intro (Pachelbel Theme)",
@@ -5813,7 +5815,7 @@ const s_stairway = assembleLeadSong(78, [
   },
 ]);
 
-// Blackbird (94 BPM - Level 5: Master)
+// Blackbird (94 BPM - Level 3: Intermediate)
 const s_blackbird = assembleLeadSong(94, [
   {
     name: "Bach-Inspired Parallel 10ths Intro",
@@ -6150,8 +6152,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Smoke on the Water",
     artist: "Deep Purple",
     genre: 'Classic Rock',
-    difficulty: 1,
-    difficultyLabel: 'Level 1: Novice',
+    difficulty: 2,
+    difficultyLabel: 'Level 2: Elementary',
     mode: 'lead',
     bpm: 112,
     timeSignature: [4, 4],
@@ -6165,8 +6167,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Seven Nation Army",
     artist: "The White Stripes",
     genre: 'Classic Rock',
-    difficulty: 1,
-    difficultyLabel: 'Level 1: Novice',
+    difficulty: 4,
+    difficultyLabel: 'Level 4: Advanced',
     mode: 'lead',
     bpm: 124,
     timeSignature: [4, 4],
@@ -6210,8 +6212,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Iron Man",
     artist: "Black Sabbath",
     genre: 'Metal & Heavy',
-    difficulty: 1,
-    difficultyLabel: 'Level 1: Novice',
+    difficulty: 4,
+    difficultyLabel: 'Level 4: Advanced',
     mode: 'lead',
     bpm: 74,
     timeSignature: [4, 4],
@@ -6225,8 +6227,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Peter Gunn Theme",
     artist: "Henry Mancini",
     genre: 'Classic Rock',
-    difficulty: 1,
-    difficultyLabel: 'Level 1: Novice',
+    difficulty: 2,
+    difficultyLabel: 'Level 2: Elementary',
     mode: 'lead',
     bpm: 132,
     timeSignature: [4, 4],
@@ -6240,8 +6242,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Wipe Out",
     artist: "The Surfaris",
     genre: 'Classic Rock',
-    difficulty: 1,
-    difficultyLabel: 'Level 1: Novice',
+    difficulty: 3,
+    difficultyLabel: 'Level 3: Intermediate',
     mode: 'lead',
     bpm: 144,
     timeSignature: [4, 4],
@@ -6255,8 +6257,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "(I Can't Get No) Satisfaction",
     artist: "The Rolling Stones",
     genre: 'Classic Rock',
-    difficulty: 1,
-    difficultyLabel: 'Level 1: Novice',
+    difficulty: 2,
+    difficultyLabel: 'Level 2: Elementary',
     mode: 'lead',
     bpm: 136,
     timeSignature: [4, 4],
@@ -6442,7 +6444,7 @@ export const SONGS_CATALOG: Song[] = [
     timeSignature: [4, 4],
     duration: s_twinkle.duration,
     description: "Mozart's classic folk theme arranged completely in ABA form with Theme A, lyrical middle section, full recapitulation, and resonant ending.",
-    key: 'C Major',
+    key: 'G Major',
     leadNotes: s_twinkle.notes,
   },
   {
@@ -6480,8 +6482,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Brahms\u2019 Lullaby (Wiegenlied)",
     artist: "Johannes Brahms",
     genre: 'Classical',
-    difficulty: 1,
-    difficultyLabel: 'Level 1: Novice',
+    difficulty: 2,
+    difficultyLabel: 'Level 2: Elementary',
     mode: 'lead',
     bpm: 70,
     timeSignature: [3, 4],
@@ -6517,7 +6519,7 @@ export const SONGS_CATALOG: Song[] = [
     timeSignature: [4, 4],
     duration: s_sunshine.duration,
     description: "Timeless American folk standard arranged with complete verses, high singing chorus, melodic variation, and warm resolving cadence on string 2.",
-    key: 'C Major',
+    key: 'G Major',
     leadNotes: s_sunshine.notes,
   },
   {
@@ -6525,8 +6527,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Come As You Are",
     artist: "Nirvana",
     genre: 'Classic Rock',
-    difficulty: 2,
-    difficultyLabel: 'Level 2: Elementary',
+    difficulty: 4,
+    difficultyLabel: 'Level 4: Advanced',
     mode: 'lead',
     bpm: 120,
     timeSignature: [4, 4],
@@ -6585,8 +6587,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Spanish Romance (Romance An\u00f3nimo)",
     artist: "Traditional Spanish",
     genre: 'Classical',
-    difficulty: 2,
-    difficultyLabel: 'Level 2: Elementary',
+    difficulty: 4,
+    difficultyLabel: 'Level 4: Advanced',
     mode: 'lead',
     bpm: 96,
     timeSignature: [3, 4],
@@ -6930,8 +6932,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Californication",
     artist: "Red Hot Chili Peppers",
     genre: 'Classic Rock',
-    difficulty: 3,
-    difficultyLabel: 'Level 3: Intermediate',
+    difficulty: 4,
+    difficultyLabel: 'Level 4: Advanced',
     mode: 'lead',
     bpm: 96,
     timeSignature: [4, 4],
@@ -7020,8 +7022,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Alive",
     artist: "Pearl Jam",
     genre: 'Classic Rock',
-    difficulty: 3,
-    difficultyLabel: 'Level 3: Intermediate',
+    difficulty: 4,
+    difficultyLabel: 'Level 4: Advanced',
     mode: 'lead',
     bpm: 75,
     timeSignature: [4, 4],
@@ -7050,8 +7052,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "You Shook Me All Night Long",
     artist: "AC/DC",
     genre: 'Classic Rock',
-    difficulty: 3,
-    difficultyLabel: 'Level 3: Intermediate',
+    difficulty: 4,
+    difficultyLabel: 'Level 4: Advanced',
     mode: 'lead',
     bpm: 128,
     timeSignature: [4, 4],
@@ -7080,8 +7082,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Nothing Else Matters",
     artist: "Metallica",
     genre: 'Metal & Heavy',
-    difficulty: 3,
-    difficultyLabel: 'Level 3: Intermediate',
+    difficulty: 4,
+    difficultyLabel: 'Level 4: Advanced',
     mode: 'lead',
     bpm: 142,
     timeSignature: [6, 8],
@@ -7110,8 +7112,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Crazy Train",
     artist: "Ozzy Osbourne",
     genre: 'Metal & Heavy',
-    difficulty: 3,
-    difficultyLabel: 'Level 3: Intermediate',
+    difficulty: 5,
+    difficultyLabel: 'Level 5: Master',
     mode: 'lead',
     bpm: 138,
     timeSignature: [4, 4],
@@ -7125,8 +7127,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Back in Black",
     artist: "AC/DC",
     genre: 'Classic Rock',
-    difficulty: 3,
-    difficultyLabel: 'Level 3: Intermediate',
+    difficulty: 4,
+    difficultyLabel: 'Level 4: Advanced',
     mode: 'lead',
     bpm: 94,
     timeSignature: [4, 4],
@@ -7140,8 +7142,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Spring (The Four Seasons)",
     artist: "Antonio Vivaldi",
     genre: 'Classical',
-    difficulty: 3,
-    difficultyLabel: 'Level 3: Intermediate',
+    difficulty: 4,
+    difficultyLabel: 'Level 4: Advanced',
     mode: 'lead',
     bpm: 106,
     timeSignature: [4, 4],
@@ -7155,8 +7157,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Turkish March (Rondo alla Turca)",
     artist: "Wolfgang Amadeus Mozart",
     genre: 'Classical',
-    difficulty: 3,
-    difficultyLabel: 'Level 3: Intermediate',
+    difficulty: 4,
+    difficultyLabel: 'Level 4: Advanced',
     mode: 'lead',
     bpm: 128,
     timeSignature: [2, 4],
@@ -7185,8 +7187,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Pride and Joy",
     artist: "Stevie Ray Vaughan",
     genre: 'Blues & Jazz',
-    difficulty: 4,
-    difficultyLabel: 'Level 4: Advanced',
+    difficulty: 3,
+    difficultyLabel: 'Level 3: Intermediate',
     mode: 'lead',
     bpm: 124,
     timeSignature: [4, 4],
@@ -7230,8 +7232,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Canon Rock",
     artist: "JerryC / Johann Pachelbel",
     genre: 'Classical',
-    difficulty: 4,
-    difficultyLabel: 'Level 4: Advanced',
+    difficulty: 5,
+    difficultyLabel: 'Level 5: Master',
     mode: 'lead',
     bpm: 132,
     timeSignature: [4, 4],
@@ -7275,8 +7277,8 @@ export const SONGS_CATALOG: Song[] = [
     title: "Blackbird",
     artist: "The Beatles",
     genre: 'Acoustic',
-    difficulty: 5,
-    difficultyLabel: 'Level 5: Master',
+    difficulty: 3,
+    difficultyLabel: 'Level 3: Intermediate',
     mode: 'lead',
     bpm: 94,
     timeSignature: [3, 4],

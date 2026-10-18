@@ -225,23 +225,15 @@ export default function App() {
         )}
 
         {activeTab === 'studio' && (
-          <div className="flex flex-col gap-6">
-            <SongPlayer
-              song={selectedSong}
-              detectedPitch={detectedPitch}
-              isMicActive={isMicActive}
-              onToggleMic={handleToggleMic}
-              onBackToCatalog={() => setActiveTab('catalog')}
-              onNextSong={handleNextSong}
-              onSongComplete={handleSongComplete}
-            />
-
-            {/* Fretboard companion view below the song runway */}
-            <Fretboard
-              detectedPitch={detectedPitch}
-              selectedChordName={selectedSong.mode === 'chord' ? 'Em' : null}
-            />
-          </div>
+          <SongPlayer
+            song={selectedSong}
+            detectedPitch={detectedPitch}
+            isMicActive={isMicActive}
+            onToggleMic={handleToggleMic}
+            onBackToCatalog={() => setActiveTab('catalog')}
+            onNextSong={handleNextSong}
+            onSongComplete={handleSongComplete}
+          />
         )}
 
         {activeTab === 'practice' && (

@@ -200,6 +200,28 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
     };
   }, [song.mode, displayScale]);
 
+  // Starts the 4-second preview countdown and automatically begins playback when done
+  const startCountdown = () => {
+    setIsPlaying(false);
+    setPrepDelay(4);
+
+    let currentCount = 4;
+    if (prepTimerRef.current) clearInterval(prepTimerRef.current);
+
+    prepTimerRef.current = setInterval(() => {
+      currentCount -= 1;
+      if (currentCount > 0) {
+        setPrepDelay(currentCount);
+      } else {
+        if (prepTimerRef.current) clearInterval(prepTimerRef.current);
+        prepTimerRef.current = null;
+        setPrepDelay(null);
+        lastTimeRef.current = performance.now();
+        setIsPlaying(true);
+      }
+    }, 1000);
+  };
+
   // 4-Second Preparation Delay before music starts scrolling
   // Allows user to see upcoming notes statically on the runway and position fingers
   const startWithDelay = () => {
@@ -210,23 +232,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
 
     // If starting from 0, initiate the 4-second delay so user can inspect upcoming notes
     if (currentTime === 0) {
-      setPrepDelay(4);
-
-      let currentCount = 4;
-      if (prepTimerRef.current) clearInterval(prepTimerRef.current);
-
-      prepTimerRef.current = setInterval(() => {
-        currentCount -= 1;
-        if (currentCount > 0) {
-          setPrepDelay(currentCount);
-        } else {
-          if (prepTimerRef.current) clearInterval(prepTimerRef.current);
-          prepTimerRef.current = null;
-          setPrepDelay(null);
-          lastTimeRef.current = performance.now();
-          setIsPlaying(true);
-        }
-      }, 1000);
+      startCountdown();
     } else {
       lastTimeRef.current = performance.now();
       setIsPlaying(true);
@@ -936,7 +942,8 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
     leadNotesRef.current = (song.leadNotes || []).map((n) => ({ ...n, hitState: 'pending' }));
     chordEventsRef.current = (song.chordEvents || []).map((c) => ({ ...c, hitState: 'pending' }));
     lastBeatRef.current = -1;
-    startWithDelay();
+    // Automatically start with the 4-second delay so user does not need to press Start
+    startCountdown();
   };
 
   // Calculate Accuracy
@@ -1193,15 +1200,15 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
           </div>
 
           {/* Speed Multipliers */}
-          <div className="flex items-center gap-1 bg-slate-950 border border-slate-800 p-1 rounded-lg">
+          <div className="flex flex-wrap items-center gap-1 bg-slate-950 border border-slate-800 p-1 rounded-lg">
             <span className="text-[10px] text-slate-500 font-mono px-1 font-semibold">RATE</span>
-            {[0.5, 0.75, 1.0, 1.25].map((speed) => (
+            {[0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0].map((speed) => (
               <button
                 key={speed}
                 onClick={() => setPlaybackSpeed(speed)}
                 className={`px-2 py-1 text-xs font-mono font-semibold rounded transition ${
                   playbackSpeed === speed
-                    ? 'bg-amber-500 text-slate-950'
+                    ? 'bg-amber-500 text-slate-950 font-bold'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >

@@ -1,0 +1,7379 @@
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// src/data/songs.ts
+var songs_exports = {};
+__export(songs_exports, {
+  SONGS_CATALOG: () => SONGS_CATALOG
+});
+module.exports = __toCommonJS(songs_exports);
+
+// src/utils/guitarConstants.ts
+var NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+var STRING_COLORS = [
+  "#F59E0B",
+  // String 0: High E (Golden Amber)
+  "#38BDF8",
+  // String 1: B (Sky Blue)
+  "#FB923C",
+  // String 2: G (Orange)
+  "#34D399",
+  // String 3: D (Emerald)
+  "#F43F5E",
+  // String 4: A (Rose)
+  "#A855F7"
+  // String 5: Low E (Purple)
+];
+var STANDARD_TUNING = [
+  {
+    stringIndex: 0,
+    label: "1st - E4",
+    shortName: "e",
+    octave: 4,
+    noteName: "E",
+    targetFreq: 329.63,
+    gauge: ".010",
+    color: STRING_COLORS[0]
+  },
+  {
+    stringIndex: 1,
+    label: "2nd - B3",
+    shortName: "B",
+    octave: 3,
+    noteName: "B",
+    targetFreq: 246.94,
+    gauge: ".013",
+    color: STRING_COLORS[1]
+  },
+  {
+    stringIndex: 2,
+    label: "3rd - G3",
+    shortName: "G",
+    octave: 3,
+    noteName: "G",
+    targetFreq: 196,
+    gauge: ".017",
+    color: STRING_COLORS[2]
+  },
+  {
+    stringIndex: 3,
+    label: "4th - D3",
+    shortName: "D",
+    octave: 3,
+    noteName: "D",
+    targetFreq: 146.83,
+    gauge: ".026",
+    color: STRING_COLORS[3]
+  },
+  {
+    stringIndex: 4,
+    label: "5th - A2",
+    shortName: "A",
+    octave: 2,
+    noteName: "A",
+    targetFreq: 110,
+    gauge: ".036",
+    color: STRING_COLORS[4]
+  },
+  {
+    stringIndex: 5,
+    label: "6th - E2",
+    shortName: "E",
+    octave: 2,
+    noteName: "E",
+    targetFreq: 82.41,
+    gauge: ".046",
+    color: STRING_COLORS[5]
+  }
+];
+var OPEN_STRING_MIDI = [64, 59, 55, 50, 45, 40];
+function getFretFrequency(stringIndex, fret) {
+  const openMidi = OPEN_STRING_MIDI[stringIndex] || 40;
+  const noteMidi = openMidi + fret;
+  return 440 * Math.pow(2, (noteMidi - 69) / 12);
+}
+function getFretNoteInfo(stringIndex, fret) {
+  const openMidi = OPEN_STRING_MIDI[stringIndex] || 40;
+  const midi = openMidi + fret;
+  const noteName = NOTE_NAMES[midi % 12];
+  const octave = Math.floor(midi / 12) - 1;
+  return { noteName, octave, midi };
+}
+var CHORD_LIBRARY = {
+  "Em": {
+    name: "Em",
+    root: "E",
+    type: "Minor",
+    frets: [0, 0, 0, 2, 2, 0],
+    fingers: [0, 0, 0, 3, 2, 0],
+    difficulty: 1,
+    description: "E Minor: The easiest, rich, open chord in guitar history."
+  },
+  "C": {
+    name: "C",
+    root: "C",
+    type: "Major",
+    frets: [0, 1, 0, 2, 3, -1],
+    fingers: [0, 1, 0, 2, 3, 0],
+    difficulty: 2,
+    description: "C Major: Foundation open chord spanning 3 frets."
+  },
+  "G": {
+    name: "G",
+    root: "G",
+    type: "Major",
+    frets: [3, 0, 0, 0, 2, 3],
+    fingers: [4, 0, 0, 0, 1, 2],
+    difficulty: 2,
+    description: "G Major: The king of folk and rock acoustics."
+  },
+  "D": {
+    name: "D",
+    root: "D",
+    type: "Major",
+    frets: [2, 3, 2, 0, -1, -1],
+    fingers: [2, 3, 1, 0, 0, 0],
+    difficulty: 2,
+    description: "D Major: Bright, triangular open triad on upper 4 strings."
+  },
+  "Am": {
+    name: "Am",
+    root: "A",
+    type: "Minor",
+    frets: [0, 1, 2, 2, 0, -1],
+    fingers: [0, 1, 3, 2, 0, 0],
+    difficulty: 2,
+    description: "A Minor: Somber, classic open minor shape."
+  },
+  "E": {
+    name: "E",
+    root: "E",
+    type: "Major",
+    frets: [0, 0, 1, 2, 2, 0],
+    fingers: [0, 0, 1, 3, 2, 0],
+    difficulty: 2,
+    description: "E Major: Full-bodied rock staple vibrating all 6 strings."
+  },
+  "A": {
+    name: "A",
+    root: "A",
+    type: "Major",
+    frets: [0, 2, 2, 2, 0, -1],
+    fingers: [0, 3, 2, 1, 0, 0],
+    difficulty: 2,
+    description: "A Major: Clean 3-finger cluster on the second fret."
+  },
+  "Dm": {
+    name: "Dm",
+    root: "D",
+    type: "Minor",
+    frets: [1, 3, 2, 0, -1, -1],
+    fingers: [1, 3, 2, 0, 0, 0],
+    difficulty: 2,
+    description: "D Minor: Melodic, poignant open triad."
+  },
+  "F": {
+    name: "F",
+    root: "F",
+    type: "Barre Major",
+    frets: [1, 1, 2, 3, 3, 1],
+    fingers: [1, 1, 2, 4, 3, 1],
+    difficulty: 3,
+    description: "F Major: The rite-of-passage full 1st fret barre chord."
+  },
+  "Bm": {
+    name: "Bm",
+    root: "B",
+    type: "Barre Minor",
+    frets: [2, 3, 4, 4, 2, -1],
+    fingers: [1, 2, 4, 3, 1, 0],
+    difficulty: 3,
+    description: "B Minor: Essential 2nd fret 5-string barre chord."
+  },
+  "A7": {
+    name: "A7",
+    root: "A",
+    type: "Dominant 7th",
+    frets: [0, 2, 0, 2, 0, -1],
+    fingers: [0, 3, 0, 2, 0, 0],
+    difficulty: 2,
+    description: "A7: Soulful open blues dominant chord."
+  },
+  "E7": {
+    name: "E7",
+    root: "E",
+    type: "Dominant 7th",
+    frets: [0, 0, 1, 0, 2, 0],
+    fingers: [0, 0, 1, 0, 2, 0],
+    difficulty: 2,
+    description: "E7: Delta blues staple requiring just 2 fingers."
+  },
+  "D7": {
+    name: "D7",
+    root: "D",
+    type: "Dominant 7th",
+    frets: [2, 1, 2, 0, -1, -1],
+    fingers: [3, 1, 2, 0, 0, 0],
+    difficulty: 2,
+    description: "D7: Inverted triangle shape for blues and country."
+  },
+  "G7": {
+    name: "G7",
+    root: "G",
+    type: "Dominant 7th",
+    frets: [1, 0, 0, 0, 2, 3],
+    fingers: [1, 0, 0, 0, 2, 3],
+    difficulty: 3,
+    description: "G7: Wide-spread finger span for jazz/folk resolutions."
+  },
+  "Cmaj7": {
+    name: "Cmaj7",
+    root: "C",
+    type: "Major 7th",
+    frets: [0, 0, 0, 2, 3, -1],
+    fingers: [0, 0, 0, 2, 3, 0],
+    difficulty: 3,
+    description: "Cmaj7: Dreamy, lush neo-soul and bossa nova open chord."
+  },
+  "F#m": {
+    name: "F#m",
+    root: "F#",
+    type: "Barre Minor",
+    frets: [2, 2, 2, 4, 4, 2],
+    fingers: [1, 1, 1, 4, 3, 1],
+    difficulty: 4,
+    description: "F#m: 2nd fret full 6-string barre minor chord."
+  },
+  "B7": {
+    name: "B7",
+    root: "B",
+    type: "Dominant 7th",
+    frets: [2, 0, 2, 1, 2, -1],
+    fingers: [4, 0, 3, 1, 2, 0],
+    difficulty: 3,
+    description: "B7: Classic acoustic blues progression resolution."
+  },
+  "Dsus4": {
+    name: "Dsus4",
+    root: "D",
+    type: "Suspended 4th",
+    frets: [3, 3, 2, 0, -1, -1],
+    fingers: [4, 3, 2, 0, 0, 0],
+    difficulty: 2,
+    description: "Dsus4: The tension builder heard in classic rock intros."
+  }
+};
+
+// src/data/songs.ts
+function makeLeadNote(bpm, beat, stringIndex, fret, durationBeats = 0.8, finger = 1) {
+  const secondsPerBeat = 60 / bpm;
+  const time = Math.round(beat * secondsPerBeat * 100) / 100;
+  const duration = Math.round(durationBeats * secondsPerBeat * 100) / 100;
+  const info = getFretNoteInfo(stringIndex, fret);
+  const freq = getFretFrequency(stringIndex, fret);
+  return {
+    stringIndex,
+    fret,
+    noteName: info.noteName,
+    octave: info.octave,
+    frequency: Math.round(freq * 10) / 10,
+    time,
+    duration,
+    finger
+  };
+}
+function makeChordEvent(bpm, beat, chordName, durationBeats = 2, strumDirection = "down") {
+  const secondsPerBeat = 60 / bpm;
+  const time = Math.round(beat * secondsPerBeat * 100) / 100;
+  const duration = Math.round(durationBeats * secondsPerBeat * 100) / 100;
+  const def = CHORD_LIBRARY[chordName] || CHORD_LIBRARY["Em"];
+  return {
+    name: chordName,
+    root: def.root,
+    frets: [...def.frets],
+    fingers: [...def.fingers],
+    strumDirection,
+    time,
+    duration
+  };
+}
+function assembleLeadSong(bpm, sections) {
+  const notes = [];
+  const LEAD_IN_BEATS = 4;
+  let beatOffset = LEAD_IN_BEATS;
+  for (const sec of sections) {
+    for (const item of sec.notes) {
+      notes.push(
+        makeLeadNote(
+          bpm,
+          item.beat + beatOffset,
+          item.stringIndex,
+          item.fret,
+          item.durationBeats ?? 0.8,
+          item.finger ?? 1
+        )
+      );
+    }
+    beatOffset += sec.beats;
+  }
+  const lastNote = notes[notes.length - 1];
+  const lastTime = lastNote ? lastNote.time + lastNote.duration : beatOffset * (60 / bpm);
+  const duration = Math.ceil(lastTime + 2);
+  return { notes, duration };
+}
+function assembleChordSong(bpm, sections) {
+  const chords = [];
+  const LEAD_IN_BEATS = 4;
+  let beatOffset = LEAD_IN_BEATS;
+  for (const sec of sections) {
+    for (const item of sec.chords) {
+      chords.push(
+        makeChordEvent(
+          bpm,
+          item.beat + beatOffset,
+          item.chord,
+          item.durationBeats ?? 2,
+          item.strum ?? "down"
+        )
+      );
+    }
+    beatOffset += sec.beats;
+  }
+  const lastChord = chords[chords.length - 1];
+  const lastTime = lastChord ? lastChord.time + lastChord.duration : beatOffset * (60 / bpm);
+  const duration = Math.ceil(lastTime + 2);
+  return { chords, duration };
+}
+var s_smoke = assembleLeadSong(112, [
+  {
+    name: "Intro Riff",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 1.5, stringIndex: 3, fret: 3, durationBeats: 1, finger: 1 },
+      { beat: 3, stringIndex: 3, fret: 5, durationBeats: 1.5, finger: 3 },
+      { beat: 5, stringIndex: 3, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 6.5, stringIndex: 3, fret: 3, durationBeats: 1, finger: 1 },
+      { beat: 8, stringIndex: 3, fret: 6, durationBeats: 0.5, finger: 4 },
+      { beat: 8.5, stringIndex: 3, fret: 5, durationBeats: 2, finger: 3 },
+      { beat: 11, stringIndex: 3, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 12.5, stringIndex: 3, fret: 3, durationBeats: 1, finger: 1 },
+      { beat: 14, stringIndex: 3, fret: 5, durationBeats: 1.2, finger: 3 },
+      { beat: 15.5, stringIndex: 3, fret: 3, durationBeats: 0.8, finger: 1 }
+    ]
+  },
+  {
+    name: "Verse 1 (Rhythm Groove)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 1, stringIndex: 4, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 4, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 3, stringIndex: 4, fret: 3, durationBeats: 0.8, finger: 1 },
+      { beat: 4, stringIndex: 4, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 6, stringIndex: 4, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 7, stringIndex: 4, fret: 3, durationBeats: 0.8, finger: 1 },
+      { beat: 8, stringIndex: 4, fret: 5, durationBeats: 1.5, finger: 3 },
+      { beat: 10, stringIndex: 4, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 12, stringIndex: 4, fret: 3, durationBeats: 0.8, finger: 1 },
+      { beat: 14, stringIndex: 4, fret: 5, durationBeats: 1.8, finger: 3 }
+    ]
+  },
+  {
+    name: "Chorus (Smoke on the Water)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 5, durationBeats: 1.5, finger: 3 },
+      { beat: 2, stringIndex: 3, fret: 3, durationBeats: 1.5, finger: 1 },
+      { beat: 4, stringIndex: 3, fret: 0, durationBeats: 2.5, finger: 0 },
+      { beat: 8, stringIndex: 3, fret: 5, durationBeats: 1.5, finger: 3 },
+      { beat: 10, stringIndex: 3, fret: 3, durationBeats: 1.5, finger: 1 },
+      { beat: 12, stringIndex: 2, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 13.5, stringIndex: 3, fret: 5, durationBeats: 2, finger: 3 }
+    ]
+  },
+  {
+    name: "Verse 2 (Syncopated)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 5, durationBeats: 0.6, finger: 3 },
+      { beat: 1, stringIndex: 4, fret: 5, durationBeats: 0.6, finger: 3 },
+      { beat: 2.5, stringIndex: 4, fret: 3, durationBeats: 0.8, finger: 1 },
+      { beat: 4, stringIndex: 4, fret: 5, durationBeats: 1.2, finger: 3 },
+      { beat: 6, stringIndex: 4, fret: 5, durationBeats: 0.6, finger: 3 },
+      { beat: 8, stringIndex: 4, fret: 3, durationBeats: 0.8, finger: 1 },
+      { beat: 10, stringIndex: 4, fret: 5, durationBeats: 1, finger: 3 },
+      { beat: 12, stringIndex: 3, fret: 3, durationBeats: 1, finger: 1 },
+      { beat: 14, stringIndex: 3, fret: 5, durationBeats: 1.8, finger: 3 }
+    ]
+  },
+  {
+    name: "Guitar Solo (Blues Pentatonic)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 3, durationBeats: 0.8, finger: 1 },
+      { beat: 1.5, stringIndex: 2, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 1 },
+      { beat: 4.5, stringIndex: 1, fret: 6, durationBeats: 1.2, finger: 4 },
+      { beat: 6.5, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 1 },
+      { beat: 8, stringIndex: 2, fret: 5, durationBeats: 1, finger: 3 },
+      { beat: 9.5, stringIndex: 2, fret: 3, durationBeats: 0.8, finger: 1 },
+      { beat: 11, stringIndex: 3, fret: 5, durationBeats: 1.5, finger: 3 },
+      { beat: 13, stringIndex: 2, fret: 3, durationBeats: 1, finger: 1 },
+      { beat: 14.5, stringIndex: 2, fret: 5, durationBeats: 2, finger: 3 }
+    ]
+  },
+  {
+    name: "Final Chorus & Outro",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 1.5, stringIndex: 3, fret: 3, durationBeats: 0.9, finger: 1 },
+      { beat: 3, stringIndex: 3, fret: 5, durationBeats: 1.4, finger: 3 },
+      { beat: 5, stringIndex: 3, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 6.5, stringIndex: 3, fret: 3, durationBeats: 0.9, finger: 1 },
+      { beat: 8, stringIndex: 3, fret: 6, durationBeats: 0.6, finger: 4 },
+      { beat: 9, stringIndex: 3, fret: 5, durationBeats: 1.5, finger: 3 },
+      { beat: 11, stringIndex: 3, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 12.5, stringIndex: 3, fret: 3, durationBeats: 0.9, finger: 1 },
+      { beat: 14, stringIndex: 3, fret: 5, durationBeats: 1.2, finger: 3 },
+      { beat: 15.5, stringIndex: 3, fret: 3, durationBeats: 0.9, finger: 1 },
+      { beat: 17, stringIndex: 4, fret: 5, durationBeats: 2.5, finger: 3 },
+      { beat: 19, stringIndex: 5, fret: 3, durationBeats: 3, finger: 2 }
+    ]
+  }
+]);
+var s_seven_nation = assembleLeadSong(124, [
+  {
+    name: "Intro Bass Riff",
+    beats: 16,
+    notes: [
+      // Measure 1
+      { beat: 0, stringIndex: 4, fret: 7, durationBeats: 1.5, finger: 1 },
+      { beat: 1.5, stringIndex: 4, fret: 7, durationBeats: 0.5, finger: 1 },
+      { beat: 2, stringIndex: 4, fret: 10, durationBeats: 1, finger: 4 },
+      { beat: 3, stringIndex: 4, fret: 7, durationBeats: 0.75, finger: 1 },
+      { beat: 3.75, stringIndex: 4, fret: 5, durationBeats: 0.5, finger: 1 },
+      // Measure 2
+      { beat: 4.5, stringIndex: 4, fret: 3, durationBeats: 1.5, finger: 1 },
+      { beat: 6, stringIndex: 4, fret: 2, durationBeats: 2, finger: 1 },
+      // Measure 3
+      { beat: 8, stringIndex: 4, fret: 7, durationBeats: 1.5, finger: 1 },
+      { beat: 9.5, stringIndex: 4, fret: 7, durationBeats: 0.5, finger: 1 },
+      { beat: 10, stringIndex: 4, fret: 10, durationBeats: 1, finger: 4 },
+      { beat: 11, stringIndex: 4, fret: 7, durationBeats: 0.75, finger: 1 },
+      { beat: 11.75, stringIndex: 4, fret: 5, durationBeats: 0.5, finger: 1 },
+      // Measure 4
+      { beat: 12.5, stringIndex: 4, fret: 3, durationBeats: 1.5, finger: 1 },
+      { beat: 14, stringIndex: 4, fret: 2, durationBeats: 2, finger: 1 }
+    ]
+  },
+  {
+    name: "Verse 1",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 7, durationBeats: 1.5, finger: 1 },
+      { beat: 2, stringIndex: 4, fret: 7, durationBeats: 0.8, finger: 1 },
+      { beat: 3, stringIndex: 4, fret: 10, durationBeats: 1, finger: 4 },
+      { beat: 4.5, stringIndex: 4, fret: 7, durationBeats: 1.2, finger: 1 },
+      { beat: 6.5, stringIndex: 4, fret: 5, durationBeats: 1.2, finger: 1 },
+      { beat: 8.5, stringIndex: 4, fret: 3, durationBeats: 1.5, finger: 1 },
+      { beat: 10.5, stringIndex: 4, fret: 5, durationBeats: 0.8, finger: 1 },
+      { beat: 11.5, stringIndex: 4, fret: 3, durationBeats: 0.8, finger: 1 },
+      { beat: 12.5, stringIndex: 4, fret: 2, durationBeats: 2.5, finger: 1 }
+    ]
+  },
+  {
+    name: "Pre-Chorus Build",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 3, durationBeats: 1.8, finger: 1 },
+      { beat: 2, stringIndex: 5, fret: 3, durationBeats: 1.8, finger: 1 },
+      { beat: 4, stringIndex: 5, fret: 3, durationBeats: 1.8, finger: 1 },
+      { beat: 6, stringIndex: 5, fret: 3, durationBeats: 1.8, finger: 1 },
+      { beat: 8, stringIndex: 5, fret: 5, durationBeats: 1.8, finger: 3 },
+      { beat: 10, stringIndex: 5, fret: 5, durationBeats: 1.8, finger: 3 },
+      { beat: 12, stringIndex: 5, fret: 5, durationBeats: 1.8, finger: 3 },
+      { beat: 14, stringIndex: 5, fret: 5, durationBeats: 2, finger: 3 }
+    ]
+  },
+  {
+    name: "Explosive Chorus",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 7, durationBeats: 1.5, finger: 1 },
+      { beat: 2, stringIndex: 4, fret: 7, durationBeats: 0.8, finger: 1 },
+      { beat: 3, stringIndex: 4, fret: 10, durationBeats: 1, finger: 4 },
+      { beat: 4.5, stringIndex: 4, fret: 7, durationBeats: 1.2, finger: 1 },
+      { beat: 6.5, stringIndex: 4, fret: 5, durationBeats: 1.2, finger: 1 },
+      { beat: 8.5, stringIndex: 4, fret: 3, durationBeats: 2, finger: 1 },
+      { beat: 11, stringIndex: 4, fret: 2, durationBeats: 2.5, finger: 1 },
+      { beat: 14, stringIndex: 4, fret: 2, durationBeats: 1.8, finger: 1 }
+    ]
+  },
+  {
+    name: "Slide Guitar Solo",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 9, durationBeats: 1.5, finger: 3 },
+      { beat: 2, stringIndex: 3, fret: 9, durationBeats: 0.8, finger: 3 },
+      { beat: 3, stringIndex: 3, fret: 12, durationBeats: 1, finger: 4 },
+      { beat: 4.5, stringIndex: 3, fret: 9, durationBeats: 1.2, finger: 3 },
+      { beat: 6.5, stringIndex: 3, fret: 7, durationBeats: 1.2, finger: 1 },
+      { beat: 8.5, stringIndex: 3, fret: 5, durationBeats: 1.5, finger: 1 },
+      { beat: 10, stringIndex: 3, fret: 7, durationBeats: 0.8, finger: 1 },
+      { beat: 11, stringIndex: 3, fret: 5, durationBeats: 0.8, finger: 1 },
+      { beat: 12, stringIndex: 3, fret: 4, durationBeats: 3, finger: 1 }
+    ]
+  },
+  {
+    name: "Final Chorus & Outro",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 7, durationBeats: 1.5, finger: 1 },
+      { beat: 2, stringIndex: 4, fret: 7, durationBeats: 0.8, finger: 1 },
+      { beat: 3, stringIndex: 4, fret: 10, durationBeats: 1, finger: 4 },
+      { beat: 4.5, stringIndex: 4, fret: 7, durationBeats: 1.2, finger: 1 },
+      { beat: 6.5, stringIndex: 4, fret: 5, durationBeats: 1.2, finger: 1 },
+      { beat: 8.5, stringIndex: 4, fret: 3, durationBeats: 2, finger: 1 },
+      { beat: 11, stringIndex: 4, fret: 2, durationBeats: 3, finger: 1 },
+      { beat: 15, stringIndex: 5, fret: 0, durationBeats: 3, finger: 0 }
+    ]
+  }
+]);
+var s_stand_by_me = assembleChordSong(84, [
+  {
+    name: "Intro Bassline Strum",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Em", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (When the night has come)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Em", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus 1 (Darling Stand By Me)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (If the sky that we look upon)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus 2 & Grand Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "G", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_knockin = assembleChordSong(68, [
+  {
+    name: "Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Mama take this badge)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus 1 (Knock knock knockin)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (Mama put my guns in the ground)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus 2 & Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "G", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_iron_man = assembleLeadSong(74, [
+  {
+    name: "Intro Bends",
+    beats: 8,
+    notes: [
+      { beat: 1, stringIndex: 5, fret: 2, durationBeats: 2, finger: 1 },
+      { beat: 4, stringIndex: 5, fret: 2, durationBeats: 2, finger: 1 },
+      { beat: 7, stringIndex: 5, fret: 2, durationBeats: 1, finger: 1 }
+    ]
+  },
+  {
+    name: "Heavy Main Riff",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 2, durationBeats: 1.8, finger: 1 },
+      { beat: 2.5, stringIndex: 5, fret: 5, durationBeats: 1.2, finger: 3 },
+      { beat: 4, stringIndex: 5, fret: 5, durationBeats: 1.2, finger: 3 },
+      { beat: 5.5, stringIndex: 5, fret: 7, durationBeats: 1.5, finger: 4 },
+      { beat: 7.5, stringIndex: 5, fret: 7, durationBeats: 1.5, finger: 4 },
+      { beat: 9.5, stringIndex: 5, fret: 10, durationBeats: 0.5, finger: 4 },
+      { beat: 10.2, stringIndex: 5, fret: 9, durationBeats: 0.5, finger: 3 },
+      { beat: 10.9, stringIndex: 5, fret: 10, durationBeats: 0.5, finger: 4 },
+      { beat: 11.6, stringIndex: 5, fret: 9, durationBeats: 0.5, finger: 3 },
+      { beat: 12.5, stringIndex: 5, fret: 5, durationBeats: 1, finger: 3 },
+      { beat: 14, stringIndex: 5, fret: 7, durationBeats: 2, finger: 4 }
+    ]
+  },
+  {
+    name: "Verse Rhythm",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 1.5, stringIndex: 5, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 3, stringIndex: 5, fret: 5, durationBeats: 1, finger: 3 },
+      { beat: 4.5, stringIndex: 5, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 6, stringIndex: 5, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 8, stringIndex: 5, fret: 7, durationBeats: 1.5, finger: 4 },
+      { beat: 10, stringIndex: 5, fret: 5, durationBeats: 1, finger: 3 },
+      { beat: 12, stringIndex: 5, fret: 2, durationBeats: 2.5, finger: 1 }
+    ]
+  },
+  {
+    name: "Solo Interlude",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 9, durationBeats: 0.8, finger: 3 },
+      { beat: 1.5, stringIndex: 3, fret: 7, durationBeats: 0.8, finger: 1 },
+      { beat: 3, stringIndex: 4, fret: 9, durationBeats: 1.2, finger: 3 },
+      { beat: 5, stringIndex: 4, fret: 7, durationBeats: 0.8, finger: 1 },
+      { beat: 6.5, stringIndex: 5, fret: 9, durationBeats: 1.5, finger: 3 },
+      { beat: 8.5, stringIndex: 5, fret: 7, durationBeats: 1, finger: 1 },
+      { beat: 10, stringIndex: 5, fret: 5, durationBeats: 1, finger: 1 },
+      { beat: 12, stringIndex: 5, fret: 7, durationBeats: 2.5, finger: 3 }
+    ]
+  },
+  {
+    name: "Final Recapitulation & Coda",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 2, durationBeats: 1.8, finger: 1 },
+      { beat: 2.5, stringIndex: 5, fret: 5, durationBeats: 1.2, finger: 3 },
+      { beat: 4, stringIndex: 5, fret: 5, durationBeats: 1.2, finger: 3 },
+      { beat: 5.5, stringIndex: 5, fret: 7, durationBeats: 1.5, finger: 4 },
+      { beat: 7.5, stringIndex: 5, fret: 7, durationBeats: 1.5, finger: 4 },
+      { beat: 9.5, stringIndex: 5, fret: 10, durationBeats: 0.5, finger: 4 },
+      { beat: 10.2, stringIndex: 5, fret: 9, durationBeats: 0.5, finger: 3 },
+      { beat: 10.9, stringIndex: 5, fret: 10, durationBeats: 0.5, finger: 4 },
+      { beat: 11.6, stringIndex: 5, fret: 9, durationBeats: 0.5, finger: 3 },
+      { beat: 12.5, stringIndex: 5, fret: 5, durationBeats: 1, finger: 3 },
+      { beat: 14, stringIndex: 5, fret: 7, durationBeats: 2, finger: 4 },
+      { beat: 16, stringIndex: 5, fret: 2, durationBeats: 3, finger: 1 }
+    ]
+  }
+]);
+var s_peter_gunn = assembleLeadSong(132, [
+  {
+    name: "Intro Driving Bass Riff",
+    beats: 16,
+    notes: [
+      // Measure 1
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 0.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 1, stringIndex: 5, fret: 2, durationBeats: 0.45, finger: 1 },
+      { beat: 1.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 2, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 2.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 3, stringIndex: 5, fret: 4, durationBeats: 0.45, finger: 3 },
+      { beat: 3.5, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 },
+      // Measure 2
+      { beat: 4, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 4.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 5, stringIndex: 5, fret: 2, durationBeats: 0.45, finger: 1 },
+      { beat: 5.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 6, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 6.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 7, stringIndex: 5, fret: 4, durationBeats: 0.45, finger: 3 },
+      { beat: 7.5, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 },
+      // Measure 3
+      { beat: 8, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 8.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 9, stringIndex: 5, fret: 2, durationBeats: 0.45, finger: 1 },
+      { beat: 9.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 10, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 10.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 11, stringIndex: 5, fret: 4, durationBeats: 0.45, finger: 3 },
+      { beat: 11.5, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 },
+      // Measure 4
+      { beat: 12, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 12.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 13, stringIndex: 5, fret: 2, durationBeats: 0.45, finger: 1 },
+      { beat: 13.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 14, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 14.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 15, stringIndex: 5, fret: 4, durationBeats: 0.45, finger: 3 },
+      { beat: 15.5, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 }
+    ]
+  },
+  {
+    name: "Horn Section (A String Shift)",
+    beats: 16,
+    notes: [
+      // Measure 1 (A String)
+      { beat: 0, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 0.5, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 1, stringIndex: 4, fret: 2, durationBeats: 0.45, finger: 1 },
+      { beat: 1.5, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 2, stringIndex: 4, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 2.5, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 3, stringIndex: 4, fret: 4, durationBeats: 0.45, finger: 3 },
+      { beat: 3.5, stringIndex: 4, fret: 3, durationBeats: 0.45, finger: 2 },
+      // Measure 2 (A String)
+      { beat: 4, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 4.5, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 5, stringIndex: 4, fret: 2, durationBeats: 0.45, finger: 1 },
+      { beat: 5.5, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 6, stringIndex: 4, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 6.5, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 7, stringIndex: 4, fret: 4, durationBeats: 0.45, finger: 3 },
+      { beat: 7.5, stringIndex: 4, fret: 3, durationBeats: 0.45, finger: 2 },
+      // Measure 3 (Return to Low E)
+      { beat: 8, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 8.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 9, stringIndex: 5, fret: 2, durationBeats: 0.45, finger: 1 },
+      { beat: 9.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 10, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 10.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 11, stringIndex: 5, fret: 4, durationBeats: 0.45, finger: 3 },
+      { beat: 11.5, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 },
+      // Measure 4
+      { beat: 12, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 12.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 13, stringIndex: 5, fret: 2, durationBeats: 0.45, finger: 1 },
+      { beat: 13.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 14, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 14.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 15, stringIndex: 5, fret: 4, durationBeats: 0.45, finger: 3 },
+      { beat: 15.5, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 }
+    ]
+  },
+  {
+    name: "Blues Solo Rake",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 1.5, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 3, stringIndex: 3, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 4.5, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 6, stringIndex: 5, fret: 3, durationBeats: 1.5, finger: 2 },
+      { beat: 8, stringIndex: 5, fret: 0, durationBeats: 2, finger: 0 },
+      { beat: 10.5, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 12, stringIndex: 1, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 14, stringIndex: 1, fret: 0, durationBeats: 2, finger: 0 }
+    ]
+  },
+  {
+    name: "Climax & Walkup Outro",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 0.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 1, stringIndex: 5, fret: 2, durationBeats: 0.45, finger: 1 },
+      { beat: 1.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 2, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 2.5, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 3, stringIndex: 5, fret: 4, durationBeats: 0.45, finger: 3 },
+      { beat: 3.5, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 4, stringIndex: 5, fret: 5, durationBeats: 1.5, finger: 4 },
+      { beat: 6, stringIndex: 5, fret: 6, durationBeats: 1.5, finger: 4 },
+      { beat: 8, stringIndex: 5, fret: 7, durationBeats: 3, finger: 4 },
+      { beat: 12, stringIndex: 5, fret: 0, durationBeats: 4, finger: 0 }
+    ]
+  }
+]);
+var s_wipe_out = assembleLeadSong(144, [
+  {
+    name: "Surf Triplet Intro",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 0.6, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 1.2, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 2, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 2.6, stringIndex: 3, fret: 5, durationBeats: 0.4, finger: 4 },
+      { beat: 3.5, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 4.2, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 5, stringIndex: 3, fret: 5, durationBeats: 1.2, finger: 4 },
+      { beat: 8, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 8.6, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 9.2, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 10, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 10.6, stringIndex: 3, fret: 5, durationBeats: 0.4, finger: 4 },
+      { beat: 11.5, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 12.2, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 13, stringIndex: 3, fret: 5, durationBeats: 1.2, finger: 4 }
+    ]
+  },
+  {
+    name: "12-Bar Surf Progression (IV-I)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 0.6, stringIndex: 3, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 1.2, stringIndex: 3, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 2, stringIndex: 2, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 2.6, stringIndex: 2, fret: 5, durationBeats: 0.4, finger: 4 },
+      { beat: 3.5, stringIndex: 3, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 4.2, stringIndex: 2, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 5, stringIndex: 2, fret: 5, durationBeats: 1.2, finger: 4 },
+      { beat: 8, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 8.6, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 9.2, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 10, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 10.6, stringIndex: 3, fret: 5, durationBeats: 0.4, finger: 4 },
+      { beat: 11.5, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 12.2, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 13, stringIndex: 3, fret: 5, durationBeats: 1.2, finger: 4 }
+    ]
+  },
+  {
+    name: "Tremolo High E Solo",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 1, stringIndex: 0, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 2, stringIndex: 0, fret: 5, durationBeats: 0.5, finger: 4 },
+      { beat: 3, stringIndex: 0, fret: 5, durationBeats: 0.5, finger: 4 },
+      { beat: 4, stringIndex: 0, fret: 6, durationBeats: 0.5, finger: 4 },
+      { beat: 5, stringIndex: 0, fret: 7, durationBeats: 1, finger: 4 },
+      { beat: 7, stringIndex: 0, fret: 5, durationBeats: 0.5, finger: 4 },
+      { beat: 8, stringIndex: 0, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 10, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 12, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 14, stringIndex: 1, fret: 1, durationBeats: 1.5, finger: 1 }
+    ]
+  },
+  {
+    name: "Surf Climax & Final Dive",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 0.6, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 1.2, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 2, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 2.6, stringIndex: 3, fret: 5, durationBeats: 0.4, finger: 4 },
+      { beat: 3.5, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 4.2, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 5, stringIndex: 3, fret: 5, durationBeats: 1.2, finger: 4 },
+      { beat: 8, stringIndex: 2, fret: 5, durationBeats: 1.5, finger: 4 },
+      { beat: 10, stringIndex: 3, fret: 5, durationBeats: 1.5, finger: 4 },
+      { beat: 12, stringIndex: 4, fret: 3, durationBeats: 2, finger: 2 },
+      { beat: 15, stringIndex: 5, fret: 3, durationBeats: 3, finger: 2 }
+    ]
+  }
+]);
+var s_satisfaction = assembleLeadSong(136, [
+  {
+    name: "Iconic Fuzz Riff Intro",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 1, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 2, stringIndex: 4, fret: 2, durationBeats: 1.2, finger: 1 },
+      { beat: 3.5, stringIndex: 4, fret: 4, durationBeats: 1, finger: 3 },
+      { beat: 5, stringIndex: 4, fret: 5, durationBeats: 1.8, finger: 4 },
+      { beat: 7.5, stringIndex: 4, fret: 5, durationBeats: 0.8, finger: 4 },
+      { beat: 8.5, stringIndex: 4, fret: 4, durationBeats: 0.8, finger: 3 },
+      { beat: 9.5, stringIndex: 4, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 12, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 13, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 14, stringIndex: 4, fret: 4, durationBeats: 1, finger: 3 },
+      { beat: 15, stringIndex: 4, fret: 5, durationBeats: 1.5, finger: 4 }
+    ]
+  },
+  {
+    name: "Verse 1 (I can't get no)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 2, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 4, stringIndex: 4, fret: 4, durationBeats: 1, finger: 3 },
+      { beat: 6, stringIndex: 4, fret: 5, durationBeats: 1.5, finger: 4 },
+      { beat: 8, stringIndex: 3, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 10, stringIndex: 3, fret: 4, durationBeats: 1, finger: 3 },
+      { beat: 12, stringIndex: 4, fret: 5, durationBeats: 1, finger: 4 },
+      { beat: 14, stringIndex: 4, fret: 2, durationBeats: 1.8, finger: 1 }
+    ]
+  },
+  {
+    name: "Chorus (And I try and I try)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 2, stringIndex: 3, fret: 4, durationBeats: 1, finger: 3 },
+      { beat: 4, stringIndex: 2, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 6, stringIndex: 2, fret: 4, durationBeats: 1.5, finger: 3 },
+      { beat: 8, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 9, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 10, stringIndex: 4, fret: 4, durationBeats: 1, finger: 3 },
+      { beat: 12, stringIndex: 4, fret: 5, durationBeats: 1.5, finger: 4 },
+      { beat: 14, stringIndex: 4, fret: 2, durationBeats: 2, finger: 1 }
+    ]
+  },
+  {
+    name: "Solo & Final Fade Riff",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 1, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 2, stringIndex: 4, fret: 2, durationBeats: 1.2, finger: 1 },
+      { beat: 3.5, stringIndex: 4, fret: 4, durationBeats: 1, finger: 3 },
+      { beat: 5, stringIndex: 4, fret: 5, durationBeats: 1.8, finger: 4 },
+      { beat: 7.5, stringIndex: 4, fret: 5, durationBeats: 0.8, finger: 4 },
+      { beat: 8.5, stringIndex: 4, fret: 4, durationBeats: 0.8, finger: 3 },
+      { beat: 9.5, stringIndex: 4, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 12, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 14, stringIndex: 5, fret: 0, durationBeats: 3, finger: 0 }
+    ]
+  }
+]);
+var s_horse_no_name = assembleChordSong(92, [
+  {
+    name: "Intro (Desert Breeze)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Em", durationBeats: 1.8, strum: "up" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "up" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Em", durationBeats: 1.8, strum: "up" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "D", durationBeats: 1.8, strum: "up" }
+    ]
+  },
+  {
+    name: "Verse 1 (On the first part of the journey)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Em", durationBeats: 1.8, strum: "up" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "up" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Em", durationBeats: 1.8, strum: "up" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "D", durationBeats: 1.8, strum: "up" }
+    ]
+  },
+  {
+    name: "Chorus (I've been through the desert)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Em", durationBeats: 1.8, strum: "up" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "up" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Em", durationBeats: 1.8, strum: "up" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "D", durationBeats: 1.8, strum: "up" }
+    ]
+  },
+  {
+    name: "Verse 2 (After two days in the desert sun)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Em", durationBeats: 1.8, strum: "up" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "up" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Em", durationBeats: 1.8, strum: "up" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "D", durationBeats: 1.8, strum: "up" }
+    ]
+  },
+  {
+    name: "La-La Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Em", durationBeats: 1.8, strum: "up" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "up" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Em", durationBeats: 1.8, strum: "up" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 16, chord: "Em", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_eleanor_rigby = assembleChordSong(96, [
+  {
+    name: "Intro (Ah look at all the lonely people)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Em", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Picks up the rice in the church)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Em", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (All the lonely people)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Em", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (Father McKenzie writing the words)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Em", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus 2 & Baroque Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "Em", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_free_fallin = assembleChordSong(84, [
+  {
+    name: "Intro Chime",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Dsus4", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Dsus4", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "A", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (She's a good girl)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Dsus4", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Dsus4", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "A", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (And I'm free fallin)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Dsus4", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Dsus4", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "A", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (All the vampires)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Dsus4", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Dsus4", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "A", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus & Resonant Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Dsus4", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Dsus4", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 16, chord: "D", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_brown_eyed_girl_easy = assembleChordSong(98, [
+  {
+    name: "Intro Rhythmic Strums",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "D", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Hey where did we go)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "D", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (You my brown eyed girl)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (Down in the green grass)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "D", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Sha-La-La Chorus & Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 16, chord: "G", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_ring_of_fire = assembleChordSong(104, [
+  {
+    name: "Boom-Chicka Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "D", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Love is a burning thing)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (I fell into a burnin ring of fire)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (The taste of love is sweet)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus 2 & Mariachi Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "G", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_three_little_birds = assembleChordSong(76, [
+  {
+    name: "Reggae Intro Strum",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "E", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "E", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus 1 (Don't worry about a thing)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "E", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Rise up this mornin)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "E", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "A", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus 2 (Every little thing gonna be alright)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "E", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 & Peaceful Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "E", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "A", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_lean_on_me = assembleChordSong(78, [
+  {
+    name: "Intro Stepwise Chords",
+    beats: 8,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Dm", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "F", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Sometimes in our lives)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Dm", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Dm", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (Lean on me when you're not strong)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "F", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Bridge (Call on me brother)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Dm", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Dm", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus 2 & Warm Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "F", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "C", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_love_me_do = assembleChordSong(116, [
+  {
+    name: "Intro Groove",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "C", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Love love me do)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Bridge (Someone to love)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "G", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (Yeah love me do)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Harmonica Riff Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "G", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_bad_moon = assembleChordSong(140, [
+  {
+    name: "Country Rock Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "A", durationBeats: 0.9, strum: "down" },
+      { beat: 3, chord: "G", durationBeats: 0.9, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "A", durationBeats: 0.9, strum: "down" },
+      { beat: 11, chord: "G", durationBeats: 0.9, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (I see the bad moon rising)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "A", durationBeats: 0.9, strum: "down" },
+      { beat: 3, chord: "G", durationBeats: 0.9, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "A", durationBeats: 0.9, strum: "down" },
+      { beat: 11, chord: "G", durationBeats: 0.9, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (Don't go around tonight)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (I hear hurricanes a-blowing)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "A", durationBeats: 0.9, strum: "down" },
+      { beat: 3, chord: "G", durationBeats: 0.9, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "A", durationBeats: 0.9, strum: "down" },
+      { beat: 11, chord: "G", durationBeats: 0.9, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus 2 & Driving Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "D", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_yellow_submarine = assembleChordSong(110, [
+  {
+    name: "Acoustic Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (In the town where I was born)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (We all live in a yellow submarine)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (And our friends are all aboard)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Grand Chorus & Oceanic Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "G", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_mary_lamb = assembleLeadSong(90, [
+  {
+    name: "Verse 1 Melody",
+    beats: 16,
+    notes: [
+      // Measure 1: Ma-ry had a
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 1, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 2, stringIndex: 1, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      // Measure 2: lit-tle lamb
+      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 6, stringIndex: 0, fret: 0, durationBeats: 1.8, finger: 0 },
+      // Measure 3: lit-tle lamb
+      { beat: 8, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 9, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 1.8, finger: 3 },
+      // Measure 4: lit-tle lamb
+      { beat: 12, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 13, stringIndex: 0, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 14, stringIndex: 0, fret: 3, durationBeats: 1.8, finger: 3 }
+    ]
+  },
+  {
+    name: "Verse 2 (Its fleece was white as snow)",
+    beats: 16,
+    notes: [
+      // Measure 1: Ma-ry had a
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 1, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 2, stringIndex: 1, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      // Measure 2: lit-tle lamb
+      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 6, stringIndex: 0, fret: 0, durationBeats: 1.8, finger: 0 },
+      // Measure 3: its fleece was white as
+      { beat: 8, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 9, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 10, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 11, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      // Measure 4: snow
+      { beat: 12, stringIndex: 1, fret: 1, durationBeats: 3.5, finger: 1 }
+    ]
+  },
+  {
+    name: "Variation & Musical Outro",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 1, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 2, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 3, stringIndex: 1, fret: 1, durationBeats: 1.5, finger: 1 },
+      { beat: 5, stringIndex: 2, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 7, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 9, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 11, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 13, stringIndex: 1, fret: 1, durationBeats: 4, finger: 1 }
+    ]
+  }
+]);
+var s_twinkle = assembleLeadSong(84, [
+  {
+    name: "Theme A1 (Twinkle twinkle little star)",
+    beats: 8,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 1, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 2, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 3, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 4, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 4 },
+      { beat: 5, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 4 },
+      { beat: 6, stringIndex: 0, fret: 3, durationBeats: 1.8, finger: 3 }
+    ]
+  },
+  {
+    name: "Theme A2 (How I wonder what you are)",
+    beats: 8,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 1, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 2, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 3, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 4, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 5, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 6, stringIndex: 1, fret: 1, durationBeats: 1.8, finger: 1 }
+    ]
+  },
+  {
+    name: "Middle Theme B (Up above the world so high)",
+    beats: 8,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 1, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 3, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 1, fret: 3, durationBeats: 1.8, finger: 3 }
+    ]
+  },
+  {
+    name: "Middle Theme B Reprise (Like a diamond in the sky)",
+    beats: 8,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 1, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 3, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 1, fret: 3, durationBeats: 1.8, finger: 3 }
+    ]
+  },
+  {
+    name: "Recapitulation & Finale",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 1, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 2, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 3, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 4, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 4 },
+      { beat: 5, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 4 },
+      { beat: 6, stringIndex: 0, fret: 3, durationBeats: 1.8, finger: 3 },
+      { beat: 8, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 9, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 10, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 11, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 12, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 13, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 14, stringIndex: 1, fret: 1, durationBeats: 2.5, finger: 1 }
+    ]
+  }
+]);
+var s_happy_birthday = assembleLeadSong(88, [
+  {
+    name: "Verse 1 (Happy Birthday to You)",
+    beats: 16,
+    notes: [
+      // Measure 1 & 2: Hap-py birth-day to you
+      { beat: 0, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 2.75, stringIndex: 2, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 4, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 5.5, stringIndex: 1, fret: 0, durationBeats: 2, finger: 0 },
+      // Measure 3 & 4: Hap-py birth-day to you
+      { beat: 8, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 8.75, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 9.5, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 10.75, stringIndex: 2, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 12, stringIndex: 1, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 13.5, stringIndex: 1, fret: 1, durationBeats: 2.5, finger: 1 }
+    ]
+  },
+  {
+    name: "Verse 1 Climax (Happy Birthday Dear Friend)",
+    beats: 18,
+    notes: [
+      // Measure 5 & 6: Hap-py birth-day dear friend
+      { beat: 0, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 0, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 3.25, stringIndex: 0, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 4.75, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 6.25, stringIndex: 1, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 7.75, stringIndex: 2, fret: 2, durationBeats: 2, finger: 2 },
+      // Measure 7 & 8: Hap-py birth-day to you!
+      { beat: 10, stringIndex: 0, fret: 1, durationBeats: 0.6, finger: 1 },
+      { beat: 10.75, stringIndex: 0, fret: 1, durationBeats: 0.6, finger: 1 },
+      { beat: 11.5, stringIndex: 0, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 13, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 14.5, stringIndex: 1, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 16, stringIndex: 1, fret: 1, durationBeats: 2.5, finger: 1 }
+    ]
+  },
+  {
+    name: "Verse 2 Repeat (Sing-Along Second Round)",
+    beats: 16,
+    notes: [
+      // Measure 1 & 2: Hap-py birth-day to you
+      { beat: 0, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 2.75, stringIndex: 2, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 4, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 5.5, stringIndex: 1, fret: 0, durationBeats: 2, finger: 0 },
+      // Measure 3 & 4: Hap-py birth-day to you
+      { beat: 8, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 8.75, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 9.5, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 10.75, stringIndex: 2, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 12, stringIndex: 1, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 13.5, stringIndex: 1, fret: 1, durationBeats: 2.5, finger: 1 }
+    ]
+  },
+  {
+    name: "Grand Birthday Finale & Celebration Outro",
+    beats: 20,
+    notes: [
+      // Measure 5 & 6: Hap-py birth-day dear friend
+      { beat: 0, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 0, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 3.25, stringIndex: 0, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 4.75, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 6.25, stringIndex: 1, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 7.75, stringIndex: 2, fret: 2, durationBeats: 2, finger: 2 },
+      // Measure 7 & 8: Hap-py birth-day to you! And many more!
+      { beat: 10, stringIndex: 0, fret: 1, durationBeats: 0.6, finger: 1 },
+      { beat: 10.75, stringIndex: 0, fret: 1, durationBeats: 0.6, finger: 1 },
+      { beat: 11.5, stringIndex: 0, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 13, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 14.5, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 16.5, stringIndex: 1, fret: 1, durationBeats: 2.5, finger: 1 },
+      { beat: 18.5, stringIndex: 1, fret: 1, durationBeats: 3, finger: 1 }
+    ]
+  }
+]);
+var s_jingle_bells = assembleLeadSong(120, [
+  {
+    name: "Chorus Theme 1 (Jingle bells)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 1, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 2, stringIndex: 0, fret: 0, durationBeats: 1.6, finger: 0 },
+      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 0, fret: 0, durationBeats: 1.6, finger: 0 },
+      { beat: 8, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 9, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 10, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 11, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 12, stringIndex: 0, fret: 0, durationBeats: 3, finger: 0 }
+    ]
+  },
+  {
+    name: "Chorus Theme 2 (Oh what fun it is to ride)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 1, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 2, stringIndex: 0, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 3, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 4, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 7, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 8, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 9, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 11, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 12, stringIndex: 1, fret: 3, durationBeats: 1.8, finger: 3 },
+      { beat: 14, stringIndex: 0, fret: 3, durationBeats: 1.8, finger: 3 }
+    ]
+  },
+  {
+    name: "Verse (Dashing through the snow)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 1, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 2, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 4, stringIndex: 2, fret: 0, durationBeats: 2.5, finger: 0 },
+      { beat: 7, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 8, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 9, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 11, stringIndex: 2, fret: 2, durationBeats: 2.5, finger: 2 }
+    ]
+  },
+  {
+    name: "Full Chorus Reprise & Finale",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 1, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 2, stringIndex: 0, fret: 0, durationBeats: 1.6, finger: 0 },
+      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 0, fret: 0, durationBeats: 1.6, finger: 0 },
+      { beat: 8, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 9, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 11, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 12, stringIndex: 1, fret: 1, durationBeats: 3.5, finger: 1 }
+    ]
+  }
+]);
+var s_brahms_lullaby = assembleLeadSong(70, [
+  {
+    name: "Verse Theme 1",
+    beats: 12,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 1, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 2, stringIndex: 0, fret: 3, durationBeats: 1.8, finger: 3 },
+      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 0, fret: 3, durationBeats: 2.2, finger: 3 },
+      { beat: 9, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 11, stringIndex: 0, fret: 7, durationBeats: 2, finger: 4 }
+    ]
+  },
+  {
+    name: "Verse Theme 2",
+    beats: 12,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 5, durationBeats: 1, finger: 3 },
+      { beat: 1.5, stringIndex: 0, fret: 3, durationBeats: 1, finger: 1 },
+      { beat: 3, stringIndex: 0, fret: 1, durationBeats: 2, finger: 1 },
+      { beat: 5, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 6, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 7, stringIndex: 1, fret: 3, durationBeats: 1.8, finger: 3 },
+      { beat: 9, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 10, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 11, stringIndex: 0, fret: 1, durationBeats: 2, finger: 1 }
+    ]
+  },
+  {
+    name: "Lullaby Refrain & High Arch",
+    beats: 12,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 1.5, stringIndex: 0, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 3, stringIndex: 0, fret: 0, durationBeats: 2, finger: 0 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 7, stringIndex: 0, fret: 7, durationBeats: 2, finger: 4 },
+      { beat: 9, stringIndex: 0, fret: 5, durationBeats: 1, finger: 3 },
+      { beat: 10.5, stringIndex: 0, fret: 3, durationBeats: 1, finger: 1 },
+      { beat: 11.5, stringIndex: 0, fret: 0, durationBeats: 2, finger: 0 }
+    ]
+  },
+  {
+    name: "Peaceful Coda",
+    beats: 12,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 1.5, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 3, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 5, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 6.5, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 8, stringIndex: 0, fret: 0, durationBeats: 3.5, finger: 0 }
+    ]
+  }
+]);
+var s_greensleeves = assembleLeadSong(82, [
+  {
+    name: "Verse 1 (Alas my love, that you do me wrong)",
+    beats: 18,
+    notes: [
+      // Pickup: A
+      { beat: 0, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      // Measure 1: C - D - E
+      { beat: 1.5, stringIndex: 1, fret: 1, durationBeats: 1.5, finger: 1 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 0.75, finger: 3 },
+      { beat: 3.75, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
+      // Measure 2: F - E - D
+      { beat: 5.5, stringIndex: 0, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 6.5, stringIndex: 0, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 7.25, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      // Measure 3: B - G - A - B
+      { beat: 9, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 10.5, stringIndex: 2, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 11.25, stringIndex: 2, fret: 2, durationBeats: 0.75, finger: 2 },
+      { beat: 12, stringIndex: 1, fret: 0, durationBeats: 1, finger: 0 },
+      // Measure 4: C - A - A (To cast me off discourteously)
+      { beat: 13, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 14.25, stringIndex: 2, fret: 2, durationBeats: 0.75, finger: 2 },
+      { beat: 15, stringIndex: 2, fret: 2, durationBeats: 2.5, finger: 2 }
+    ]
+  },
+  {
+    name: "Verse 2 (For I have loved you well and long)",
+    beats: 18,
+    notes: [
+      // Pickup: A
+      { beat: 0, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      // Measure 1: C - D - E
+      { beat: 1.5, stringIndex: 1, fret: 1, durationBeats: 1.5, finger: 1 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 0.75, finger: 3 },
+      { beat: 3.75, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
+      // Measure 2: F - E - D
+      { beat: 5.5, stringIndex: 0, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 6.5, stringIndex: 0, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 7.25, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      // Measure 3: B - G - A - B
+      { beat: 9, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 10.5, stringIndex: 2, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 11.25, stringIndex: 2, fret: 2, durationBeats: 0.75, finger: 2 },
+      { beat: 12, stringIndex: 1, fret: 0, durationBeats: 1, finger: 0 },
+      // Measure 4: C - B - A - G# - A (Harmonic Minor Cadence)
+      { beat: 13, stringIndex: 1, fret: 1, durationBeats: 0.75, finger: 1 },
+      { beat: 13.75, stringIndex: 1, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 14.5, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 15.5, stringIndex: 2, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 16.5, stringIndex: 2, fret: 2, durationBeats: 3, finger: 2 }
+    ]
+  },
+  {
+    name: "Chorus (Greensleeves was all my joy)",
+    beats: 18,
+    notes: [
+      // High G - G
+      { beat: 0, stringIndex: 0, fret: 3, durationBeats: 2, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 3, durationBeats: 1, finger: 3 },
+      // F - E - D
+      { beat: 3, stringIndex: 0, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 4.75, stringIndex: 1, fret: 3, durationBeats: 1.75, finger: 3 },
+      // B - G - A - B
+      { beat: 6.5, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 8, stringIndex: 2, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 8.75, stringIndex: 2, fret: 2, durationBeats: 0.75, finger: 2 },
+      { beat: 9.5, stringIndex: 1, fret: 0, durationBeats: 1, finger: 0 },
+      // C - A - A
+      { beat: 10.5, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 11.75, stringIndex: 2, fret: 2, durationBeats: 0.75, finger: 2 },
+      { beat: 12.5, stringIndex: 2, fret: 2, durationBeats: 2.5, finger: 2 }
+    ]
+  },
+  {
+    name: "Chorus Reprise & Renaissance Cadence",
+    beats: 20,
+    notes: [
+      // High G - G
+      { beat: 0, stringIndex: 0, fret: 3, durationBeats: 2, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 3, durationBeats: 1, finger: 3 },
+      // F - E - D
+      { beat: 3, stringIndex: 0, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 4.75, stringIndex: 1, fret: 3, durationBeats: 1.75, finger: 3 },
+      // B - G - A - B
+      { beat: 6.5, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 8, stringIndex: 2, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 8.75, stringIndex: 2, fret: 2, durationBeats: 0.75, finger: 2 },
+      { beat: 9.5, stringIndex: 1, fret: 0, durationBeats: 1, finger: 0 },
+      // C - B - A - G# - A
+      { beat: 10.5, stringIndex: 1, fret: 1, durationBeats: 0.75, finger: 1 },
+      { beat: 11.25, stringIndex: 1, fret: 0, durationBeats: 0.75, finger: 0 },
+      { beat: 12, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 13, stringIndex: 2, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 14, stringIndex: 2, fret: 2, durationBeats: 4, finger: 2 }
+    ]
+  }
+]);
+var s_sunshine = assembleLeadSong(100, [
+  {
+    name: "Verse 1 (The other night dear)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 1, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 2, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 3, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 7, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 9, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 11, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 12, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 13.5, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 14.5, stringIndex: 0, fret: 0, durationBeats: 1.8, finger: 0 }
+    ]
+  },
+  {
+    name: "Chorus (You are my sunshine)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 1, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 5, durationBeats: 1.8, finger: 4 },
+      { beat: 4.5, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 4 },
+      { beat: 5.5, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 6.5, stringIndex: 0, fret: 1, durationBeats: 1.8, finger: 1 },
+      { beat: 9, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 11, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 12.5, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 13.5, stringIndex: 1, fret: 1, durationBeats: 2.5, finger: 1 }
+    ]
+  },
+  {
+    name: "Verse 2 (I'll always love you)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 1, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 2, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 3, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 7, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 9, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 11, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 12, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 13.5, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 14.5, stringIndex: 0, fret: 0, durationBeats: 1.8, finger: 0 }
+    ]
+  },
+  {
+    name: "Chorus 2 & Sweet Outro",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 1, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 5, durationBeats: 1.8, finger: 4 },
+      { beat: 4.5, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 4 },
+      { beat: 5.5, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 6.5, stringIndex: 0, fret: 1, durationBeats: 1.8, finger: 1 },
+      { beat: 9, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 11, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 13, stringIndex: 2, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 14.5, stringIndex: 1, fret: 1, durationBeats: 3.5, finger: 1 }
+    ]
+  }
+]);
+var s_come_as_you_are = assembleLeadSong(120, [
+  {
+    name: "Iconic Chorus Riff (Intro)",
+    beats: 16,
+    notes: [
+      // Cycle 1 (Measure 1 & 2): 0 - 0 - 1 - 2 - A0 - 2 - A0 - 2 - 2 - 1 - 0 - A0
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 2, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 3.75, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 4.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 5.25, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 5.75, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 6.25, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 6.75, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 7.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      // Cycle 2 (Measure 3 & 4)
+      { beat: 8, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 8.75, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 9.5, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 10, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 11, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 11.75, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 12.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 13.25, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 13.75, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 14.25, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 14.75, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 15.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 }
+    ]
+  },
+  {
+    name: "Verse 1 (Come as you are, as you were)",
+    beats: 16,
+    notes: [
+      // Kurt plays the hypnotic riff underneath the vocals
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 2, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 3.75, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 4.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 5.25, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 5.75, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 6.25, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 6.75, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 7.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      // Second half of Verse 1 ("As I want you to be")
+      { beat: 8, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 8.75, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 9.5, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 10, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 11, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 11.75, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 12.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 13.25, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 13.75, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 14.25, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 14.75, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 15.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 }
+    ]
+  },
+  {
+    name: "Pre-Chorus (Memoria, Memoria)",
+    beats: 16,
+    notes: [
+      // F#5 Power Chord Stabs
+      { beat: 0, stringIndex: 5, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 1.5, stringIndex: 4, fret: 4, durationBeats: 1, finger: 3 },
+      { beat: 2.75, stringIndex: 5, fret: 2, durationBeats: 1, finger: 1 },
+      // A5 Power Chord Stabs
+      { beat: 4, stringIndex: 5, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 5.5, stringIndex: 4, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 6.75, stringIndex: 5, fret: 0, durationBeats: 1, finger: 0 },
+      // F#5 Power Chord Stabs Reprise
+      { beat: 8, stringIndex: 5, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 9.5, stringIndex: 4, fret: 4, durationBeats: 1, finger: 3 },
+      { beat: 10.75, stringIndex: 5, fret: 2, durationBeats: 1, finger: 1 },
+      // A5 Power Chord Stabs Reprise
+      { beat: 12, stringIndex: 5, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 13.5, stringIndex: 4, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 14.75, stringIndex: 5, fret: 0, durationBeats: 1.2, finger: 0 }
+    ]
+  },
+  {
+    name: "Verse 2 (Take your time, hurry up)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 2, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 3.75, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 4.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 5.25, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 5.75, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 6.25, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 6.75, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 7.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 8, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 8.75, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 9.5, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 10, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 11, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 11.75, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 12.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 13.25, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 13.75, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 14.25, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 14.75, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 15.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 }
+    ]
+  },
+  {
+    name: "Guitar Solo (Kurt's Hypnotic G-String Solo)",
+    beats: 16,
+    notes: [
+      // Measure 1 & 2: 6 - 9 - 6 - 9 - 11 - 9
+      { beat: 0, stringIndex: 2, fret: 6, durationBeats: 1.2, finger: 1 },
+      { beat: 1.5, stringIndex: 2, fret: 9, durationBeats: 1.2, finger: 3 },
+      { beat: 3, stringIndex: 2, fret: 6, durationBeats: 1.2, finger: 1 },
+      { beat: 4.5, stringIndex: 2, fret: 9, durationBeats: 1.2, finger: 3 },
+      { beat: 6, stringIndex: 2, fret: 11, durationBeats: 1.2, finger: 4 },
+      { beat: 7.25, stringIndex: 2, fret: 9, durationBeats: 0.7, finger: 3 },
+      // Measure 3 & 4: 6 - 9 - 6 - 9 - 11 with expressive sustain
+      { beat: 8, stringIndex: 2, fret: 6, durationBeats: 1.2, finger: 1 },
+      { beat: 9.5, stringIndex: 2, fret: 9, durationBeats: 1.2, finger: 3 },
+      { beat: 11, stringIndex: 2, fret: 6, durationBeats: 1.2, finger: 1 },
+      { beat: 12.5, stringIndex: 2, fret: 9, durationBeats: 1.5, finger: 3 },
+      { beat: 14.25, stringIndex: 2, fret: 11, durationBeats: 1.7, finger: 4 }
+    ]
+  },
+  {
+    name: "Outro Riff & Final Ring",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.75, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 2, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 3.75, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 4.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 5.25, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 5.75, stringIndex: 5, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 6.25, stringIndex: 5, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 6.75, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 7.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      // Final slow fade riff
+      { beat: 8.5, stringIndex: 5, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 9.5, stringIndex: 5, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10.5, stringIndex: 5, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 11.5, stringIndex: 5, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 13, stringIndex: 4, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 14.5, stringIndex: 5, fret: 0, durationBeats: 3.5, finger: 0 }
+    ]
+  }
+]);
+var s_ode_to_joy = assembleLeadSong(108, [
+  {
+    name: "Theme A1 (Beethoven 9th Symphony)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 1, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 2, stringIndex: 0, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 3, stringIndex: 0, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 4, stringIndex: 0, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 5, stringIndex: 0, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 6, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 7, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 8, stringIndex: 1, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 9, stringIndex: 1, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 11, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 12, stringIndex: 0, fret: 0, durationBeats: 1.4, finger: 0 },
+      { beat: 13.5, stringIndex: 1, fret: 3, durationBeats: 0.5, finger: 3 },
+      { beat: 14, stringIndex: 1, fret: 3, durationBeats: 2, finger: 3 }
+    ]
+  },
+  {
+    name: "Theme A2 (Resolved Cadence)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 1, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 2, stringIndex: 0, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 3, stringIndex: 0, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 4, stringIndex: 0, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 5, stringIndex: 0, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 6, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 7, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 8, stringIndex: 1, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 9, stringIndex: 1, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 11, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 12, stringIndex: 1, fret: 3, durationBeats: 1.4, finger: 3 },
+      { beat: 13.5, stringIndex: 1, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 14, stringIndex: 1, fret: 1, durationBeats: 2, finger: 1 }
+    ]
+  },
+  {
+    name: "Bridge & Middle Development",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 1, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 3, stringIndex: 1, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 4, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 5.5, stringIndex: 0, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 6, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 7, stringIndex: 1, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 8, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 9, stringIndex: 0, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 9.5, stringIndex: 0, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 10, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 11, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 12, stringIndex: 1, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 13, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 14, stringIndex: 2, fret: 0, durationBeats: 2, finger: 0 }
+    ]
+  },
+  {
+    name: "Recapitulation",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 1, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 2, stringIndex: 0, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 3, stringIndex: 0, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 4, stringIndex: 0, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 5, stringIndex: 0, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 6, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 7, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 8, stringIndex: 1, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 9, stringIndex: 1, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 11, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 12, stringIndex: 1, fret: 3, durationBeats: 1.4, finger: 3 },
+      { beat: 13.5, stringIndex: 1, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 14, stringIndex: 1, fret: 1, durationBeats: 2, finger: 1 }
+    ]
+  },
+  {
+    name: "Triumphant Coda & Grand Finale",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 1, stringIndex: 0, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 2, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 4, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 6, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 8, stringIndex: 0, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 10, stringIndex: 0, fret: 5, durationBeats: 2, finger: 4 },
+      { beat: 13, stringIndex: 0, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 14.5, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 16, stringIndex: 1, fret: 1, durationBeats: 3.5, finger: 1 }
+    ]
+  }
+]);
+var s_fur_elise = assembleLeadSong(128, [
+  {
+    name: "Theme A1 (Beethoven Chromatic Motif)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 0.5, stringIndex: 1, fret: 4, durationBeats: 0.45, finger: 4 },
+      { beat: 1, stringIndex: 0, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 1.5, stringIndex: 1, fret: 4, durationBeats: 0.45, finger: 4 },
+      { beat: 2, stringIndex: 0, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 2.5, stringIndex: 1, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 0.45, finger: 3 },
+      { beat: 3.5, stringIndex: 1, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 4, stringIndex: 2, fret: 2, durationBeats: 2.5, finger: 2 },
+      { beat: 6.5, stringIndex: 3, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 7, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 7.5, stringIndex: 1, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 8, stringIndex: 1, fret: 1, durationBeats: 2, finger: 1 },
+      { beat: 10.5, stringIndex: 3, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 11, stringIndex: 2, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 11.5, stringIndex: 1, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 12, stringIndex: 0, fret: 0, durationBeats: 2.5, finger: 0 }
+    ]
+  },
+  {
+    name: "Theme A Recapitulation",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 0.5, stringIndex: 1, fret: 4, durationBeats: 0.45, finger: 4 },
+      { beat: 1, stringIndex: 0, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 1.5, stringIndex: 1, fret: 4, durationBeats: 0.45, finger: 4 },
+      { beat: 2, stringIndex: 0, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 2.5, stringIndex: 1, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 0.45, finger: 3 },
+      { beat: 3.5, stringIndex: 1, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 4, stringIndex: 2, fret: 2, durationBeats: 2.8, finger: 2 },
+      { beat: 7, stringIndex: 3, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 7.5, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 8, stringIndex: 1, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 8.5, stringIndex: 1, fret: 1, durationBeats: 2, finger: 1 },
+      { beat: 11, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 12, stringIndex: 2, fret: 2, durationBeats: 3.5, finger: 2 }
+    ]
+  },
+  {
+    name: "Theme B (Lyrical Singing Romance)",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 5, durationBeats: 1, finger: 4 },
+      { beat: 4, stringIndex: 0, fret: 7, durationBeats: 2, finger: 4 },
+      { beat: 7, stringIndex: 0, fret: 8, durationBeats: 1, finger: 4 },
+      { beat: 9, stringIndex: 0, fret: 7, durationBeats: 1, finger: 3 },
+      { beat: 11, stringIndex: 0, fret: 5, durationBeats: 1, finger: 1 },
+      { beat: 13, stringIndex: 0, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 15, stringIndex: 0, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 16.5, stringIndex: 0, fret: 0, durationBeats: 2, finger: 0 }
+    ]
+  },
+  {
+    name: "Scalar Return & Authentic Cadence",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 0.5, stringIndex: 1, fret: 4, durationBeats: 0.45, finger: 4 },
+      { beat: 1, stringIndex: 0, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 1.5, stringIndex: 1, fret: 4, durationBeats: 0.45, finger: 4 },
+      { beat: 2, stringIndex: 0, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 2.5, stringIndex: 1, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 0.45, finger: 3 },
+      { beat: 3.5, stringIndex: 1, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 4, stringIndex: 2, fret: 2, durationBeats: 2.5, finger: 2 },
+      { beat: 7, stringIndex: 3, fret: 2, durationBeats: 1.5, finger: 2 },
+      { beat: 9, stringIndex: 4, fret: 0, durationBeats: 4, finger: 0 }
+    ]
+  }
+]);
+var s_bach_cello = assembleLeadSong(86, [
+  {
+    name: "Prelude Opening (G Major Arpeggio)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 5, durationBeats: 0.4, finger: 3 },
+      { beat: 0.5, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 1, stringIndex: 2, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 1.5, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 2, stringIndex: 2, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 2.5, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 3, stringIndex: 2, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 3.5, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 4, stringIndex: 4, fret: 5, durationBeats: 0.4, finger: 3 },
+      { beat: 4.5, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 5, stringIndex: 2, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 5.5, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 6, stringIndex: 2, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 6.5, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 7, stringIndex: 2, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 7.5, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 8, stringIndex: 4, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 8.5, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 9, stringIndex: 2, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 9.5, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 10, stringIndex: 2, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 10.5, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 11, stringIndex: 2, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 11.5, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 12, stringIndex: 4, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 12.5, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 13, stringIndex: 2, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 13.5, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 14, stringIndex: 2, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 14.5, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 15, stringIndex: 2, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 15.5, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 }
+    ]
+  },
+  {
+    name: "E Minor Shift & Dominant Turn",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 0.5, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 1, stringIndex: 2, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 1.5, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 2, stringIndex: 2, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 2.5, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 3, stringIndex: 2, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 3.5, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 4, stringIndex: 5, fret: 3, durationBeats: 0.4, finger: 2 },
+      { beat: 4.5, stringIndex: 4, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 5, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 5.5, stringIndex: 4, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 6, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 6.5, stringIndex: 4, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 7, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 7.5, stringIndex: 4, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 8, stringIndex: 5, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 8.5, stringIndex: 4, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 9, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 9.5, stringIndex: 4, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 10, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 10.5, stringIndex: 4, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 11, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 11.5, stringIndex: 4, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 12, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 12.5, stringIndex: 4, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 13, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 13.5, stringIndex: 4, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 14, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 14.5, stringIndex: 4, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 15, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 15.5, stringIndex: 4, fret: 2, durationBeats: 0.4, finger: 1 }
+    ]
+  },
+  {
+    name: "Pedal Point D & Grand Cadence",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 1, stringIndex: 2, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 2, stringIndex: 1, fret: 3, durationBeats: 0.5, finger: 3 },
+      { beat: 3, stringIndex: 0, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 5, stringIndex: 3, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 6, stringIndex: 2, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 7, stringIndex: 1, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 8, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 10, stringIndex: 4, fret: 5, durationBeats: 1, finger: 3 },
+      { beat: 12, stringIndex: 3, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 14, stringIndex: 2, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 16, stringIndex: 5, fret: 3, durationBeats: 3.5, finger: 2 }
+    ]
+  }
+]);
+var s_spanish_romance = assembleLeadSong(96, [
+  {
+    name: "Part 1 (E Minor High Melody)",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 7, durationBeats: 0.8, finger: 4 },
+      { beat: 1, stringIndex: 1, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 1.5, stringIndex: 2, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 2, stringIndex: 0, fret: 7, durationBeats: 0.8, finger: 4 },
+      { beat: 3, stringIndex: 1, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 3.5, stringIndex: 2, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 4, stringIndex: 0, fret: 7, durationBeats: 0.8, finger: 4 },
+      { beat: 5, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 6, stringIndex: 0, fret: 3, durationBeats: 1, finger: 1 },
+      { beat: 7.5, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 1 },
+      { beat: 9, stringIndex: 0, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 10.5, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 12, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 13.5, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 1 },
+      { beat: 15, stringIndex: 0, fret: 7, durationBeats: 2.5, finger: 4 }
+    ]
+  },
+  {
+    name: "Part 2 (Ascending to 12th Fret)",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 12, durationBeats: 1, finger: 4 },
+      { beat: 1.5, stringIndex: 0, fret: 12, durationBeats: 0.8, finger: 4 },
+      { beat: 3, stringIndex: 0, fret: 12, durationBeats: 0.8, finger: 4 },
+      { beat: 4.5, stringIndex: 0, fret: 12, durationBeats: 0.8, finger: 4 },
+      { beat: 6, stringIndex: 0, fret: 10, durationBeats: 0.8, finger: 3 },
+      { beat: 7.5, stringIndex: 0, fret: 8, durationBeats: 1, finger: 1 },
+      { beat: 9, stringIndex: 0, fret: 8, durationBeats: 0.8, finger: 1 },
+      { beat: 10.5, stringIndex: 0, fret: 7, durationBeats: 0.8, finger: 1 },
+      { beat: 12, stringIndex: 0, fret: 5, durationBeats: 1.5, finger: 1 },
+      { beat: 14, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 1 },
+      { beat: 15.5, stringIndex: 0, fret: 7, durationBeats: 0.8, finger: 2 },
+      { beat: 16.5, stringIndex: 0, fret: 8, durationBeats: 1.5, finger: 3 }
+    ]
+  },
+  {
+    name: "Part 3 (Spanish Flamenco Turnaround)",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 7, durationBeats: 1, finger: 2 },
+      { beat: 1.5, stringIndex: 0, fret: 8, durationBeats: 0.8, finger: 3 },
+      { beat: 3, stringIndex: 0, fret: 7, durationBeats: 1, finger: 2 },
+      { beat: 4.5, stringIndex: 0, fret: 11, durationBeats: 1, finger: 4 },
+      { beat: 6, stringIndex: 0, fret: 8, durationBeats: 0.8, finger: 2 },
+      { beat: 7.5, stringIndex: 0, fret: 7, durationBeats: 1.5, finger: 1 },
+      { beat: 9, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10.5, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 12, stringIndex: 3, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 14, stringIndex: 4, fret: 2, durationBeats: 1.5, finger: 2 },
+      { beat: 16, stringIndex: 5, fret: 0, durationBeats: 2.5, finger: 0 }
+    ]
+  },
+  {
+    name: "Peaceful Harmonic Coda",
+    beats: 12,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 12, durationBeats: 1.5, finger: 4 },
+      { beat: 2, stringIndex: 1, fret: 12, durationBeats: 1.5, finger: 4 },
+      { beat: 4, stringIndex: 2, fret: 12, durationBeats: 1.5, finger: 4 },
+      { beat: 6, stringIndex: 3, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 8, stringIndex: 4, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 10, stringIndex: 5, fret: 0, durationBeats: 3.5, finger: 0 }
+    ]
+  }
+]);
+var s_day_tripper = assembleLeadSong(138, [
+  {
+    name: "Intro Riff",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 1, stringIndex: 5, fret: 3, durationBeats: 0.7, finger: 2 },
+      { beat: 1.8, stringIndex: 5, fret: 4, durationBeats: 0.7, finger: 3 },
+      { beat: 2.5, stringIndex: 4, fret: 2, durationBeats: 0.7, finger: 1 },
+      { beat: 3.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 4.5, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 1 },
+      { beat: 5.5, stringIndex: 3, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 6.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 7.2, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 8, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 9, stringIndex: 5, fret: 3, durationBeats: 0.7, finger: 2 },
+      { beat: 9.8, stringIndex: 5, fret: 4, durationBeats: 0.7, finger: 3 },
+      { beat: 10.5, stringIndex: 4, fret: 2, durationBeats: 0.7, finger: 1 },
+      { beat: 11.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 12.5, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 1 },
+      { beat: 13.5, stringIndex: 3, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 14.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 15.2, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 }
+    ]
+  },
+  {
+    name: "Verse 1 (Got a good reason)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 1, stringIndex: 5, fret: 3, durationBeats: 0.7, finger: 2 },
+      { beat: 2, stringIndex: 5, fret: 4, durationBeats: 0.7, finger: 3 },
+      { beat: 3, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 4.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 5.5, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 1 },
+      { beat: 6.5, stringIndex: 3, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 8, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 9, stringIndex: 4, fret: 3, durationBeats: 0.7, finger: 2 },
+      { beat: 10, stringIndex: 4, fret: 4, durationBeats: 0.7, finger: 3 },
+      { beat: 11, stringIndex: 3, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 12.5, stringIndex: 3, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 13.5, stringIndex: 4, fret: 2, durationBeats: 0.7, finger: 1 },
+      { beat: 14.5, stringIndex: 2, fret: 2, durationBeats: 1.2, finger: 2 }
+    ]
+  },
+  {
+    name: "Chorus (She was a day tripper)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 1.5, stringIndex: 3, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 3, stringIndex: 2, fret: 2, durationBeats: 1.5, finger: 2 },
+      { beat: 5, stringIndex: 3, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 6.5, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 8, stringIndex: 1, fret: 2, durationBeats: 2, finger: 2 },
+      { beat: 11, stringIndex: 1, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 12.5, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 14, stringIndex: 2, fret: 0, durationBeats: 1.8, finger: 0 }
+    ]
+  },
+  {
+    name: "Guitar Solo Break",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 1.5, stringIndex: 1, fret: 5, durationBeats: 1, finger: 4 },
+      { beat: 3, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 2 },
+      { beat: 4.5, stringIndex: 0, fret: 5, durationBeats: 1.5, finger: 4 },
+      { beat: 6.5, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 2 },
+      { beat: 8, stringIndex: 1, fret: 5, durationBeats: 1, finger: 4 },
+      { beat: 9.5, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 2 },
+      { beat: 11, stringIndex: 2, fret: 4, durationBeats: 1.2, finger: 3 },
+      { beat: 13, stringIndex: 2, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 14.5, stringIndex: 3, fret: 4, durationBeats: 2, finger: 3 }
+    ]
+  },
+  {
+    name: "Final Chorus & Outro Riff",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 1, stringIndex: 5, fret: 3, durationBeats: 0.7, finger: 2 },
+      { beat: 1.8, stringIndex: 5, fret: 4, durationBeats: 0.7, finger: 3 },
+      { beat: 2.5, stringIndex: 4, fret: 2, durationBeats: 0.7, finger: 1 },
+      { beat: 3.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 4.5, stringIndex: 5, fret: 2, durationBeats: 0.7, finger: 1 },
+      { beat: 5.5, stringIndex: 3, fret: 2, durationBeats: 0.7, finger: 2 },
+      { beat: 6.5, stringIndex: 4, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 7.2, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 8, stringIndex: 5, fret: 0, durationBeats: 0.7, finger: 0 },
+      { beat: 9, stringIndex: 5, fret: 3, durationBeats: 0.7, finger: 2 },
+      { beat: 9.8, stringIndex: 5, fret: 4, durationBeats: 0.7, finger: 3 },
+      { beat: 10.5, stringIndex: 4, fret: 2, durationBeats: 0.7, finger: 1 },
+      { beat: 12, stringIndex: 5, fret: 0, durationBeats: 3.5, finger: 0 }
+    ]
+  }
+]);
+var s_house_rising_sun = assembleChordSong(120, [
+  {
+    name: "6/8 Arpeggio Intro",
+    beats: 24,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 2.8, strum: "down" },
+      { beat: 3, chord: "C", durationBeats: 2.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 2.8, strum: "down" },
+      { beat: 9, chord: "F", durationBeats: 2.8, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 2.8, strum: "down" },
+      { beat: 15, chord: "E", durationBeats: 2.8, strum: "down" },
+      { beat: 18, chord: "Am", durationBeats: 2.8, strum: "down" },
+      { beat: 21, chord: "E", durationBeats: 2.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (There is a house in New Orleans)",
+    beats: 24,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 2.8, strum: "down" },
+      { beat: 3, chord: "C", durationBeats: 2.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 2.8, strum: "down" },
+      { beat: 9, chord: "F", durationBeats: 2.8, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 2.8, strum: "down" },
+      { beat: 15, chord: "E", durationBeats: 2.8, strum: "down" },
+      { beat: 18, chord: "Am", durationBeats: 2.8, strum: "down" },
+      { beat: 21, chord: "E", durationBeats: 2.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (My mother was a tailor)",
+    beats: 24,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 2.8, strum: "down" },
+      { beat: 3, chord: "C", durationBeats: 2.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 2.8, strum: "down" },
+      { beat: 9, chord: "F", durationBeats: 2.8, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 2.8, strum: "down" },
+      { beat: 15, chord: "E", durationBeats: 2.8, strum: "down" },
+      { beat: 18, chord: "Am", durationBeats: 2.8, strum: "down" },
+      { beat: 21, chord: "E", durationBeats: 2.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Organ Climax Break",
+    beats: 24,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 2.8, strum: "down" },
+      { beat: 3, chord: "C", durationBeats: 2.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 2.8, strum: "down" },
+      { beat: 9, chord: "F", durationBeats: 2.8, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 2.8, strum: "down" },
+      { beat: 15, chord: "E", durationBeats: 2.8, strum: "down" },
+      { beat: 18, chord: "Am", durationBeats: 2.8, strum: "down" },
+      { beat: 21, chord: "E", durationBeats: 2.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 3 & Fading Outro",
+    beats: 28,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 2.8, strum: "down" },
+      { beat: 3, chord: "C", durationBeats: 2.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 2.8, strum: "down" },
+      { beat: 9, chord: "F", durationBeats: 2.8, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 2.8, strum: "down" },
+      { beat: 15, chord: "E", durationBeats: 2.8, strum: "down" },
+      { beat: 18, chord: "Am", durationBeats: 2.8, strum: "down" },
+      { beat: 22, chord: "Am", durationBeats: 5, strum: "down" }
+    ]
+  }
+]);
+var s_hurt = assembleChordSong(80, [
+  {
+    name: "Reflective Acoustic Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (I hurt myself today)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus 1 (What have I become)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "F", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (I wear this crown of thorns)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Heavy Climax Chorus & Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "F", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "Am", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_redemption = assembleChordSong(76, [
+  {
+    name: "Acoustic Intro Bassline",
+    beats: 8,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Old pirates, yes they rob I)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (Songs of Freedom)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "D", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (Emancipate yourselves from mental slavery)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Final Chorus & Acoustic Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 16, chord: "G", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_with_or_without = assembleChordSong(110, [
+  {
+    name: "Ambient Four-Chord Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Bm", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (See the stone set in your eyes)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Bm", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (With or without you)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Bm", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Edge's Infinite Guitar Build",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Bm", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Stirring Climax & Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Bm", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "D", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_zombie = assembleChordSong(82, [
+  {
+    name: "Clean Chorus Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Another head hangs lowly)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Pre-Chorus Distortion Swell",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Exploding Chorus (In your head, zombie)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Heavy Grunge Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "Em", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_let_it_be = assembleChordSong(72, [
+  {
+    name: "Gospel Hymn Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "C", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Times of trouble)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "C", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (Let it be, let it be)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "C", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 & Guitar Solo Progression",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "C", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Final Chorus & Amen Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 16, chord: "C", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_aint_no_sunshine = assembleChordSong(78, [
+  {
+    name: "Minor Soul Groove Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Em", durationBeats: 0.9, strum: "down" },
+      { beat: 3, chord: "G", durationBeats: 0.9, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Em", durationBeats: 0.9, strum: "down" },
+      { beat: 11, chord: "G", durationBeats: 0.9, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Ain't no sunshine when she's gone)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Em", durationBeats: 0.9, strum: "down" },
+      { beat: 3, chord: "G", durationBeats: 0.9, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Dm", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Bridge (I know, I know, I know)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (Anytime she goes away)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Em", durationBeats: 0.9, strum: "down" },
+      { beat: 3, chord: "G", durationBeats: 0.9, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Dm", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Soulful Fading Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Em", durationBeats: 0.9, strum: "down" },
+      { beat: 3, chord: "G", durationBeats: 0.9, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Em", durationBeats: 0.9, strum: "down" },
+      { beat: 11, chord: "G", durationBeats: 0.9, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "Am", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_sweet_home = assembleLeadSong(98, [
+  {
+    name: "Signature Southern Intro Riff",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 0.5, stringIndex: 3, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 1, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3, stringIndex: 4, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 3.5, stringIndex: 4, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 4, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 5, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 5, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 6.5, stringIndex: 5, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 7, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 8, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 9, stringIndex: 4, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 9.5, stringIndex: 4, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 10, stringIndex: 3, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 11, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 12, stringIndex: 4, fret: 0, durationBeats: 1.5, finger: 0 }
+    ]
+  },
+  {
+    name: "Verse 1 (Big wheels keep on turning)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 1, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 4, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 4, stringIndex: 5, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 5, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 8, stringIndex: 3, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 9, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 10, stringIndex: 4, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 11, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 12, stringIndex: 5, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 13, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 14, stringIndex: 1, fret: 3, durationBeats: 1.8, finger: 3 }
+    ]
+  },
+  {
+    name: "Chorus (Sweet Home Alabama)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 1.5, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 3, stringIndex: 0, fret: 2, durationBeats: 1.5, finger: 2 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 6.5, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 8, stringIndex: 2, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 10, stringIndex: 4, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 10.5, stringIndex: 4, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 11, stringIndex: 3, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 12, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 13, stringIndex: 4, fret: 0, durationBeats: 1.8, finger: 0 }
+    ]
+  },
+  {
+    name: "Piano & Guitar Trade-Off Solo",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 1, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 3.5, stringIndex: 0, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 5.5, stringIndex: 0, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 7, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 8.5, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 10, stringIndex: 2, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 12, stringIndex: 3, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 13.5, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 15, stringIndex: 5, fret: 3, durationBeats: 1.8, finger: 2 }
+    ]
+  },
+  {
+    name: "Final Chorus & Southern Outro",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 0.5, stringIndex: 3, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 1, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3, stringIndex: 4, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 3.5, stringIndex: 4, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 4, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 5, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 5, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 6.5, stringIndex: 5, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 7, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 8, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 10, stringIndex: 4, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 10.5, stringIndex: 4, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 11, stringIndex: 3, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 12, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 14, stringIndex: 5, fret: 3, durationBeats: 3.5, finger: 2 }
+    ]
+  }
+]);
+var s_have_you_ever = assembleChordSong(116, [
+  {
+    name: "Acoustic Strum Intro",
+    beats: 8,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Someone told me long ago)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (I wanna know, have you ever seen the rain)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (Yesterday and days before)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus 2 & Stormy Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "C", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_la_bamba = assembleLeadSong(150, [
+  {
+    name: "Latin Rock Hook Intro",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 3, durationBeats: 0.6, finger: 2 },
+      { beat: 1, stringIndex: 3, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 2, stringIndex: 3, fret: 3, durationBeats: 0.6, finger: 2 },
+      { beat: 3, stringIndex: 3, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 4, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 5.5, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 7, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 8, stringIndex: 4, fret: 3, durationBeats: 0.6, finger: 2 },
+      { beat: 9, stringIndex: 3, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 10, stringIndex: 3, fret: 3, durationBeats: 0.6, finger: 2 },
+      { beat: 11, stringIndex: 3, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 12, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 13.5, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 15, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 }
+    ]
+  },
+  {
+    name: "Verse Rhythm (Para bailar la bamba)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 3, durationBeats: 0.8, finger: 2 },
+      { beat: 2, stringIndex: 3, fret: 3, durationBeats: 0.8, finger: 2 },
+      { beat: 4, stringIndex: 2, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 8, stringIndex: 4, fret: 3, durationBeats: 0.8, finger: 2 },
+      { beat: 10, stringIndex: 3, fret: 3, durationBeats: 0.8, finger: 2 },
+      { beat: 12, stringIndex: 2, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 14, stringIndex: 2, fret: 2, durationBeats: 1.5, finger: 2 }
+    ]
+  },
+  {
+    name: "Ritchie Valens Lead Solo",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 1, durationBeats: 0.6, finger: 1 },
+      { beat: 1, stringIndex: 1, fret: 3, durationBeats: 0.6, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 3.5, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 5, stringIndex: 0, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 7, stringIndex: 0, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 8.5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 11.5, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 13, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 14.5, stringIndex: 2, fret: 0, durationBeats: 1.8, finger: 0 }
+    ]
+  },
+  {
+    name: "Triumphant Spanish Outro",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 3, durationBeats: 0.6, finger: 2 },
+      { beat: 1, stringIndex: 3, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 2, stringIndex: 3, fret: 3, durationBeats: 0.6, finger: 2 },
+      { beat: 3, stringIndex: 3, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 4, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 5.5, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 7, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 9, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 11, stringIndex: 2, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 13, stringIndex: 3, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 15, stringIndex: 4, fret: 3, durationBeats: 3.5, finger: 2 }
+    ]
+  }
+]);
+var s_good_riddance = assembleChordSong(94, [
+  {
+    name: "Acoustic Fingerpicked Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Another turning point)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (It's something unpredictable)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (So take the photographs)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Violin Swell Chorus & Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "G", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_heart_of_gold = assembleChordSong(86, [
+  {
+    name: "Harmonica Acoustic Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "G", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (I want to live, I want to give)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "G", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (And I'm getting old)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (I've been in my mind)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "G", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Harmonica Soliloquy & Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 16, chord: "Em", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_should_i_stay = assembleChordSong(112, [
+  {
+    name: "Punchy Punk Intro",
+    beats: 8,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Darling you got to let me know)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (Should I stay or should I go)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (It's always tease tease tease)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Double-Time Climax & Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 16, chord: "D", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_blitzkrieg_bop = assembleChordSong(176, [
+  {
+    name: "Chant Intro (Hey Ho Let's Go!)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "E", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "E", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (They're forming in a straight line)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "E", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "E", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (Hey Ho Let's Go)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "E", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (They're generating steam heat)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "E", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "E", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Full Throttle Finish & Final Crash",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "E", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "E", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "A", durationBeats: 2, strum: "down" },
+      { beat: 16, chord: "A", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_fast_car = assembleLeadSong(104, [
+  {
+    name: "Acoustic Fingerpicking Intro",
+    beats: 16,
+    notes: [
+      // Measure 1 (C to G)
+      { beat: 0, stringIndex: 4, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 0.5, stringIndex: 1, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 1, stringIndex: 1, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 1.5, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 2, stringIndex: 2, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 3, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      // Measure 2 (Em to D)
+      { beat: 4, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 4.5, stringIndex: 2, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 5.5, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 6, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 6.5, stringIndex: 1, fret: 3, durationBeats: 1.2, finger: 3 },
+      // Measure 3 (C to G Reprise)
+      { beat: 8, stringIndex: 4, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 8.5, stringIndex: 1, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 9, stringIndex: 1, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 9.5, stringIndex: 5, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 10, stringIndex: 2, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 11, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      // Measure 4 (Em to D)
+      { beat: 12, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 12.5, stringIndex: 2, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 13.5, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 14, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 14.5, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 }
+    ]
+  },
+  {
+    name: "Verse 1 (You got a fast car)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 0.5, stringIndex: 1, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 1, stringIndex: 1, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 1.5, stringIndex: 5, fret: 3, durationBeats: 0.8, finger: 2 },
+      { beat: 4, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 4.5, stringIndex: 2, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 5.5, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 6, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 8, stringIndex: 4, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 8.5, stringIndex: 1, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 9, stringIndex: 1, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 9.5, stringIndex: 5, fret: 3, durationBeats: 0.8, finger: 2 },
+      { beat: 12, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 13.5, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 14, stringIndex: 1, fret: 3, durationBeats: 1.8, finger: 3 }
+    ]
+  },
+  {
+    name: "Chorus (And I had a feeling that I belonged)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 3, durationBeats: 1.5, finger: 2 },
+      { beat: 2, stringIndex: 5, fret: 3, durationBeats: 1.5, finger: 2 },
+      { beat: 4, stringIndex: 5, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 6, stringIndex: 4, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 8, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 9.5, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 11, stringIndex: 0, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 13, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 14.5, stringIndex: 1, fret: 1, durationBeats: 2, finger: 1 }
+    ]
+  },
+  {
+    name: "Verse 2 (We go driving)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 0.5, stringIndex: 1, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 1, stringIndex: 1, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 1.5, stringIndex: 5, fret: 3, durationBeats: 0.8, finger: 2 },
+      { beat: 4, stringIndex: 5, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 4.5, stringIndex: 2, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 5.5, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 6, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 8, stringIndex: 4, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 9.5, stringIndex: 5, fret: 3, durationBeats: 0.8, finger: 2 },
+      { beat: 12, stringIndex: 5, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 14, stringIndex: 4, fret: 0, durationBeats: 2, finger: 0 }
+    ]
+  },
+  {
+    name: "Melodic Climax & Gentle Outro",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 3, durationBeats: 1.5, finger: 2 },
+      { beat: 2, stringIndex: 5, fret: 3, durationBeats: 1.5, finger: 2 },
+      { beat: 4, stringIndex: 5, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 6, stringIndex: 4, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 8, stringIndex: 4, fret: 3, durationBeats: 0.45, finger: 2 },
+      { beat: 8.5, stringIndex: 1, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 9, stringIndex: 1, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 9.5, stringIndex: 5, fret: 3, durationBeats: 1.5, finger: 2 },
+      { beat: 12, stringIndex: 4, fret: 3, durationBeats: 4, finger: 2 }
+    ]
+  }
+]);
+var s_sound_of_silence = assembleChordSong(106, [
+  {
+    name: "Gentle Folk Intro",
+    beats: 8,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Hello darkness my old friend)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 Continuation (Left its seeds while I was sleeping)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (In restless dreams I walked alone)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Within the Sound of Silence Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "Am", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_hey_jude = assembleChordSong(74, [
+  {
+    name: "Verse 1 (Hey Jude, don't make it bad)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "F", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 Refrain (Remember to let her into your heart)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Bb", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "F", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (Hey Jude, don't be afraid)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "F", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Bridge (Anytime you feel the pain)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Bb", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "F", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "The Legendary Na-Na Outro Singalong",
+    beats: 32,
+    chords: [
+      { beat: 0, chord: "F", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Bb", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "F", durationBeats: 3.5, strum: "down" },
+      { beat: 20, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 24, chord: "Bb", durationBeats: 3.5, strum: "down" },
+      { beat: 28, chord: "F", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_boulevard = assembleChordSong(84, [
+  {
+    name: "Tremolo Acoustic Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "A", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (I walk a lonely road)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "A", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (My shadow's the only one)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (I walk this empty street)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "A", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Guitar Solo Progression & Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 16, chord: "Em", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_creep = assembleChordSong(92, [
+  {
+    name: "Clean Arpeggiated Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "B", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Cm", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (When you were here before)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "B", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Cm", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Pre-Chorus String Thwacks",
+    beats: 8,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "B", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Explosive Chorus (I'm a creep, I'm a weirdo)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "B", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Cm", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (I don't care if it hurts)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "B", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Cm", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Quiet Fading Outro (She's running out)",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "B", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Cm", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "G", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_wish_lead = assembleLeadSong(64, [
+  {
+    name: "Acoustic 12-String Intro Solo",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 1.5, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 1.8, finger: 3 },
+      { beat: 5.5, stringIndex: 0, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 7, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 8.5, stringIndex: 1, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 10, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 11.5, stringIndex: 2, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 13.5, stringIndex: 3, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 15, stringIndex: 4, fret: 2, durationBeats: 1.8, finger: 2 }
+    ]
+  },
+  {
+    name: "Verse 1 Lead Fill (Heaven from hell)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 3.5, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 5, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 7.5, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 9, stringIndex: 2, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 11, stringIndex: 3, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 13, stringIndex: 4, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 14.5, stringIndex: 4, fret: 2, durationBeats: 2, finger: 2 }
+    ]
+  },
+  {
+    name: "Chorus Lead Melody (How I wish you were here)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 3.5, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 5.5, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 7, stringIndex: 2, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 8.5, stringIndex: 2, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 10.5, stringIndex: 3, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 12, stringIndex: 4, fret: 2, durationBeats: 1.5, finger: 2 },
+      { beat: 14, stringIndex: 5, fret: 3, durationBeats: 2.5, finger: 2 }
+    ]
+  },
+  {
+    name: "Acoustic Solo Break (Gilmour Soul)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 1.5, stringIndex: 2, fret: 4, durationBeats: 1.2, finger: 4 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 4.5, stringIndex: 1, fret: 5, durationBeats: 1.5, finger: 4 },
+      { beat: 6.5, stringIndex: 0, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 8, stringIndex: 0, fret: 5, durationBeats: 1.2, finger: 4 },
+      { beat: 9.5, stringIndex: 0, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 11, stringIndex: 1, fret: 5, durationBeats: 1, finger: 4 },
+      { beat: 12.5, stringIndex: 1, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 14, stringIndex: 2, fret: 2, durationBeats: 2, finger: 2 }
+    ]
+  },
+  {
+    name: "Final Chorus & Acoustic Outro",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 5.5, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 7.5, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 9, stringIndex: 2, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 11, stringIndex: 3, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 13, stringIndex: 4, fret: 2, durationBeats: 1.5, finger: 2 },
+      { beat: 15, stringIndex: 5, fret: 3, durationBeats: 3.5, finger: 2 }
+    ]
+  }
+]);
+var s_wish_chords = assembleChordSong(64, [
+  {
+    name: "Acoustic 12-String Intro Riff Chords",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Em", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (So you think you can tell)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (How I wish you were here)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (Did they get you to trade)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus 2 & Nostalgic Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "G", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_californication = assembleLeadSong(96, [
+  {
+    name: "Frusciante Am-F Picking Intro",
+    beats: 16,
+    notes: [
+      // Cycle 1: Measure 1 (Am)
+      { beat: 0, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 0.5, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 1, stringIndex: 1, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 1.5, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 2, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 2.5, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 3, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      // Cycle 1: Measure 2 (F)
+      { beat: 4, stringIndex: 5, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 4.5, stringIndex: 3, fret: 3, durationBeats: 0.45, finger: 3 },
+      { beat: 5, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 5.5, stringIndex: 3, fret: 3, durationBeats: 0.45, finger: 3 },
+      { beat: 6, stringIndex: 5, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 6.5, stringIndex: 3, fret: 3, durationBeats: 0.45, finger: 3 },
+      { beat: 7, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      // Cycle 2: Measure 3 (Am)
+      { beat: 8, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 8.5, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 9, stringIndex: 1, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 9.5, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 10, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 10.5, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 11, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      // Cycle 2: Measure 4 (F)
+      { beat: 12, stringIndex: 5, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 12.5, stringIndex: 3, fret: 3, durationBeats: 0.45, finger: 3 },
+      { beat: 13, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 13.5, stringIndex: 3, fret: 3, durationBeats: 0.45, finger: 3 },
+      { beat: 14, stringIndex: 5, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 14.5, stringIndex: 3, fret: 3, durationBeats: 0.45, finger: 3 },
+      { beat: 15, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 }
+    ]
+  },
+  {
+    name: "Verse 1 (Psychic spies from China)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 0.5, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 1, stringIndex: 1, fret: 1, durationBeats: 1.5, finger: 1 },
+      { beat: 4, stringIndex: 5, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 4.5, stringIndex: 3, fret: 3, durationBeats: 0.45, finger: 3 },
+      { beat: 5, stringIndex: 2, fret: 2, durationBeats: 1.5, finger: 2 },
+      { beat: 8, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 8.5, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 9, stringIndex: 1, fret: 1, durationBeats: 1.5, finger: 1 },
+      { beat: 12, stringIndex: 5, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 12.5, stringIndex: 3, fret: 3, durationBeats: 0.45, finger: 3 },
+      { beat: 13, stringIndex: 2, fret: 2, durationBeats: 2.5, finger: 2 }
+    ]
+  },
+  {
+    name: "Chorus (Dream of Californication)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 3, durationBeats: 1.5, finger: 2 },
+      { beat: 2, stringIndex: 5, fret: 3, durationBeats: 1.5, finger: 2 },
+      { beat: 4, stringIndex: 5, fret: 1, durationBeats: 1.5, finger: 1 },
+      { beat: 6, stringIndex: 4, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 8, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 12, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 14, stringIndex: 1, fret: 1, durationBeats: 1.8, finger: 1 }
+    ]
+  },
+  {
+    name: "Guitar Solo (Emotional High Octave Bends)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 10, durationBeats: 1.2, finger: 2 },
+      { beat: 2, stringIndex: 1, fret: 13, durationBeats: 1.5, finger: 4 },
+      { beat: 4, stringIndex: 0, fret: 12, durationBeats: 1.5, finger: 3 },
+      { beat: 6, stringIndex: 0, fret: 10, durationBeats: 1, finger: 1 },
+      { beat: 8, stringIndex: 1, fret: 13, durationBeats: 1.2, finger: 4 },
+      { beat: 10, stringIndex: 1, fret: 10, durationBeats: 1, finger: 2 },
+      { beat: 12, stringIndex: 2, fret: 12, durationBeats: 1.5, finger: 3 },
+      { beat: 14, stringIndex: 2, fret: 9, durationBeats: 2, finger: 1 }
+    ]
+  },
+  {
+    name: "Final Chorus & Melodic Outro",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 0.5, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 1, stringIndex: 1, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 1.5, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 2, stringIndex: 5, fret: 1, durationBeats: 0.45, finger: 1 },
+      { beat: 2.5, stringIndex: 3, fret: 3, durationBeats: 0.45, finger: 3 },
+      { beat: 3, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 3.5, stringIndex: 3, fret: 3, durationBeats: 0.45, finger: 3 },
+      { beat: 4, stringIndex: 4, fret: 0, durationBeats: 0.45, finger: 0 },
+      { beat: 4.5, stringIndex: 2, fret: 2, durationBeats: 0.45, finger: 2 },
+      { beat: 5, stringIndex: 1, fret: 1, durationBeats: 2, finger: 1 },
+      { beat: 8, stringIndex: 4, fret: 0, durationBeats: 4, finger: 0 }
+    ]
+  }
+]);
+var s_riptide = assembleChordSong(102, [
+  {
+    name: "Upbeat Strum Intro",
+    beats: 8,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (I was scared of dentists)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (Lady running down to the riptide)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Bridge (I just wanna know)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Final Chorus & Acoustic Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "C", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_wonderwall = assembleChordSong(88, [
+  {
+    name: "Acoustic Strum Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "A", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Today is gonna be the day)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "A", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "A", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Pre-Chorus (And all the roads we have to walk)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "Em", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (Because maybe you're gonna be the one)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "Em", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Final Chorus & Britpop Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "Em", durationBeats: 1.8, strum: "down" },
+      { beat: 16, chord: "Em", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_hotel_california_easy = assembleChordSong(74, [
+  {
+    name: "12-String Arpeggiated Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "E7", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "Dm", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "E7", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (On a dark desert highway)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "E7", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "Dm", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "E7", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (Welcome to the Hotel California)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "F", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "E7", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (Her mind is Tiffany-twisted)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "E7", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "Dm", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "E7", durationBeats: 1.8, strum: "down" }
+    ]
+  },
+  {
+    name: "Dual Guitar Solo Harmony Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "E7", durationBeats: 1.8, strum: "down" },
+      { beat: 4, chord: "G", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "D", durationBeats: 1.8, strum: "down" },
+      { beat: 8, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "C", durationBeats: 1.8, strum: "down" },
+      { beat: 12, chord: "Dm", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "E7", durationBeats: 1.8, strum: "down" },
+      { beat: 16, chord: "Am", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_under_bridge = assembleChordSong(84, [
+  {
+    name: "Melodic Chord Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "E", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "B", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Cmaj7", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "A", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Sometimes I feel like I don't have a partner)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "E", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "B", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Cmaj7", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "A", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (I don't ever wanna feel)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "F", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Am", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (Drive through her suburbs)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "E", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "B", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Cmaj7", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "A", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Choir Outro (Under the bridge downtown)",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Am", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "G", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "E", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_black_pearl_jam = assembleChordSong(72, [
+  {
+    name: "Acoustic Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "E", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Em", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Sheets of empty canvas)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "E", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Em", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (And now my bitter hands)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "D", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (All five horizons revolved)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "E", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "Em", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Emotional Climax Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "Em", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "D", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "C", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "E", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_alive_riff = assembleLeadSong(75, [
+  {
+    name: "Intro Riff",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.8, stringIndex: 3, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 1.6, stringIndex: 3, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 2.4, stringIndex: 4, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 3.2, stringIndex: 4, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 4.5, stringIndex: 5, fret: 3, durationBeats: 1.5, finger: 2 },
+      { beat: 8, stringIndex: 4, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 8.8, stringIndex: 3, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 9.6, stringIndex: 3, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 10.4, stringIndex: 4, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 11.2, stringIndex: 4, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 12.5, stringIndex: 5, fret: 3, durationBeats: 1.5, finger: 2 }
+    ]
+  },
+  {
+    name: "Verse Rhythm Groove",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 2, stringIndex: 4, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 4, stringIndex: 5, fret: 3, durationBeats: 1.2, finger: 2 },
+      { beat: 6, stringIndex: 5, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 8, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 10, stringIndex: 4, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 12, stringIndex: 5, fret: 3, durationBeats: 1.2, finger: 2 },
+      { beat: 14, stringIndex: 5, fret: 0, durationBeats: 1.5, finger: 0 }
+    ]
+  },
+  {
+    name: "Chorus Lead Hook (I'm still alive)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 2, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 4, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 6, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 8, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 10, stringIndex: 2, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 12, stringIndex: 3, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 14, stringIndex: 4, fret: 0, durationBeats: 1.8, finger: 0 }
+    ]
+  },
+  {
+    name: "Mike McCready Wah Solo",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 7, durationBeats: 0.8, finger: 2 },
+      { beat: 1.5, stringIndex: 2, fret: 9, durationBeats: 1, finger: 4 },
+      { beat: 3, stringIndex: 1, fret: 8, durationBeats: 1, finger: 2 },
+      { beat: 4.5, stringIndex: 1, fret: 10, durationBeats: 1.5, finger: 4 },
+      { beat: 6.5, stringIndex: 0, fret: 8, durationBeats: 1, finger: 2 },
+      { beat: 8, stringIndex: 0, fret: 10, durationBeats: 1.5, finger: 4 },
+      { beat: 10, stringIndex: 1, fret: 10, durationBeats: 1, finger: 4 },
+      { beat: 12, stringIndex: 2, fret: 9, durationBeats: 1.5, finger: 3 },
+      { beat: 14, stringIndex: 2, fret: 7, durationBeats: 2, finger: 1 }
+    ]
+  },
+  {
+    name: "Grand Anthem Outro",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.8, stringIndex: 3, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 1.6, stringIndex: 3, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 2.4, stringIndex: 4, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 3.2, stringIndex: 4, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 4.5, stringIndex: 5, fret: 3, durationBeats: 1.5, finger: 2 },
+      { beat: 8, stringIndex: 3, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 10, stringIndex: 2, fret: 2, durationBeats: 1.5, finger: 2 },
+      { beat: 12, stringIndex: 1, fret: 3, durationBeats: 2, finger: 3 },
+      { beat: 16, stringIndex: 4, fret: 0, durationBeats: 3.5, finger: 0 }
+    ]
+  }
+]);
+var s_tush = assembleLeadSong(144, [
+  {
+    name: "Texas Blues Shuffle Intro",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 3, durationBeats: 0.6, finger: 2 },
+      { beat: 0.8, stringIndex: 4, fret: 5, durationBeats: 0.6, finger: 4 },
+      { beat: 1.6, stringIndex: 3, fret: 3, durationBeats: 0.6, finger: 1 },
+      { beat: 2.4, stringIndex: 3, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 3.4, stringIndex: 3, fret: 3, durationBeats: 0.6, finger: 1 },
+      { beat: 4.2, stringIndex: 4, fret: 5, durationBeats: 1.5, finger: 4 },
+      { beat: 8, stringIndex: 5, fret: 3, durationBeats: 0.6, finger: 2 },
+      { beat: 8.8, stringIndex: 4, fret: 5, durationBeats: 0.6, finger: 4 },
+      { beat: 9.6, stringIndex: 3, fret: 3, durationBeats: 0.6, finger: 1 },
+      { beat: 10.4, stringIndex: 3, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 11.4, stringIndex: 3, fret: 3, durationBeats: 0.6, finger: 1 },
+      { beat: 12.2, stringIndex: 4, fret: 5, durationBeats: 1.5, finger: 4 }
+    ]
+  },
+  {
+    name: "12-Bar Blues Shift (IV-I)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 3, durationBeats: 0.6, finger: 2 },
+      { beat: 0.8, stringIndex: 3, fret: 5, durationBeats: 0.6, finger: 4 },
+      { beat: 1.6, stringIndex: 2, fret: 3, durationBeats: 0.6, finger: 1 },
+      { beat: 2.4, stringIndex: 2, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 3.4, stringIndex: 2, fret: 3, durationBeats: 0.6, finger: 1 },
+      { beat: 4.2, stringIndex: 3, fret: 5, durationBeats: 1.5, finger: 4 },
+      { beat: 8, stringIndex: 5, fret: 3, durationBeats: 0.6, finger: 2 },
+      { beat: 8.8, stringIndex: 4, fret: 5, durationBeats: 0.6, finger: 4 },
+      { beat: 9.6, stringIndex: 3, fret: 3, durationBeats: 0.6, finger: 1 },
+      { beat: 10.4, stringIndex: 3, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 11.4, stringIndex: 3, fret: 3, durationBeats: 0.6, finger: 1 },
+      { beat: 12.2, stringIndex: 4, fret: 5, durationBeats: 1.5, finger: 4 }
+    ]
+  },
+  {
+    name: "Billy Gibbons Slide Solo",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 6, durationBeats: 0.8, finger: 2 },
+      { beat: 1.5, stringIndex: 1, fret: 8, durationBeats: 1, finger: 4 },
+      { beat: 3, stringIndex: 0, fret: 6, durationBeats: 0.8, finger: 2 },
+      { beat: 4.5, stringIndex: 0, fret: 8, durationBeats: 1.5, finger: 4 },
+      { beat: 6.5, stringIndex: 0, fret: 6, durationBeats: 0.8, finger: 2 },
+      { beat: 8, stringIndex: 1, fret: 8, durationBeats: 1, finger: 4 },
+      { beat: 9.5, stringIndex: 1, fret: 6, durationBeats: 0.8, finger: 2 },
+      { beat: 11, stringIndex: 2, fret: 7, durationBeats: 1.2, finger: 3 },
+      { beat: 13, stringIndex: 2, fret: 5, durationBeats: 1, finger: 1 },
+      { beat: 14.5, stringIndex: 3, fret: 5, durationBeats: 2, finger: 3 }
+    ]
+  },
+  {
+    name: "Turnaround & Final Stomp",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 7, durationBeats: 1, finger: 3 },
+      { beat: 2, stringIndex: 3, fret: 5, durationBeats: 1, finger: 1 },
+      { beat: 4, stringIndex: 4, fret: 7, durationBeats: 1.2, finger: 3 },
+      { beat: 6, stringIndex: 5, fret: 5, durationBeats: 1.2, finger: 2 },
+      { beat: 8, stringIndex: 5, fret: 3, durationBeats: 0.6, finger: 2 },
+      { beat: 8.8, stringIndex: 4, fret: 5, durationBeats: 0.6, finger: 4 },
+      { beat: 9.6, stringIndex: 3, fret: 3, durationBeats: 0.6, finger: 1 },
+      { beat: 10.4, stringIndex: 3, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 12, stringIndex: 3, fret: 3, durationBeats: 1, finger: 1 },
+      { beat: 14, stringIndex: 5, fret: 3, durationBeats: 3.5, finger: 2 }
+    ]
+  }
+]);
+var s_you_shook_me = assembleLeadSong(128, [
+  {
+    name: "Angus Open Position Intro Riff",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 3, durationBeats: 0.6, finger: 3 },
+      { beat: 0.8, stringIndex: 0, fret: 3, durationBeats: 0.6, finger: 3 },
+      { beat: 1.6, stringIndex: 0, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 2.4, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 3.4, stringIndex: 2, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 4.2, stringIndex: 2, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 8, stringIndex: 1, fret: 3, durationBeats: 0.6, finger: 3 },
+      { beat: 8.8, stringIndex: 0, fret: 3, durationBeats: 0.6, finger: 3 },
+      { beat: 9.6, stringIndex: 0, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 10.4, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 11.4, stringIndex: 2, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 12.2, stringIndex: 2, fret: 0, durationBeats: 1.5, finger: 0 }
+    ]
+  },
+  {
+    name: "Rhythm Verse Chug",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 1, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 2, stringIndex: 2, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 4, stringIndex: 5, fret: 3, durationBeats: 0.8, finger: 2 },
+      { beat: 5, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 6, stringIndex: 3, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 8, stringIndex: 4, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 9, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 10, stringIndex: 2, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 12, stringIndex: 3, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 14, stringIndex: 2, fret: 2, durationBeats: 1.8, finger: 2 }
+    ]
+  },
+  {
+    name: "Chorus Hook (You shook me all night long)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 6, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 8, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 10, stringIndex: 2, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 12, stringIndex: 3, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 14, stringIndex: 4, fret: 0, durationBeats: 1.8, finger: 0 }
+    ]
+  },
+  {
+    name: "Angus Pentatonic Solo Lick",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 7, durationBeats: 0.8, finger: 2 },
+      { beat: 1.5, stringIndex: 2, fret: 9, durationBeats: 1, finger: 4 },
+      { beat: 3, stringIndex: 1, fret: 8, durationBeats: 1, finger: 2 },
+      { beat: 4.5, stringIndex: 1, fret: 10, durationBeats: 1.5, finger: 4 },
+      { beat: 6.5, stringIndex: 0, fret: 8, durationBeats: 1, finger: 2 },
+      { beat: 8, stringIndex: 0, fret: 10, durationBeats: 1.5, finger: 4 },
+      { beat: 10, stringIndex: 1, fret: 10, durationBeats: 1, finger: 4 },
+      { beat: 12, stringIndex: 2, fret: 9, durationBeats: 1.5, finger: 3 },
+      { beat: 14, stringIndex: 2, fret: 7, durationBeats: 2, finger: 1 }
+    ]
+  },
+  {
+    name: "Final Explosive Chorus & Coda",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 3, durationBeats: 0.6, finger: 3 },
+      { beat: 0.8, stringIndex: 0, fret: 3, durationBeats: 0.6, finger: 3 },
+      { beat: 1.6, stringIndex: 0, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 2.4, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 3.4, stringIndex: 2, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 4.2, stringIndex: 2, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 8, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 10, stringIndex: 2, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 12, stringIndex: 3, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 15, stringIndex: 5, fret: 3, durationBeats: 3.5, finger: 2 }
+    ]
+  }
+]);
+var s_watchtower = assembleChordSong(114, [
+  {
+    name: "Driving Acoustic Turnaround Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.4, strum: "down" },
+      { beat: 4, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "G", durationBeats: 1.6, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.4, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "G", durationBeats: 1.6, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (There must be some way out of here)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.4, strum: "down" },
+      { beat: 4, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "G", durationBeats: 1.6, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.4, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "G", durationBeats: 1.6, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 2 (No reason to get excited)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.4, strum: "down" },
+      { beat: 4, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "G", durationBeats: 1.6, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.4, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "G", durationBeats: 1.6, strum: "down" }
+    ]
+  },
+  {
+    name: "Hendrix Solo Progression",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.4, strum: "down" },
+      { beat: 4, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "G", durationBeats: 1.6, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.4, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "G", durationBeats: 1.6, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 3 & Wind Howling Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 2, chord: "G", durationBeats: 1.4, strum: "down" },
+      { beat: 4, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 6, chord: "G", durationBeats: 1.6, strum: "down" },
+      { beat: 8, chord: "Am", durationBeats: 1.8, strum: "down" },
+      { beat: 10, chord: "G", durationBeats: 1.4, strum: "down" },
+      { beat: 12, chord: "F", durationBeats: 1.8, strum: "down" },
+      { beat: 14, chord: "G", durationBeats: 1.6, strum: "down" },
+      { beat: 16, chord: "Am", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_nothing_else_matters = assembleLeadSong(142, [
+  {
+    name: "Open String 6/8 Arpeggio Intro",
+    beats: 12,
+    notes: [
+      // Measure 1 (6 beats)
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 1, stringIndex: 2, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 2, stringIndex: 1, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 3, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 4, stringIndex: 1, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 5, stringIndex: 2, fret: 0, durationBeats: 0.9, finger: 0 },
+      // Measure 2 (6 beats)
+      { beat: 6, stringIndex: 5, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 7, stringIndex: 2, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 8, stringIndex: 1, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 9, stringIndex: 0, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 10, stringIndex: 1, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 11, stringIndex: 2, fret: 0, durationBeats: 0.9, finger: 0 }
+    ]
+  },
+  {
+    name: "Harmonic Chime Riff",
+    beats: 12,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 7, durationBeats: 1.8, finger: 1 },
+      { beat: 3, stringIndex: 1, fret: 7, durationBeats: 1.8, finger: 1 },
+      { beat: 6, stringIndex: 2, fret: 7, durationBeats: 1.8, finger: 1 },
+      { beat: 9, stringIndex: 0, fret: 12, durationBeats: 2.5, finger: 4 }
+    ]
+  },
+  {
+    name: "Verse Melody (So close, no matter how far)",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 0, durationBeats: 0.9, finger: 0 },
+      { beat: 1, stringIndex: 2, fret: 2, durationBeats: 0.9, finger: 2 },
+      { beat: 2, stringIndex: 1, fret: 0, durationBeats: 1.8, finger: 0 },
+      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 2, finger: 0 },
+      { beat: 6, stringIndex: 0, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 7, stringIndex: 0, fret: 2, durationBeats: 0.9, finger: 2 },
+      { beat: 8, stringIndex: 0, fret: 0, durationBeats: 2, finger: 0 },
+      { beat: 11, stringIndex: 1, fret: 3, durationBeats: 0.9, finger: 3 },
+      { beat: 12, stringIndex: 1, fret: 1, durationBeats: 0.9, finger: 1 },
+      { beat: 13, stringIndex: 1, fret: 0, durationBeats: 4, finger: 0 }
+    ]
+  },
+  {
+    name: "Chorus Lead (Never cared for what they do)",
+    beats: 12,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 2, stringIndex: 0, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 4, stringIndex: 0, fret: 5, durationBeats: 1.8, finger: 4 },
+      { beat: 6, stringIndex: 0, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 8, stringIndex: 0, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 10, stringIndex: 0, fret: 0, durationBeats: 2, finger: 0 }
+    ]
+  },
+  {
+    name: "Acoustic Solo Lick & Fadeout",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 4, durationBeats: 1, finger: 3 },
+      { beat: 1.5, stringIndex: 2, fret: 5, durationBeats: 1, finger: 4 },
+      { beat: 3, stringIndex: 1, fret: 5, durationBeats: 1.5, finger: 3 },
+      { beat: 5, stringIndex: 0, fret: 7, durationBeats: 1.8, finger: 4 },
+      { beat: 7, stringIndex: 0, fret: 5, durationBeats: 1.2, finger: 2 },
+      { beat: 9, stringIndex: 0, fret: 3, durationBeats: 1.2, finger: 1 },
+      { beat: 11, stringIndex: 0, fret: 0, durationBeats: 5, finger: 0 }
+    ]
+  }
+]);
+var s_dont_stop_believin = assembleChordSong(118, [
+  {
+    name: "Piano Rhythm Guitar Intro",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "E", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "B", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Cmaj7", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "A", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Verse 1 (Just a small town girl)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "E", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "B", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Cmaj7", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "A", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Pre-Chorus (Strangers waiting)",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "E", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "B", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Chorus (Don't stop believin')",
+    beats: 16,
+    chords: [
+      { beat: 0, chord: "E", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "B", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Cmaj7", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "A", durationBeats: 3.5, strum: "down" }
+    ]
+  },
+  {
+    name: "Neal Schon Solo Progression & Stadium Outro",
+    beats: 20,
+    chords: [
+      { beat: 0, chord: "E", durationBeats: 3.5, strum: "down" },
+      { beat: 4, chord: "B", durationBeats: 3.5, strum: "down" },
+      { beat: 8, chord: "Cmaj7", durationBeats: 3.5, strum: "down" },
+      { beat: 12, chord: "A", durationBeats: 3.5, strum: "down" },
+      { beat: 16, chord: "E", durationBeats: 4, strum: "down" }
+    ]
+  }
+]);
+var s_crazy_train = assembleLeadSong(138, [
+  {
+    name: "Randy Rhoads F#m Pedal Intro",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 0.8, stringIndex: 4, fret: 4, durationBeats: 0.6, finger: 3 },
+      { beat: 1.6, stringIndex: 4, fret: 5, durationBeats: 0.6, finger: 4 },
+      { beat: 2.4, stringIndex: 4, fret: 4, durationBeats: 0.6, finger: 3 },
+      { beat: 3.2, stringIndex: 4, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 4, stringIndex: 5, fret: 5, durationBeats: 0.6, finger: 4 },
+      { beat: 4.8, stringIndex: 4, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 5.6, stringIndex: 5, fret: 4, durationBeats: 0.8, finger: 3 },
+      { beat: 8, stringIndex: 4, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 8.8, stringIndex: 4, fret: 4, durationBeats: 0.6, finger: 3 },
+      { beat: 9.6, stringIndex: 4, fret: 5, durationBeats: 0.6, finger: 4 },
+      { beat: 10.4, stringIndex: 4, fret: 4, durationBeats: 0.6, finger: 3 },
+      { beat: 11.2, stringIndex: 4, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 12, stringIndex: 5, fret: 5, durationBeats: 0.6, finger: 4 },
+      { beat: 12.8, stringIndex: 4, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 13.6, stringIndex: 5, fret: 4, durationBeats: 0.8, finger: 3 }
+    ]
+  },
+  {
+    name: "Verse Driving Power Groove",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 2, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 4, stringIndex: 3, fret: 2, durationBeats: 1.2, finger: 1 },
+      { beat: 6, stringIndex: 2, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 8, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 10, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 12, stringIndex: 3, fret: 4, durationBeats: 1.2, finger: 3 },
+      { beat: 14, stringIndex: 3, fret: 2, durationBeats: 1.8, finger: 1 }
+    ]
+  },
+  {
+    name: "Chorus (I'm going off the rails)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 4, durationBeats: 1.5, finger: 3 },
+      { beat: 2, stringIndex: 4, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 4, stringIndex: 5, fret: 5, durationBeats: 1.5, finger: 4 },
+      { beat: 6, stringIndex: 5, fret: 4, durationBeats: 1.5, finger: 3 },
+      { beat: 8, stringIndex: 4, fret: 4, durationBeats: 1.5, finger: 3 },
+      { beat: 10, stringIndex: 4, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 12, stringIndex: 5, fret: 5, durationBeats: 1.5, finger: 4 },
+      { beat: 14, stringIndex: 5, fret: 2, durationBeats: 2, finger: 1 }
+    ]
+  },
+  {
+    name: "Classical Metal Solo Run",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 9, durationBeats: 0.6, finger: 2 },
+      { beat: 1, stringIndex: 2, fret: 11, durationBeats: 0.6, finger: 4 },
+      { beat: 2, stringIndex: 1, fret: 10, durationBeats: 0.8, finger: 3 },
+      { beat: 3.5, stringIndex: 1, fret: 12, durationBeats: 1, finger: 4 },
+      { beat: 5, stringIndex: 0, fret: 9, durationBeats: 0.8, finger: 1 },
+      { beat: 6.5, stringIndex: 0, fret: 12, durationBeats: 1.2, finger: 4 },
+      { beat: 8, stringIndex: 0, fret: 14, durationBeats: 1.5, finger: 4 },
+      { beat: 10.5, stringIndex: 0, fret: 12, durationBeats: 0.8, finger: 3 },
+      { beat: 12, stringIndex: 0, fret: 9, durationBeats: 1, finger: 1 },
+      { beat: 13.5, stringIndex: 1, fret: 10, durationBeats: 1.5, finger: 3 }
+    ]
+  },
+  {
+    name: "Heavy Freight Train Outro",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 0.8, stringIndex: 4, fret: 4, durationBeats: 0.6, finger: 3 },
+      { beat: 1.6, stringIndex: 4, fret: 5, durationBeats: 0.6, finger: 4 },
+      { beat: 2.4, stringIndex: 4, fret: 4, durationBeats: 0.6, finger: 3 },
+      { beat: 3.2, stringIndex: 4, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 4, stringIndex: 5, fret: 5, durationBeats: 0.6, finger: 4 },
+      { beat: 4.8, stringIndex: 4, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 5.6, stringIndex: 5, fret: 4, durationBeats: 0.8, finger: 3 },
+      { beat: 8, stringIndex: 4, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 10, stringIndex: 5, fret: 5, durationBeats: 1.5, finger: 4 },
+      { beat: 12, stringIndex: 5, fret: 2, durationBeats: 3.5, finger: 1 }
+    ]
+  }
+]);
+var s_back_in_black = assembleLeadSong(94, [
+  {
+    name: "Power Chord & Pentatonic Rake Intro",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 2, stringIndex: 3, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 2.5, stringIndex: 2, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 5, stringIndex: 4, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 5.5, stringIndex: 3, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 6, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 8, stringIndex: 0, fret: 3, durationBeats: 0.5, finger: 3 },
+      { beat: 8.5, stringIndex: 0, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 9, stringIndex: 1, fret: 3, durationBeats: 0.5, finger: 3 },
+      { beat: 9.5, stringIndex: 1, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 10, stringIndex: 2, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 10.5, stringIndex: 2, fret: 0, durationBeats: 1.5, finger: 0 }
+    ]
+  },
+  {
+    name: "Verse Driving Rhythm",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 2, stringIndex: 3, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 2.5, stringIndex: 2, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 5, stringIndex: 4, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 5.5, stringIndex: 3, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 6, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 8, stringIndex: 5, fret: 3, durationBeats: 0.8, finger: 2 },
+      { beat: 9, stringIndex: 5, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 10, stringIndex: 5, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 11, stringIndex: 5, fret: 0, durationBeats: 1.8, finger: 0 }
+    ]
+  },
+  {
+    name: "Chorus (Back in black, I hit the sack)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 2, stringIndex: 4, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 4, stringIndex: 5, fret: 3, durationBeats: 1.5, finger: 2 },
+      { beat: 6, stringIndex: 5, fret: 0, durationBeats: 2, finger: 0 },
+      { beat: 8, stringIndex: 4, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 10, stringIndex: 4, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 12, stringIndex: 5, fret: 3, durationBeats: 1.5, finger: 2 },
+      { beat: 14, stringIndex: 5, fret: 0, durationBeats: 2, finger: 0 }
+    ]
+  },
+  {
+    name: "Angus Young Blues Box Solo",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 12, durationBeats: 1, finger: 2 },
+      { beat: 1.5, stringIndex: 2, fret: 14, durationBeats: 1.2, finger: 4 },
+      { beat: 3, stringIndex: 1, fret: 12, durationBeats: 1, finger: 2 },
+      { beat: 4.5, stringIndex: 1, fret: 15, durationBeats: 1.5, finger: 4 },
+      { beat: 6.5, stringIndex: 0, fret: 12, durationBeats: 1, finger: 2 },
+      { beat: 8, stringIndex: 0, fret: 15, durationBeats: 1.5, finger: 4 },
+      { beat: 10, stringIndex: 1, fret: 15, durationBeats: 1, finger: 4 },
+      { beat: 12, stringIndex: 2, fret: 14, durationBeats: 1.5, finger: 3 },
+      { beat: 14, stringIndex: 2, fret: 12, durationBeats: 2, finger: 1 }
+    ]
+  },
+  {
+    name: "Final Crashing Chorus & Outro",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 2, stringIndex: 3, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 2.5, stringIndex: 2, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 5, stringIndex: 4, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 5.5, stringIndex: 3, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 6, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 8, stringIndex: 0, fret: 3, durationBeats: 0.5, finger: 3 },
+      { beat: 8.5, stringIndex: 0, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 9, stringIndex: 1, fret: 3, durationBeats: 0.5, finger: 3 },
+      { beat: 9.5, stringIndex: 1, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 10, stringIndex: 2, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 12, stringIndex: 5, fret: 0, durationBeats: 3.5, finger: 0 }
+    ]
+  }
+]);
+var s_vivaldi_spring = assembleLeadSong(106, [
+  {
+    name: "Allegro Theme A (Spring has arrived)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 1, stringIndex: 0, fret: 4, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 7, durationBeats: 1.5, finger: 4 },
+      { beat: 4, stringIndex: 0, fret: 7, durationBeats: 0.8, finger: 4 },
+      { beat: 5, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 6, stringIndex: 0, fret: 4, durationBeats: 1.5, finger: 1 },
+      { beat: 8, stringIndex: 0, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 9, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10, stringIndex: 0, fret: 7, durationBeats: 2, finger: 4 },
+      { beat: 12, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 13, stringIndex: 0, fret: 4, durationBeats: 0.8, finger: 1 },
+      { beat: 14, stringIndex: 0, fret: 2, durationBeats: 1.8, finger: 1 }
+    ]
+  },
+  {
+    name: "Bird Song Trills & Murmuring Stream",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 7, durationBeats: 0.4, finger: 4 },
+      { beat: 0.5, stringIndex: 0, fret: 9, durationBeats: 0.4, finger: 4 },
+      { beat: 1, stringIndex: 0, fret: 7, durationBeats: 0.4, finger: 4 },
+      { beat: 1.5, stringIndex: 0, fret: 9, durationBeats: 0.4, finger: 4 },
+      { beat: 2, stringIndex: 0, fret: 7, durationBeats: 1.5, finger: 4 },
+      { beat: 4, stringIndex: 0, fret: 5, durationBeats: 0.4, finger: 3 },
+      { beat: 4.5, stringIndex: 0, fret: 7, durationBeats: 0.4, finger: 4 },
+      { beat: 5, stringIndex: 0, fret: 5, durationBeats: 0.4, finger: 3 },
+      { beat: 6, stringIndex: 0, fret: 4, durationBeats: 1.8, finger: 1 },
+      { beat: 8, stringIndex: 0, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 9, stringIndex: 0, fret: 4, durationBeats: 0.8, finger: 2 },
+      { beat: 10, stringIndex: 0, fret: 5, durationBeats: 1.2, finger: 3 },
+      { beat: 12, stringIndex: 0, fret: 4, durationBeats: 0.8, finger: 2 },
+      { beat: 13, stringIndex: 0, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 14, stringIndex: 0, fret: 0, durationBeats: 2, finger: 0 }
+    ]
+  },
+  {
+    name: "Thunderstorm Interlude",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 0.5, stringIndex: 1, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 1, stringIndex: 1, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 1.5, stringIndex: 1, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 2, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 3.5, stringIndex: 0, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 5, stringIndex: 0, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 8, stringIndex: 0, fret: 7, durationBeats: 0.8, finger: 4 },
+      { beat: 9.5, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 11, stringIndex: 0, fret: 3, durationBeats: 1, finger: 1 },
+      { beat: 12.5, stringIndex: 0, fret: 2, durationBeats: 1.5, finger: 1 }
+    ]
+  },
+  {
+    name: "Triumphant Spring Recapitulation & Coda",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 1, stringIndex: 0, fret: 4, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 7, durationBeats: 1.5, finger: 4 },
+      { beat: 4, stringIndex: 0, fret: 7, durationBeats: 0.8, finger: 4 },
+      { beat: 5, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 3 },
+      { beat: 6, stringIndex: 0, fret: 4, durationBeats: 1.5, finger: 1 },
+      { beat: 8, stringIndex: 0, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 9, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 10, stringIndex: 0, fret: 4, durationBeats: 1.5, finger: 2 },
+      { beat: 12, stringIndex: 0, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 14, stringIndex: 0, fret: 0, durationBeats: 3.5, finger: 0 }
+    ]
+  }
+]);
+var s_mozart_turkish_march = assembleLeadSong(128, [
+  {
+    name: "Theme A1 (Rondo Alla Turca Opening)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 0.5, stringIndex: 2, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 1, stringIndex: 2, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 1.5, stringIndex: 2, fret: 2, durationBeats: 0.5, finger: 2 },
+      { beat: 2, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 3.5, stringIndex: 1, fret: 3, durationBeats: 0.5, finger: 3 },
+      { beat: 4, stringIndex: 1, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 4.5, stringIndex: 1, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 5, stringIndex: 1, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 5.5, stringIndex: 0, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 7, stringIndex: 0, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 7.5, stringIndex: 0, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 8, stringIndex: 1, fret: 4, durationBeats: 0.5, finger: 4 },
+      { beat: 8.5, stringIndex: 0, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 9, stringIndex: 0, fret: 5, durationBeats: 0.5, finger: 4 },
+      { beat: 9.5, stringIndex: 0, fret: 4, durationBeats: 0.5, finger: 3 },
+      { beat: 10, stringIndex: 0, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 10.5, stringIndex: 0, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 11, stringIndex: 1, fret: 4, durationBeats: 0.8, finger: 4 },
+      { beat: 12, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 }
+    ]
+  },
+  {
+    name: "Theme B (Major Key Janissary March)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 1, stringIndex: 0, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 2, stringIndex: 0, fret: 4, durationBeats: 1.2, finger: 3 },
+      { beat: 4, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 4 },
+      { beat: 5, stringIndex: 0, fret: 4, durationBeats: 0.8, finger: 3 },
+      { beat: 6, stringIndex: 0, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 7, stringIndex: 0, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 8, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 9, stringIndex: 0, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 10, stringIndex: 0, fret: 4, durationBeats: 1.2, finger: 3 },
+      { beat: 12, stringIndex: 0, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 13.5, stringIndex: 0, fret: 0, durationBeats: 2, finger: 0 }
+    ]
+  },
+  {
+    name: "Rapid Sixteenth Run & Technical Climax",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 5, durationBeats: 0.4, finger: 4 },
+      { beat: 0.5, stringIndex: 0, fret: 4, durationBeats: 0.4, finger: 3 },
+      { beat: 1, stringIndex: 0, fret: 2, durationBeats: 0.4, finger: 1 },
+      { beat: 1.5, stringIndex: 0, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 2, stringIndex: 1, fret: 3, durationBeats: 0.4, finger: 3 },
+      { beat: 2.5, stringIndex: 1, fret: 1, durationBeats: 0.4, finger: 1 },
+      { beat: 3, stringIndex: 1, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 3.5, stringIndex: 2, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 4, stringIndex: 2, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 5, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 6.5, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 8, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 10, stringIndex: 0, fret: 4, durationBeats: 1, finger: 3 },
+      { beat: 11.5, stringIndex: 0, fret: 5, durationBeats: 2, finger: 4 }
+    ]
+  },
+  {
+    name: "Grand Turkish Coda & Triumphant Cadence",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 4 },
+      { beat: 1, stringIndex: 0, fret: 4, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 3, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 4, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 6, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 8, stringIndex: 0, fret: 5, durationBeats: 1.5, finger: 4 },
+      { beat: 10, stringIndex: 0, fret: 9, durationBeats: 2, finger: 4 },
+      { beat: 13, stringIndex: 0, fret: 5, durationBeats: 1, finger: 4 },
+      { beat: 14.5, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 16, stringIndex: 1, fret: 1, durationBeats: 3.5, finger: 1 }
+    ]
+  }
+]);
+var s_black_magic_woman = assembleLeadSong(126, [
+  {
+    name: "Santana Singing Intro Lead",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 7, durationBeats: 1.5, finger: 1 },
+      { beat: 2, stringIndex: 1, fret: 6, durationBeats: 1, finger: 1 },
+      { beat: 3.5, stringIndex: 1, fret: 8, durationBeats: 1, finger: 3 },
+      { beat: 5, stringIndex: 0, fret: 5, durationBeats: 2.5, finger: 1 },
+      { beat: 8, stringIndex: 0, fret: 8, durationBeats: 1.2, finger: 4 },
+      { beat: 10, stringIndex: 0, fret: 7, durationBeats: 1, finger: 3 },
+      { beat: 11.5, stringIndex: 0, fret: 5, durationBeats: 1.5, finger: 1 },
+      { beat: 13.5, stringIndex: 1, fret: 6, durationBeats: 2, finger: 2 }
+    ]
+  },
+  {
+    name: "Latin Blues Riff & Rhythmic Comping",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 7, durationBeats: 0.8, finger: 3 },
+      { beat: 1.5, stringIndex: 2, fret: 7, durationBeats: 0.8, finger: 3 },
+      { beat: 3, stringIndex: 1, fret: 6, durationBeats: 1.2, finger: 2 },
+      { beat: 5, stringIndex: 3, fret: 5, durationBeats: 0.8, finger: 1 },
+      { beat: 6.5, stringIndex: 2, fret: 5, durationBeats: 0.8, finger: 1 },
+      { beat: 8, stringIndex: 1, fret: 5, durationBeats: 1.2, finger: 1 },
+      { beat: 10, stringIndex: 4, fret: 7, durationBeats: 1, finger: 3 },
+      { beat: 12, stringIndex: 3, fret: 7, durationBeats: 1, finger: 3 },
+      { beat: 14, stringIndex: 2, fret: 7, durationBeats: 1.8, finger: 3 }
+    ]
+  },
+  {
+    name: "Expressive Minor Pentatonic Solo",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 10, durationBeats: 1.2, finger: 2 },
+      { beat: 2, stringIndex: 1, fret: 13, durationBeats: 1.5, finger: 4 },
+      { beat: 4, stringIndex: 0, fret: 10, durationBeats: 1.2, finger: 1 },
+      { beat: 6, stringIndex: 0, fret: 13, durationBeats: 1.5, finger: 4 },
+      { beat: 8.5, stringIndex: 0, fret: 15, durationBeats: 1.8, finger: 4 },
+      { beat: 11, stringIndex: 0, fret: 13, durationBeats: 1, finger: 3 },
+      { beat: 12.5, stringIndex: 0, fret: 10, durationBeats: 1.2, finger: 1 },
+      { beat: 14, stringIndex: 1, fret: 13, durationBeats: 1.8, finger: 4 }
+    ]
+  },
+  {
+    name: "Gypsy Queen Fast Latin Finale",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 7, durationBeats: 0.8, finger: 1 },
+      { beat: 1, stringIndex: 1, fret: 6, durationBeats: 0.8, finger: 1 },
+      { beat: 2, stringIndex: 0, fret: 5, durationBeats: 1.2, finger: 1 },
+      { beat: 4, stringIndex: 0, fret: 8, durationBeats: 1, finger: 4 },
+      { beat: 5.5, stringIndex: 0, fret: 10, durationBeats: 1.2, finger: 4 },
+      { beat: 7.5, stringIndex: 0, fret: 8, durationBeats: 1, finger: 3 },
+      { beat: 9, stringIndex: 0, fret: 5, durationBeats: 1.5, finger: 1 },
+      { beat: 11, stringIndex: 1, fret: 6, durationBeats: 1.5, finger: 2 },
+      { beat: 13, stringIndex: 2, fret: 7, durationBeats: 2, finger: 3 },
+      { beat: 16, stringIndex: 3, fret: 7, durationBeats: 3.5, finger: 3 }
+    ]
+  }
+]);
+var s_pride_and_joy = assembleLeadSong(124, [
+  {
+    name: "SRV Texas Shuffle Bass & Rakes",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.8, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1.5, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 2.5, stringIndex: 4, fret: 4, durationBeats: 0.8, finger: 3 },
+      { beat: 3.5, stringIndex: 3, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 5, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6, stringIndex: 2, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 8, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 8.8, stringIndex: 5, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 9.5, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 10.5, stringIndex: 4, fret: 4, durationBeats: 0.8, finger: 3 },
+      { beat: 11.5, stringIndex: 3, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 13, stringIndex: 1, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 14, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 }
+    ]
+  },
+  {
+    name: "12-Bar Blues Texas Groove",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 1.5, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 3, stringIndex: 2, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 5, stringIndex: 5, fret: 3, durationBeats: 0.8, finger: 2 },
+      { beat: 6.5, stringIndex: 5, fret: 4, durationBeats: 0.8, finger: 3 },
+      { beat: 8, stringIndex: 4, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 10, stringIndex: 4, fret: 4, durationBeats: 0.8, finger: 3 },
+      { beat: 11.5, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 13, stringIndex: 2, fret: 0, durationBeats: 1.8, finger: 0 }
+    ]
+  },
+  {
+    name: "Stevie Ray Vaughan Signature Solo",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 1.5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 3, stringIndex: 0, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 6.5, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 8, stringIndex: 2, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 10, stringIndex: 2, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 11.5, stringIndex: 3, fret: 2, durationBeats: 1.5, finger: 2 },
+      { beat: 13.5, stringIndex: 4, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 14.5, stringIndex: 5, fret: 3, durationBeats: 1.8, finger: 3 }
+    ]
+  },
+  {
+    name: "Turnaround & Texas Stomp Outro",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 1, stringIndex: 1, fret: 3, durationBeats: 0.6, finger: 3 },
+      { beat: 2, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 4, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 6, stringIndex: 5, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 8, stringIndex: 5, fret: 3, durationBeats: 1.2, finger: 2 },
+      { beat: 10, stringIndex: 4, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 12, stringIndex: 5, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 15, stringIndex: 5, fret: 0, durationBeats: 3.5, finger: 0 }
+    ]
+  }
+]);
+var s_crossroads = assembleLeadSong(130, [
+  {
+    name: "Eric Clapton Intro Riff",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 0.8, stringIndex: 3, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 1.6, stringIndex: 3, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 2.4, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3.4, stringIndex: 4, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 4.5, stringIndex: 5, fret: 3, durationBeats: 1.2, finger: 2 },
+      { beat: 8, stringIndex: 4, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 8.8, stringIndex: 3, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 9.6, stringIndex: 3, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 10.4, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 11.4, stringIndex: 4, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 12.5, stringIndex: 5, fret: 3, durationBeats: 1.2, finger: 2 }
+    ]
+  },
+  {
+    name: "12-Bar Blues Verse (Went down to the crossroads)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 1.5, stringIndex: 4, fret: 4, durationBeats: 0.8, finger: 4 },
+      { beat: 3, stringIndex: 4, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 5, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 6.5, stringIndex: 3, fret: 4, durationBeats: 0.8, finger: 4 },
+      { beat: 8, stringIndex: 3, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 10, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 12, stringIndex: 5, fret: 3, durationBeats: 1, finger: 2 },
+      { beat: 14, stringIndex: 4, fret: 0, durationBeats: 1.8, finger: 0 }
+    ]
+  },
+  {
+    name: "Clapton Live at the Fillmore Solo",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 7, durationBeats: 0.8, finger: 2 },
+      { beat: 1.5, stringIndex: 2, fret: 9, durationBeats: 1, finger: 4 },
+      { beat: 3, stringIndex: 1, fret: 8, durationBeats: 1, finger: 2 },
+      { beat: 4.5, stringIndex: 1, fret: 10, durationBeats: 1.5, finger: 4 },
+      { beat: 6.5, stringIndex: 0, fret: 8, durationBeats: 1, finger: 2 },
+      { beat: 8, stringIndex: 0, fret: 10, durationBeats: 1.5, finger: 4 },
+      { beat: 10, stringIndex: 1, fret: 10, durationBeats: 1, finger: 4 },
+      { beat: 12, stringIndex: 2, fret: 9, durationBeats: 1.5, finger: 3 },
+      { beat: 14, stringIndex: 2, fret: 7, durationBeats: 2, finger: 1 }
+    ]
+  },
+  {
+    name: "Turnaround & Robert Johnson Cadence",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 1.5, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 5, stringIndex: 1, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 6.5, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 8, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 10, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 12, stringIndex: 3, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 15, stringIndex: 4, fret: 0, durationBeats: 3.5, finger: 0 }
+    ]
+  }
+]);
+var s_little_wing = assembleLeadSong(71, [
+  {
+    name: "Jimi's Embellished Chord Intro",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 1.5, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 2.5, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 3.5, stringIndex: 2, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 5, stringIndex: 5, fret: 3, durationBeats: 1, finger: 2 },
+      { beat: 6.5, stringIndex: 4, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 7.5, stringIndex: 4, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 9, stringIndex: 4, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 10.5, stringIndex: 3, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 11.5, stringIndex: 3, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 13, stringIndex: 5, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 15, stringIndex: 5, fret: 2, durationBeats: 1, finger: 1 }
+    ]
+  },
+  {
+    name: "Verse (She's walking through the clouds)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 1.5, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 2.5, stringIndex: 2, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 4.5, stringIndex: 4, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 6, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 7, stringIndex: 3, fret: 3, durationBeats: 1.5, finger: 2 },
+      { beat: 9, stringIndex: 4, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 10.5, stringIndex: 3, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 12, stringIndex: 3, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 14, stringIndex: 5, fret: 0, durationBeats: 1.8, finger: 0 }
+    ]
+  },
+  {
+    name: "Hendrix Fluid Whammy Solo",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 10, durationBeats: 1.2, finger: 2 },
+      { beat: 2, stringIndex: 1, fret: 12, durationBeats: 1.5, finger: 4 },
+      { beat: 4, stringIndex: 0, fret: 10, durationBeats: 1.2, finger: 1 },
+      { beat: 6, stringIndex: 0, fret: 12, durationBeats: 1.5, finger: 4 },
+      { beat: 8.5, stringIndex: 0, fret: 15, durationBeats: 1.8, finger: 4 },
+      { beat: 11, stringIndex: 0, fret: 12, durationBeats: 1, finger: 2 },
+      { beat: 12.5, stringIndex: 1, fret: 12, durationBeats: 1.2, finger: 3 },
+      { beat: 14, stringIndex: 2, fret: 12, durationBeats: 2, finger: 3 }
+    ]
+  },
+  {
+    name: "Glockenspiel Outro Fade",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 1.5, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 3, stringIndex: 2, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 4.5, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 6.5, stringIndex: 0, fret: 0, durationBeats: 2, finger: 0 },
+      { beat: 9, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 11, stringIndex: 2, fret: 2, durationBeats: 1.5, finger: 2 },
+      { beat: 14, stringIndex: 5, fret: 0, durationBeats: 4, finger: 0 }
+    ]
+  }
+]);
+var s_canon_rock = assembleLeadSong(132, [
+  {
+    name: "Classical Ballad Intro (Pachelbel Theme)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 2, stringIndex: 4, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 4, stringIndex: 4, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 6, stringIndex: 5, fret: 2, durationBeats: 1.5, finger: 1 },
+      { beat: 8, stringIndex: 5, fret: 3, durationBeats: 1.5, finger: 2 },
+      { beat: 10, stringIndex: 3, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 12, stringIndex: 5, fret: 3, durationBeats: 1.5, finger: 2 },
+      { beat: 14, stringIndex: 4, fret: 0, durationBeats: 1.5, finger: 0 }
+    ]
+  },
+  {
+    name: "Heavy Rock Entrance & Power Melody",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 1.5, stringIndex: 0, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 3, stringIndex: 0, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 5, stringIndex: 0, fret: 5, durationBeats: 1.5, finger: 4 },
+      { beat: 7, stringIndex: 0, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 8.5, stringIndex: 0, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 10, stringIndex: 1, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 12, stringIndex: 1, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 13.5, stringIndex: 2, fret: 2, durationBeats: 2, finger: 2 }
+    ]
+  },
+  {
+    name: "Arpeggio Sweep Passage",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 4, durationBeats: 0.5, finger: 2 },
+      { beat: 0.5, stringIndex: 2, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 1, stringIndex: 1, fret: 3, durationBeats: 0.5, finger: 3 },
+      { beat: 1.5, stringIndex: 0, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 2.5, stringIndex: 0, fret: 5, durationBeats: 0.5, finger: 4 },
+      { beat: 3, stringIndex: 1, fret: 3, durationBeats: 0.5, finger: 3 },
+      { beat: 3.5, stringIndex: 2, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 4, stringIndex: 3, fret: 4, durationBeats: 0.8, finger: 2 },
+      { beat: 5, stringIndex: 3, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 5.5, stringIndex: 2, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 6, stringIndex: 1, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 6.5, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 8, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 10, stringIndex: 0, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 12, stringIndex: 0, fret: 5, durationBeats: 1.5, finger: 4 },
+      { beat: 14, stringIndex: 0, fret: 2, durationBeats: 1.8, finger: 2 }
+    ]
+  },
+  {
+    name: "JerryC Virtuoso Tapping Solo",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 10, durationBeats: 0.4, finger: 1 },
+      { beat: 0.5, stringIndex: 0, fret: 14, durationBeats: 0.4, finger: 4 },
+      { beat: 1, stringIndex: 0, fret: 17, durationBeats: 0.8, finger: 4 },
+      { beat: 2, stringIndex: 0, fret: 9, durationBeats: 0.4, finger: 1 },
+      { beat: 2.5, stringIndex: 0, fret: 12, durationBeats: 0.4, finger: 4 },
+      { beat: 3, stringIndex: 0, fret: 15, durationBeats: 0.8, finger: 4 },
+      { beat: 4, stringIndex: 0, fret: 7, durationBeats: 0.4, finger: 1 },
+      { beat: 4.5, stringIndex: 0, fret: 10, durationBeats: 0.4, finger: 4 },
+      { beat: 5, stringIndex: 0, fret: 14, durationBeats: 0.8, finger: 4 },
+      { beat: 6, stringIndex: 0, fret: 5, durationBeats: 0.4, finger: 1 },
+      { beat: 6.5, stringIndex: 0, fret: 9, durationBeats: 0.4, finger: 4 },
+      { beat: 7, stringIndex: 0, fret: 12, durationBeats: 0.8, finger: 4 },
+      { beat: 8, stringIndex: 0, fret: 10, durationBeats: 1.5, finger: 2 },
+      { beat: 10, stringIndex: 0, fret: 14, durationBeats: 1.5, finger: 4 },
+      { beat: 12, stringIndex: 0, fret: 17, durationBeats: 2, finger: 4 }
+    ]
+  },
+  {
+    name: "Grand Neo-Classical Finale",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 14, durationBeats: 1, finger: 3 },
+      { beat: 1.5, stringIndex: 0, fret: 12, durationBeats: 1, finger: 2 },
+      { beat: 3, stringIndex: 0, fret: 10, durationBeats: 1.2, finger: 1 },
+      { beat: 5, stringIndex: 1, fret: 12, durationBeats: 1, finger: 3 },
+      { beat: 7, stringIndex: 1, fret: 10, durationBeats: 1, finger: 2 },
+      { beat: 9, stringIndex: 2, fret: 11, durationBeats: 1.5, finger: 3 },
+      { beat: 11, stringIndex: 2, fret: 9, durationBeats: 1, finger: 1 },
+      { beat: 13, stringIndex: 3, fret: 12, durationBeats: 1.5, finger: 4 },
+      { beat: 15, stringIndex: 3, fret: 0, durationBeats: 3.5, finger: 0 }
+    ]
+  }
+]);
+var s_cliffs = assembleLeadSong(180, [
+  {
+    name: "Rubato Waterfall Intro",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 10, durationBeats: 0.5, finger: 1 },
+      { beat: 0.5, stringIndex: 0, fret: 12, durationBeats: 0.5, finger: 2 },
+      { beat: 1, stringIndex: 0, fret: 15, durationBeats: 0.8, finger: 4 },
+      { beat: 2, stringIndex: 0, fret: 12, durationBeats: 0.5, finger: 2 },
+      { beat: 2.5, stringIndex: 0, fret: 10, durationBeats: 0.5, finger: 1 },
+      { beat: 3, stringIndex: 1, fret: 12, durationBeats: 0.8, finger: 3 },
+      { beat: 4, stringIndex: 1, fret: 10, durationBeats: 0.5, finger: 1 },
+      { beat: 4.5, stringIndex: 2, fret: 12, durationBeats: 0.8, finger: 3 },
+      { beat: 5.5, stringIndex: 2, fret: 9, durationBeats: 0.5, finger: 1 },
+      { beat: 6, stringIndex: 3, fret: 12, durationBeats: 1, finger: 4 },
+      { beat: 7.5, stringIndex: 3, fret: 9, durationBeats: 0.8, finger: 2 },
+      { beat: 8.5, stringIndex: 4, fret: 10, durationBeats: 1.5, finger: 3 },
+      { beat: 10.5, stringIndex: 2, fret: 12, durationBeats: 1, finger: 3 },
+      { beat: 12, stringIndex: 1, fret: 10, durationBeats: 1, finger: 1 },
+      { beat: 13.5, stringIndex: 0, fret: 10, durationBeats: 2, finger: 1 }
+    ]
+  },
+  {
+    name: "Signature Hybrid Picking Bounce",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 0.5, stringIndex: 1, fret: 3, durationBeats: 0.5, finger: 3 },
+      { beat: 1, stringIndex: 0, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 2, stringIndex: 1, fret: 3, durationBeats: 0.5, finger: 3 },
+      { beat: 2.5, stringIndex: 2, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 3, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 4, stringIndex: 2, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 4.5, stringIndex: 1, fret: 3, durationBeats: 0.5, finger: 3 },
+      { beat: 5.5, stringIndex: 0, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 7, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 4 },
+      { beat: 8, stringIndex: 0, fret: 7, durationBeats: 1.2, finger: 4 },
+      { beat: 10, stringIndex: 0, fret: 3, durationBeats: 1, finger: 2 },
+      { beat: 12, stringIndex: 1, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 14, stringIndex: 2, fret: 0, durationBeats: 1.8, finger: 0 }
+    ]
+  },
+  {
+    name: "Violin-Tone Theme A Melody",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 10, durationBeats: 1, finger: 1 },
+      { beat: 1.5, stringIndex: 0, fret: 12, durationBeats: 1.2, finger: 3 },
+      { beat: 3, stringIndex: 0, fret: 15, durationBeats: 1.5, finger: 4 },
+      { beat: 5, stringIndex: 0, fret: 17, durationBeats: 1.5, finger: 4 },
+      { beat: 7, stringIndex: 0, fret: 15, durationBeats: 1, finger: 3 },
+      { beat: 8.5, stringIndex: 0, fret: 12, durationBeats: 1, finger: 1 },
+      { beat: 10, stringIndex: 0, fret: 10, durationBeats: 1.5, finger: 1 },
+      { beat: 12, stringIndex: 1, fret: 12, durationBeats: 1.2, finger: 3 },
+      { beat: 14, stringIndex: 1, fret: 10, durationBeats: 1.8, finger: 1 }
+    ]
+  },
+  {
+    name: "Fast Cascading Pentatonic Run",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 15, durationBeats: 0.4, finger: 4 },
+      { beat: 0.5, stringIndex: 0, fret: 12, durationBeats: 0.4, finger: 1 },
+      { beat: 1, stringIndex: 1, fret: 15, durationBeats: 0.4, finger: 4 },
+      { beat: 1.5, stringIndex: 1, fret: 12, durationBeats: 0.4, finger: 1 },
+      { beat: 2, stringIndex: 2, fret: 14, durationBeats: 0.4, finger: 3 },
+      { beat: 2.5, stringIndex: 2, fret: 12, durationBeats: 0.4, finger: 1 },
+      { beat: 3, stringIndex: 3, fret: 14, durationBeats: 0.4, finger: 3 },
+      { beat: 3.5, stringIndex: 3, fret: 12, durationBeats: 0.4, finger: 1 },
+      { beat: 4, stringIndex: 4, fret: 14, durationBeats: 0.4, finger: 3 },
+      { beat: 4.5, stringIndex: 4, fret: 12, durationBeats: 0.4, finger: 1 },
+      { beat: 5, stringIndex: 5, fret: 15, durationBeats: 0.8, finger: 4 },
+      { beat: 6, stringIndex: 5, fret: 12, durationBeats: 1, finger: 1 },
+      { beat: 7.5, stringIndex: 4, fret: 14, durationBeats: 1.2, finger: 3 },
+      { beat: 9, stringIndex: 3, fret: 12, durationBeats: 1.2, finger: 1 },
+      { beat: 10.5, stringIndex: 2, fret: 12, durationBeats: 1.5, finger: 1 },
+      { beat: 12, stringIndex: 1, fret: 12, durationBeats: 1.8, finger: 1 },
+      { beat: 14, stringIndex: 0, fret: 10, durationBeats: 2, finger: 1 }
+    ]
+  },
+  {
+    name: "Grammy-Winning Coda & Final Harmonic",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 10, durationBeats: 0.8, finger: 1 },
+      { beat: 1, stringIndex: 0, fret: 12, durationBeats: 0.8, finger: 2 },
+      { beat: 2, stringIndex: 0, fret: 15, durationBeats: 1, finger: 4 },
+      { beat: 3.5, stringIndex: 0, fret: 17, durationBeats: 1.2, finger: 4 },
+      { beat: 5.5, stringIndex: 0, fret: 19, durationBeats: 1.8, finger: 4 },
+      { beat: 8, stringIndex: 0, fret: 15, durationBeats: 1, finger: 2 },
+      { beat: 9.5, stringIndex: 0, fret: 12, durationBeats: 1, finger: 1 },
+      { beat: 11, stringIndex: 1, fret: 12, durationBeats: 1.5, finger: 2 },
+      { beat: 13, stringIndex: 2, fret: 12, durationBeats: 1.5, finger: 2 },
+      { beat: 16, stringIndex: 0, fret: 12, durationBeats: 3.5, finger: 4 }
+    ]
+  }
+]);
+var s_stairway = assembleLeadSong(78, [
+  {
+    name: "Jimmy Page Acoustic Fingerstyle Intro",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 1, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 2, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 4, stringIndex: 0, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 5.5, stringIndex: 4, fret: 4, durationBeats: 1, finger: 4 },
+      { beat: 6.5, stringIndex: 3, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 7.5, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 8.5, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 9.5, stringIndex: 0, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 11, stringIndex: 4, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 12, stringIndex: 3, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 13, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 14, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 15, stringIndex: 0, fret: 3, durationBeats: 1.5, finger: 3 }
+    ]
+  },
+  {
+    name: "Verse (There's a lady who's sure)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 1.5, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 2.5, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3.5, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 5, stringIndex: 4, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 6.5, stringIndex: 3, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 7.5, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 8.5, stringIndex: 1, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 10, stringIndex: 4, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 11.5, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 12.5, stringIndex: 2, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 13.5, stringIndex: 1, fret: 1, durationBeats: 1.5, finger: 1 }
+    ]
+  },
+  {
+    name: "Fanfare Bridge (And it makes me wonder)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 1, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 2, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 3, stringIndex: 0, fret: 3, durationBeats: 1.2, finger: 3 },
+      { beat: 4.5, stringIndex: 0, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 5.5, stringIndex: 1, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 6.5, stringIndex: 2, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 8, stringIndex: 4, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 9.5, stringIndex: 3, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 11, stringIndex: 2, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 12.5, stringIndex: 1, fret: 1, durationBeats: 1.5, finger: 1 },
+      { beat: 14, stringIndex: 4, fret: 0, durationBeats: 2, finger: 0 }
+    ]
+  },
+  {
+    name: "Legendary Rock Guitar Solo Lead",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 5, durationBeats: 0.8, finger: 2 },
+      { beat: 1.5, stringIndex: 2, fret: 7, durationBeats: 1, finger: 4 },
+      { beat: 3, stringIndex: 1, fret: 5, durationBeats: 0.8, finger: 1 },
+      { beat: 4.5, stringIndex: 1, fret: 8, durationBeats: 1.5, finger: 4 },
+      { beat: 6.5, stringIndex: 0, fret: 5, durationBeats: 0.8, finger: 1 },
+      { beat: 8, stringIndex: 0, fret: 8, durationBeats: 1.5, finger: 4 },
+      { beat: 10, stringIndex: 0, fret: 10, durationBeats: 1.5, finger: 4 },
+      { beat: 12, stringIndex: 0, fret: 8, durationBeats: 1, finger: 2 },
+      { beat: 13.5, stringIndex: 0, fret: 5, durationBeats: 1, finger: 1 },
+      { beat: 14.5, stringIndex: 1, fret: 8, durationBeats: 1.8, finger: 4 }
+    ]
+  },
+  {
+    name: "Acoustic Coda (Buying a stairway to heaven)",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 1.5, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 2.5, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3.5, stringIndex: 1, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 5.5, stringIndex: 0, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 7.5, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 9, stringIndex: 2, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 11, stringIndex: 3, fret: 2, durationBeats: 1.2, finger: 2 },
+      { beat: 13, stringIndex: 4, fret: 0, durationBeats: 2, finger: 0 },
+      { beat: 16, stringIndex: 4, fret: 0, durationBeats: 3.5, finger: 0 }
+    ]
+  }
+]);
+var s_blackbird = assembleLeadSong(94, [
+  {
+    name: "Bach-Inspired Parallel 10ths Intro",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 0, stringIndex: 1, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 2, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 2, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 4, stringIndex: 4, fret: 4, durationBeats: 1, finger: 2 },
+      { beat: 4, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 6, stringIndex: 4, fret: 5, durationBeats: 1.5, finger: 3 },
+      { beat: 6, stringIndex: 1, fret: 5, durationBeats: 1.5, finger: 3 },
+      { beat: 9, stringIndex: 4, fret: 5, durationBeats: 1, finger: 3 },
+      { beat: 9, stringIndex: 1, fret: 5, durationBeats: 1, finger: 3 },
+      { beat: 11, stringIndex: 4, fret: 4, durationBeats: 1, finger: 2 },
+      { beat: 11, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 13, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 13, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 15, stringIndex: 4, fret: 0, durationBeats: 2.5, finger: 0 },
+      { beat: 15, stringIndex: 1, fret: 0, durationBeats: 2.5, finger: 0 }
+    ]
+  },
+  {
+    name: "Verse 1 (Blackbird singing in the dead of night)",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 0, stringIndex: 1, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 2, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 2, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 4, stringIndex: 4, fret: 4, durationBeats: 1, finger: 2 },
+      { beat: 4, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 6, stringIndex: 4, fret: 5, durationBeats: 1.5, finger: 3 },
+      { beat: 6, stringIndex: 1, fret: 5, durationBeats: 1.5, finger: 3 },
+      { beat: 9, stringIndex: 4, fret: 7, durationBeats: 1.2, finger: 4 },
+      { beat: 9, stringIndex: 1, fret: 8, durationBeats: 1.2, finger: 4 },
+      { beat: 11.5, stringIndex: 4, fret: 6, durationBeats: 1, finger: 2 },
+      { beat: 11.5, stringIndex: 1, fret: 6, durationBeats: 1, finger: 2 },
+      { beat: 13.5, stringIndex: 4, fret: 5, durationBeats: 1.2, finger: 1 },
+      { beat: 13.5, stringIndex: 1, fret: 5, durationBeats: 1.2, finger: 1 },
+      { beat: 15.5, stringIndex: 4, fret: 3, durationBeats: 2, finger: 1 },
+      { beat: 15.5, stringIndex: 1, fret: 3, durationBeats: 2, finger: 1 }
+    ]
+  },
+  {
+    name: "Chorus (Blackbird fly, into the light)",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 3, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 0, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 2, stringIndex: 4, fret: 3, durationBeats: 1, finger: 2 },
+      { beat: 2, stringIndex: 1, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 4, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 4, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 6, stringIndex: 4, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 6, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 9, stringIndex: 3, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 9, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 11, stringIndex: 4, fret: 3, durationBeats: 1, finger: 2 },
+      { beat: 11, stringIndex: 1, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 13, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 13, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 15, stringIndex: 5, fret: 3, durationBeats: 2.5, finger: 3 },
+      { beat: 15, stringIndex: 1, fret: 0, durationBeats: 2.5, finger: 0 }
+    ]
+  },
+  {
+    name: "Fingerstyle Interlude & Chromatic Walk",
+    beats: 18,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 5, durationBeats: 1, finger: 3 },
+      { beat: 0, stringIndex: 1, fret: 5, durationBeats: 1, finger: 3 },
+      { beat: 2, stringIndex: 4, fret: 4, durationBeats: 1, finger: 2 },
+      { beat: 2, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 4, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 4, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 6, stringIndex: 4, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 6, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 9, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 9, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 11, stringIndex: 4, fret: 4, durationBeats: 1, finger: 2 },
+      { beat: 11, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 13, stringIndex: 4, fret: 5, durationBeats: 2, finger: 3 },
+      { beat: 13, stringIndex: 1, fret: 5, durationBeats: 2, finger: 3 },
+      { beat: 16, stringIndex: 5, fret: 3, durationBeats: 2, finger: 3 }
+    ]
+  },
+  {
+    name: "Final Flight & Birdsong Outro",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 0, stringIndex: 1, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 2, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 2, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 4, stringIndex: 4, fret: 4, durationBeats: 1, finger: 2 },
+      { beat: 4, stringIndex: 1, fret: 3, durationBeats: 1, finger: 3 },
+      { beat: 6, stringIndex: 4, fret: 5, durationBeats: 1.5, finger: 3 },
+      { beat: 6, stringIndex: 1, fret: 5, durationBeats: 1.5, finger: 3 },
+      { beat: 9, stringIndex: 4, fret: 3, durationBeats: 1, finger: 1 },
+      { beat: 9, stringIndex: 1, fret: 3, durationBeats: 1, finger: 1 },
+      { beat: 11, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 11, stringIndex: 1, fret: 1, durationBeats: 1, finger: 1 },
+      { beat: 13, stringIndex: 5, fret: 3, durationBeats: 1.5, finger: 3 },
+      { beat: 13, stringIndex: 1, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 16, stringIndex: 5, fret: 3, durationBeats: 4, finger: 3 },
+      { beat: 16, stringIndex: 1, fret: 0, durationBeats: 4, finger: 0 }
+    ]
+  }
+]);
+var s_master_of_puppets = assembleLeadSong(212, [
+  {
+    name: "Relentless Chromatic Downpicking Intro",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 0.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 1, stringIndex: 5, fret: 1, durationBeats: 0.4, finger: 1 },
+      { beat: 1.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 2, stringIndex: 5, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 2.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 3, stringIndex: 5, fret: 1, durationBeats: 0.4, finger: 1 },
+      { beat: 3.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 4, stringIndex: 5, fret: 3, durationBeats: 0.4, finger: 3 },
+      { beat: 4.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 5, stringIndex: 5, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 5.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 6, stringIndex: 5, fret: 1, durationBeats: 0.4, finger: 1 },
+      { beat: 6.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 7, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 8, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 8.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 9, stringIndex: 5, fret: 1, durationBeats: 0.4, finger: 1 },
+      { beat: 9.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 10, stringIndex: 5, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 10.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 11, stringIndex: 5, fret: 1, durationBeats: 0.4, finger: 1 },
+      { beat: 11.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 12, stringIndex: 5, fret: 3, durationBeats: 0.4, finger: 3 },
+      { beat: 12.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 13, stringIndex: 5, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 14, stringIndex: 4, fret: 2, durationBeats: 1.5, finger: 1 }
+    ]
+  },
+  {
+    name: "Spider Chord Verse Riff",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 0.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 1, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 1.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 2, stringIndex: 4, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 2.5, stringIndex: 3, fret: 4, durationBeats: 0.5, finger: 3 },
+      { beat: 3, stringIndex: 4, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 3.5, stringIndex: 3, fret: 5, durationBeats: 0.5, finger: 4 },
+      { beat: 4, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 4.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 5.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 6, stringIndex: 4, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 6.5, stringIndex: 3, fret: 4, durationBeats: 0.5, finger: 3 },
+      { beat: 7, stringIndex: 4, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 8, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 8.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 9, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 9.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 10, stringIndex: 4, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 10.5, stringIndex: 3, fret: 4, durationBeats: 0.5, finger: 3 },
+      { beat: 12, stringIndex: 5, fret: 0, durationBeats: 1.5, finger: 0 }
+    ]
+  },
+  {
+    name: "Chorus (Master! Master! Where's the dreams)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 1.5, stringIndex: 3, fret: 4, durationBeats: 1, finger: 3 },
+      { beat: 3, stringIndex: 4, fret: 3, durationBeats: 1, finger: 2 },
+      { beat: 4.5, stringIndex: 3, fret: 5, durationBeats: 1.2, finger: 4 },
+      { beat: 6.5, stringIndex: 5, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 7, stringIndex: 5, fret: 0, durationBeats: 0.5, finger: 0 },
+      { beat: 8, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 9.5, stringIndex: 4, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 11, stringIndex: 5, fret: 3, durationBeats: 1, finger: 2 },
+      { beat: 12.5, stringIndex: 5, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 14, stringIndex: 5, fret: 0, durationBeats: 2, finger: 0 }
+    ]
+  },
+  {
+    name: "Harmonic Interlude & Twin Guitar Lead",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 2, fret: 9, durationBeats: 1, finger: 2 },
+      { beat: 1.5, stringIndex: 2, fret: 11, durationBeats: 1, finger: 4 },
+      { beat: 3, stringIndex: 1, fret: 10, durationBeats: 1.2, finger: 3 },
+      { beat: 4.5, stringIndex: 1, fret: 12, durationBeats: 1.5, finger: 4 },
+      { beat: 6.5, stringIndex: 0, fret: 9, durationBeats: 1, finger: 1 },
+      { beat: 8, stringIndex: 0, fret: 12, durationBeats: 1.2, finger: 4 },
+      { beat: 9.5, stringIndex: 0, fret: 14, durationBeats: 1.5, finger: 4 },
+      { beat: 11.5, stringIndex: 0, fret: 12, durationBeats: 1, finger: 3 },
+      { beat: 13, stringIndex: 0, fret: 9, durationBeats: 1, finger: 1 },
+      { beat: 14.5, stringIndex: 1, fret: 10, durationBeats: 2, finger: 3 }
+    ]
+  },
+  {
+    name: "Relentless Outro Chugs & Final Crush",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 0.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 1, stringIndex: 5, fret: 1, durationBeats: 0.4, finger: 1 },
+      { beat: 1.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 2, stringIndex: 5, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 2.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 3, stringIndex: 5, fret: 3, durationBeats: 0.8, finger: 3 },
+      { beat: 4.5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 5, stringIndex: 5, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 5.5, stringIndex: 5, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 6, stringIndex: 5, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 8, stringIndex: 4, fret: 2, durationBeats: 1, finger: 1 },
+      { beat: 10, stringIndex: 5, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 12, stringIndex: 5, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 15, stringIndex: 5, fret: 0, durationBeats: 4, finger: 0 }
+    ]
+  }
+]);
+var s_paganini = assembleLeadSong(134, [
+  {
+    name: "Paganini Theme in A Minor (Theme Quasi Presto)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 1, fret: 1, durationBeats: 0.6, finger: 1 },
+      { beat: 0.8, stringIndex: 2, fret: 2, durationBeats: 0.6, finger: 2 },
+      { beat: 1.6, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 2.4, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 3.4, stringIndex: 4, fret: 0, durationBeats: 1.2, finger: 0 },
+      { beat: 5, stringIndex: 1, fret: 3, durationBeats: 0.6, finger: 3 },
+      { beat: 5.8, stringIndex: 1, fret: 1, durationBeats: 0.6, finger: 1 },
+      { beat: 6.6, stringIndex: 1, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 7.4, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 8.4, stringIndex: 2, fret: 1, durationBeats: 1.2, finger: 1 },
+      { beat: 10, stringIndex: 1, fret: 1, durationBeats: 0.6, finger: 1 },
+      { beat: 10.8, stringIndex: 2, fret: 2, durationBeats: 0.6, finger: 2 },
+      { beat: 11.6, stringIndex: 2, fret: 0, durationBeats: 0.6, finger: 0 },
+      { beat: 12.4, stringIndex: 3, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 13.4, stringIndex: 4, fret: 0, durationBeats: 2, finger: 0 }
+    ]
+  },
+  {
+    name: "Variation 1 (Rapid Arpeggio Shifts)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 0.5, stringIndex: 1, fret: 1, durationBeats: 0.4, finger: 1 },
+      { beat: 1, stringIndex: 2, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 1.5, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 2, stringIndex: 4, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 3, stringIndex: 0, fret: 1, durationBeats: 0.4, finger: 1 },
+      { beat: 3.5, stringIndex: 1, fret: 3, durationBeats: 0.4, finger: 3 },
+      { beat: 4, stringIndex: 2, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 4.5, stringIndex: 3, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 5, stringIndex: 4, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 6, stringIndex: 0, fret: 0, durationBeats: 0.4, finger: 0 },
+      { beat: 6.5, stringIndex: 1, fret: 1, durationBeats: 0.4, finger: 1 },
+      { beat: 7, stringIndex: 2, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 7.5, stringIndex: 3, fret: 2, durationBeats: 0.4, finger: 2 },
+      { beat: 8, stringIndex: 4, fret: 0, durationBeats: 1.5, finger: 0 },
+      { beat: 10, stringIndex: 0, fret: 5, durationBeats: 0.5, finger: 4 },
+      { beat: 11, stringIndex: 0, fret: 4, durationBeats: 0.5, finger: 3 },
+      { beat: 12, stringIndex: 0, fret: 2, durationBeats: 0.5, finger: 1 },
+      { beat: 13, stringIndex: 0, fret: 0, durationBeats: 0.8, finger: 0 },
+      { beat: 14, stringIndex: 1, fret: 4, durationBeats: 1.5, finger: 4 }
+    ]
+  },
+  {
+    name: "Variation 2 (High Register Virtuoso Run)",
+    beats: 16,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 8, durationBeats: 0.4, finger: 2 },
+      { beat: 0.5, stringIndex: 0, fret: 12, durationBeats: 0.4, finger: 4 },
+      { beat: 1, stringIndex: 0, fret: 10, durationBeats: 0.4, finger: 3 },
+      { beat: 1.5, stringIndex: 0, fret: 8, durationBeats: 0.4, finger: 2 },
+      { beat: 2, stringIndex: 0, fret: 7, durationBeats: 0.8, finger: 1 },
+      { beat: 3, stringIndex: 0, fret: 10, durationBeats: 0.4, finger: 3 },
+      { beat: 3.5, stringIndex: 0, fret: 8, durationBeats: 0.4, finger: 2 },
+      { beat: 4, stringIndex: 0, fret: 7, durationBeats: 0.4, finger: 1 },
+      { beat: 4.5, stringIndex: 0, fret: 5, durationBeats: 0.4, finger: 1 },
+      { beat: 5, stringIndex: 0, fret: 4, durationBeats: 0.8, finger: 1 },
+      { beat: 6, stringIndex: 0, fret: 8, durationBeats: 0.4, finger: 2 },
+      { beat: 6.5, stringIndex: 0, fret: 7, durationBeats: 0.4, finger: 1 },
+      { beat: 7, stringIndex: 0, fret: 5, durationBeats: 0.4, finger: 1 },
+      { beat: 7.5, stringIndex: 0, fret: 3, durationBeats: 0.4, finger: 1 },
+      { beat: 8, stringIndex: 0, fret: 2, durationBeats: 0.8, finger: 1 },
+      { beat: 9.5, stringIndex: 0, fret: 5, durationBeats: 0.5, finger: 4 },
+      { beat: 10.5, stringIndex: 0, fret: 3, durationBeats: 0.5, finger: 2 },
+      { beat: 11.5, stringIndex: 0, fret: 1, durationBeats: 0.5, finger: 1 },
+      { beat: 12.5, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 14, stringIndex: 1, fret: 4, durationBeats: 1.5, finger: 4 }
+    ]
+  },
+  {
+    name: "Grand Virtuoso Finale & Final Cadence",
+    beats: 20,
+    notes: [
+      { beat: 0, stringIndex: 0, fret: 12, durationBeats: 0.6, finger: 4 },
+      { beat: 1, stringIndex: 0, fret: 10, durationBeats: 0.6, finger: 3 },
+      { beat: 2, stringIndex: 0, fret: 8, durationBeats: 0.6, finger: 2 },
+      { beat: 3, stringIndex: 0, fret: 7, durationBeats: 0.8, finger: 1 },
+      { beat: 4.5, stringIndex: 0, fret: 5, durationBeats: 0.6, finger: 4 },
+      { beat: 5.5, stringIndex: 0, fret: 4, durationBeats: 0.6, finger: 3 },
+      { beat: 6.5, stringIndex: 0, fret: 2, durationBeats: 0.6, finger: 1 },
+      { beat: 7.5, stringIndex: 0, fret: 0, durationBeats: 1, finger: 0 },
+      { beat: 9, stringIndex: 1, fret: 1, durationBeats: 0.8, finger: 1 },
+      { beat: 10.5, stringIndex: 2, fret: 2, durationBeats: 0.8, finger: 2 },
+      { beat: 12, stringIndex: 3, fret: 2, durationBeats: 1, finger: 2 },
+      { beat: 14, stringIndex: 4, fret: 0, durationBeats: 2, finger: 0 },
+      { beat: 17, stringIndex: 4, fret: 0, durationBeats: 3.5, finger: 0 }
+    ]
+  }
+]);
+var SONGS_CATALOG = [
+  {
+    id: "smoke-on-the-water",
+    title: "Smoke on the Water",
+    artist: "Deep Purple",
+    genre: "Classic Rock",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "lead",
+    bpm: 112,
+    timeSignature: [4, 4],
+    duration: s_smoke.duration,
+    description: "The definitive rock guitar anthem featuring Ritchie Blackmore's 4ths riff, verse groove, vocal chorus, blues solo, and heavy outro.",
+    key: "G Minor",
+    leadNotes: s_smoke.notes
+  },
+  {
+    id: "seven-nation-army",
+    title: "Seven Nation Army",
+    artist: "The White Stripes",
+    genre: "Classic Rock",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "lead",
+    bpm: 124,
+    timeSignature: [4, 4],
+    duration: s_seven_nation.duration,
+    description: "Jack White's Grammy-winning stadium anthem with iconic low octave hook, verse, pre-chorus build, slide solo, and thunderous outro.",
+    key: "E Minor",
+    leadNotes: s_seven_nation.notes
+  },
+  {
+    id: "stand-by-me",
+    title: "Stand By Me",
+    artist: "Ben E. King",
+    genre: "Acoustic",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "chord",
+    bpm: 84,
+    timeSignature: [4, 4],
+    duration: s_stand_by_me.duration,
+    description: "Timeless soul masterpiece using the famous I-vi-IV-V progression (G, Em, C, D) complete with verses, choruses, and warm outro.",
+    key: "G Major",
+    chordEvents: s_stand_by_me.chords
+  },
+  {
+    id: "knockin-on-heavens-door",
+    title: "Knockin' on Heaven's Door",
+    artist: "Bob Dylan",
+    genre: "Acoustic",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "chord",
+    bpm: 68,
+    timeSignature: [4, 4],
+    duration: s_knockin.duration,
+    description: "Bob Dylan's moving acoustic classic cycling G, D, Am, and C with full verses, anthemic choruses, and gentle acoustic outro.",
+    key: "G Major",
+    chordEvents: s_knockin.chords
+  },
+  {
+    id: "iron-man",
+    title: "Iron Man",
+    artist: "Black Sabbath",
+    genre: "Metal & Heavy",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "lead",
+    bpm: 74,
+    timeSignature: [4, 4],
+    duration: s_iron_man.duration,
+    description: "Tony Iommi's towering heavy metal foundation with slow intro bends, legendary power riff, verse chugs, solo breakdown, and crushing finale.",
+    key: "B Minor",
+    leadNotes: s_iron_man.notes
+  },
+  {
+    id: "peter-gunn",
+    title: "Peter Gunn Theme",
+    artist: "Henry Mancini",
+    genre: "Classic Rock",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "lead",
+    bpm: 132,
+    timeSignature: [4, 4],
+    duration: s_peter_gunn.duration,
+    description: "High-octane spy rockabilly groove featuring Henry Mancini's driving chromatic bassline, brass key modulation, blues licks, and chromatic walkup.",
+    key: "E Minor",
+    leadNotes: s_peter_gunn.notes
+  },
+  {
+    id: "wipe-out",
+    title: "Wipe Out",
+    artist: "The Surfaris",
+    genre: "Classic Rock",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "lead",
+    bpm: 144,
+    timeSignature: [4, 4],
+    duration: s_wipe_out.duration,
+    description: "High-speed California surf rock guitar showcase featuring rapid triplet picking, 12-bar blues changes, tremolo picking, and epic whammy dive resolution.",
+    key: "C Major",
+    leadNotes: s_wipe_out.notes
+  },
+  {
+    id: "satisfaction",
+    title: "(I Can't Get No) Satisfaction",
+    artist: "The Rolling Stones",
+    genre: "Classic Rock",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "lead",
+    bpm: 136,
+    timeSignature: [4, 4],
+    duration: s_satisfaction.duration,
+    description: "Keith Richards' legendary Maestro fuzz-box riff, driving verse hook, vocal chorus response, and energetic blues rock finale.",
+    key: "E Major",
+    leadNotes: s_satisfaction.notes
+  },
+  {
+    id: "horse-with-no-name",
+    title: "A Horse with No Name",
+    artist: "America",
+    genre: "Acoustic",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "chord",
+    bpm: 92,
+    timeSignature: [4, 4],
+    duration: s_horse_no_name.duration,
+    description: "Folk-rock classic featuring the gentle two-chord movement of Em and D, complete with desert verses, singing choruses, and atmospheric outro.",
+    key: "E Minor",
+    chordEvents: s_horse_no_name.chords
+  },
+  {
+    id: "eleanor-rigby",
+    title: "Eleanor Rigby",
+    artist: "The Beatles",
+    genre: "Indie & Pop",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "chord",
+    bpm: 96,
+    timeSignature: [4, 4],
+    duration: s_eleanor_rigby.duration,
+    description: "Paul McCartney's chamber-pop masterpiece built on dynamic C and Em changes with haunting vocal refrains, complete story verses, and baroque resolution.",
+    key: "E Minor",
+    chordEvents: s_eleanor_rigby.chords
+  },
+  {
+    id: "free-fallin",
+    title: "Free Fallin\u2019",
+    artist: "Tom Petty",
+    genre: "Acoustic",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "chord",
+    bpm: 84,
+    timeSignature: [4, 4],
+    duration: s_free_fallin.duration,
+    description: "Tom Petty's heartland acoustic anthem featuring sparkling open D, Dsus4, and A chords across complete verses, soaring choruses, and ringing outro.",
+    key: "D Major",
+    chordEvents: s_free_fallin.chords
+  },
+  {
+    id: "brown-eyed-girl-easy",
+    title: "Brown Eyed Girl (Novice)",
+    artist: "Van Morrison",
+    genre: "Classic Rock",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "chord",
+    bpm: 98,
+    timeSignature: [4, 4],
+    duration: s_brown_eyed_girl_easy.duration,
+    description: "Sun-drenched feel-good open chords (G, C, D, Em) arranged with complete narrative verses, singalong chorus, and joyful sha-la-la outro.",
+    key: "G Major",
+    chordEvents: s_brown_eyed_girl_easy.chords
+  },
+  {
+    id: "ring-of-fire",
+    title: "Ring of Fire",
+    artist: "Johnny Cash",
+    genre: "Folk & Country",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "chord",
+    bpm: 104,
+    timeSignature: [4, 4],
+    duration: s_ring_of_fire.duration,
+    description: "Johnny Cash's country-western triumph driven by bold G, C, and D strums with verses, signature chorus, and mariachi-style resolved outro.",
+    key: "G Major",
+    chordEvents: s_ring_of_fire.chords
+  },
+  {
+    id: "three-little-birds",
+    title: "Three Little Birds",
+    artist: "Bob Marley",
+    genre: "Acoustic",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "chord",
+    bpm: 76,
+    timeSignature: [4, 4],
+    duration: s_three_little_birds.duration,
+    description: "Bob Marley's uplifting reggae anthem moving gracefully between A, D, and E with complete choruses, morning verses, and sunny outro.",
+    key: "A Major",
+    chordEvents: s_three_little_birds.chords
+  },
+  {
+    id: "lean-on-me",
+    title: "Lean on Me",
+    artist: "Bill Withers",
+    genre: "Acoustic",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "chord",
+    bpm: 78,
+    timeSignature: [4, 4],
+    duration: s_lean_on_me.duration,
+    description: "Inspiring soul standard using stepwise open chords (C, Dm, Em, F) that build finger strength across full verses, soulful chorus, and gospel outro.",
+    key: "C Major",
+    chordEvents: s_lean_on_me.chords
+  },
+  {
+    id: "love-me-do",
+    title: "Love Me Do",
+    artist: "The Beatles",
+    genre: "Indie & Pop",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "chord",
+    bpm: 116,
+    timeSignature: [4, 4],
+    duration: s_love_me_do.duration,
+    description: "The Beatles' debut single built around snappy G and C changes with full vocal verses, D-major middle eight bridge, and cheerful acoustic outro.",
+    key: "G Major",
+    chordEvents: s_love_me_do.chords
+  },
+  {
+    id: "bad-moon-rising",
+    title: "Bad Moon Rising",
+    artist: "Creedence Clearwater Revival",
+    genre: "Classic Rock",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "chord",
+    bpm: 140,
+    timeSignature: [4, 4],
+    duration: s_bad_moon.duration,
+    description: "Brisk Southern rock classic by John Fogerty featuring crisp D, A, and G changes with full verses, warning choruses, and energetic country outro.",
+    key: "D Major",
+    chordEvents: s_bad_moon.chords
+  },
+  {
+    id: "yellow-submarine",
+    title: "Yellow Submarine",
+    artist: "The Beatles",
+    genre: "Indie & Pop",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "chord",
+    bpm: 110,
+    timeSignature: [4, 4],
+    duration: s_yellow_submarine.duration,
+    description: "Ringo Starr's beloved singalong with smooth changes between D, C, G, Em, and Am complete with story verses, joyful chorus, and oceanic brass finale.",
+    key: "G Major",
+    chordEvents: s_yellow_submarine.chords
+  },
+  {
+    id: "mary-had-a-little-lamb",
+    title: "Mary Had a Little Lamb",
+    artist: "Traditional",
+    genre: "Acoustic",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "lead",
+    bpm: 90,
+    timeSignature: [4, 4],
+    duration: s_mary_lamb.duration,
+    description: "Essential single-string beginner standard arranged across strings 1 and 2 with full verses, rhythmic variations, and resolved root cadence.",
+    key: "C Major",
+    leadNotes: s_mary_lamb.notes
+  },
+  {
+    id: "twinkle-twinkle",
+    title: "Twinkle Twinkle Little Star",
+    artist: "Traditional Folk",
+    genre: "Acoustic",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "lead",
+    bpm: 84,
+    timeSignature: [4, 4],
+    duration: s_twinkle.duration,
+    description: "Mozart's classic folk theme arranged completely in ABA form with Theme A, lyrical middle section, full recapitulation, and resonant ending.",
+    key: "C Major",
+    leadNotes: s_twinkle.notes
+  },
+  {
+    id: "happy-birthday",
+    title: "Happy Birthday to You",
+    artist: "Traditional",
+    genre: "Acoustic",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "lead",
+    bpm: 88,
+    timeSignature: [3, 4],
+    duration: s_happy_birthday.duration,
+    description: "The world's celebrated melody in 3/4 waltz time arranged with smooth string crossings, dynamic high octave climax, and celebratory resolution.",
+    key: "C Major",
+    leadNotes: s_happy_birthday.notes
+  },
+  {
+    id: "jingle-bells",
+    title: "Jingle Bells",
+    artist: "Traditional Holiday",
+    genre: "Acoustic",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "lead",
+    bpm: 120,
+    timeSignature: [4, 4],
+    duration: s_jingle_bells.duration,
+    description: "Joyful holiday standard arranged with full chorus parts, verse melody ('Dashing through the snow'), grand return of the refrain, and bright finale.",
+    key: "C Major",
+    leadNotes: s_jingle_bells.notes
+  },
+  {
+    id: "brahms-lullaby",
+    title: "Brahms\u2019 Lullaby (Wiegenlied)",
+    artist: "Johannes Brahms",
+    genre: "Classical",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "lead",
+    bpm: 70,
+    timeSignature: [3, 4],
+    duration: s_brahms_lullaby.duration,
+    description: "Brahms' timeless 3/4 classical masterpiece arranged across strings 1 and 2 with tender verse themes, lyrical high arch, and tranquil resolved coda.",
+    key: "C Major",
+    leadNotes: s_brahms_lullaby.notes
+  },
+  {
+    id: "greensleeves-novice",
+    title: "Greensleeves (Novice Melodic)",
+    artist: "Traditional English",
+    genre: "Classical",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "lead",
+    bpm: 82,
+    timeSignature: [3, 4],
+    duration: s_greensleeves.duration,
+    description: "Renaissance masterpiece arranged in authentic 3/4 meter featuring complete narrative verse, soaring chorus, ornamented variation, and minor cadence.",
+    key: "A Minor",
+    leadNotes: s_greensleeves.notes
+  },
+  {
+    id: "you-are-my-sunshine",
+    title: "You Are My Sunshine",
+    artist: "Traditional Folk",
+    genre: "Folk & Country",
+    difficulty: 1,
+    difficultyLabel: "Level 1: Novice",
+    mode: "lead",
+    bpm: 100,
+    timeSignature: [4, 4],
+    duration: s_sunshine.duration,
+    description: "Timeless American folk standard arranged with complete verses, high singing chorus, melodic variation, and warm resolving cadence on string 2.",
+    key: "C Major",
+    leadNotes: s_sunshine.notes
+  },
+  {
+    id: "come-as-you-are",
+    title: "Come As You Are",
+    artist: "Nirvana",
+    genre: "Classic Rock",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "lead",
+    bpm: 120,
+    timeSignature: [4, 4],
+    duration: s_come_as_you_are.duration,
+    description: "Kurt Cobain's iconic Small Clone chorus-drenched classic featuring full intro riff, vocal verse, soaring chorus, emotional solo bends, and resolving outro.",
+    key: "E Minor",
+    leadNotes: s_come_as_you_are.notes
+  },
+  {
+    id: "ode-to-joy",
+    title: "Ode to Joy (9th Symphony)",
+    artist: "Ludwig van Beethoven",
+    genre: "Classical",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "lead",
+    bpm: 108,
+    timeSignature: [4, 4],
+    duration: s_ode_to_joy.duration,
+    description: "Beethoven's complete classical masterpiece containing Theme A, resolved second phrase, middle development bridge, authentic recapitulation, and triumphant coda.",
+    key: "C Major",
+    leadNotes: s_ode_to_joy.notes
+  },
+  {
+    id: "fur-elise",
+    title: "F\xFCr Elise",
+    artist: "Ludwig van Beethoven",
+    genre: "Classical",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "lead",
+    bpm: 128,
+    timeSignature: [3, 8],
+    duration: s_fur_elise.duration,
+    description: "Beethoven's world-famous piano romance adapted for acoustic guitar with Theme A chromatic motif, arpeggio transition, Theme B singing romance, and classical minor cadence.",
+    key: "A Minor",
+    leadNotes: s_fur_elise.notes
+  },
+  {
+    id: "bach-cello-prelude",
+    title: "Bach Cello Suite No. 1 (Prelude)",
+    artist: "Johann Sebastian Bach",
+    genre: "Classical",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "lead",
+    bpm: 86,
+    timeSignature: [4, 4],
+    duration: s_bach_cello.duration,
+    description: "J.S. Bach's immortal baroque prelude arranged for classical guitar with authentic undulating arpeggios, E-minor tonal shift, pedal point tension, and grand cadence.",
+    key: "G Major",
+    leadNotes: s_bach_cello.notes
+  },
+  {
+    id: "spanish-romance",
+    title: "Spanish Romance (Romance An\xF3nimo)",
+    artist: "Traditional Spanish",
+    genre: "Classical",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "lead",
+    bpm: 96,
+    timeSignature: [3, 4],
+    duration: s_spanish_romance.duration,
+    description: "Spain's treasured classical guitar masterpiece featuring the famous high E triplet melody, 12th-fret climax, flamenco turnaround, and resonant natural harmonic ending.",
+    key: "E Minor",
+    leadNotes: s_spanish_romance.notes
+  },
+  {
+    id: "day-tripper",
+    title: "Day Tripper",
+    artist: "The Beatles",
+    genre: "Classic Rock",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "lead",
+    bpm: 138,
+    timeSignature: [4, 4],
+    duration: s_day_tripper.duration,
+    description: "George Harrison's high-energy riff in E featuring chromatic lead drive, A-string verse shift, soaring vocal chorus, blues solo, and power outro.",
+    key: "E Major",
+    leadNotes: s_day_tripper.notes
+  },
+  {
+    id: "house-of-the-rising-sun",
+    title: "House of the Rising Sun",
+    artist: "The Animals",
+    genre: "Classic Rock",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 120,
+    timeSignature: [6, 8],
+    duration: s_house_rising_sun.duration,
+    description: "Hilton Valentine's arpeggiated electric folk-rock masterpiece in 6/8 meter cycling Am, C, D, F, and E across full verses, crescendo solo, and haunting minor outro.",
+    key: "A Minor",
+    chordEvents: s_house_rising_sun.chords
+  },
+  {
+    id: "hurt-cash",
+    title: "Hurt",
+    artist: "Johnny Cash",
+    genre: "Acoustic",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 80,
+    timeSignature: [4, 4],
+    duration: s_hurt.duration,
+    description: "Johnny Cash's poignant acoustic rendition featuring deep Am, C, D verses, booming G, Am, F choruses, and solemn unresolved cadence.",
+    key: "A Minor",
+    chordEvents: s_hurt.chords
+  },
+  {
+    id: "redemption-song",
+    title: "Redemption Song",
+    artist: "Bob Marley",
+    genre: "Acoustic",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 76,
+    timeSignature: [4, 4],
+    duration: s_redemption.duration,
+    description: "Bob Marley's solo acoustic farewell arranged with open bass walkup, poetic storytelling verses, soaring freedom chorus, and gentle outro.",
+    key: "G Major",
+    chordEvents: s_redemption.chords
+  },
+  {
+    id: "with-or-without-you",
+    title: "With or Without You",
+    artist: "U2",
+    genre: "Classic Rock",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 110,
+    timeSignature: [4, 4],
+    duration: s_with_or_without.duration,
+    description: "U2's greatest stadium ballad powered by the hypnotically repeating I-V-vi-IV progression (D, A, Bm, G) with emotional dynamic build and soaring climax.",
+    key: "D Major",
+    chordEvents: s_with_or_without.chords
+  },
+  {
+    id: "zombie",
+    title: "Zombie",
+    artist: "The Cranberries",
+    genre: "Classic Rock",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 82,
+    timeSignature: [4, 4],
+    duration: s_zombie.duration,
+    description: "Dolores O'Riordan's impassioned 90s protest anthem with heavy dynamic shifts across Em, C, G, and D from clean verse to roaring chorus.",
+    key: "E Minor",
+    chordEvents: s_zombie.chords
+  },
+  {
+    id: "let-it-be",
+    title: "Let It Be",
+    artist: "The Beatles",
+    genre: "Acoustic",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 72,
+    timeSignature: [4, 4],
+    duration: s_let_it_be.duration,
+    description: "Paul McCartney's hymn-like masterpiece moving smoothly through C, G, Am, and F with complete storytelling verses, comforting choruses, and warm piano-guitar resolution.",
+    key: "C Major",
+    chordEvents: s_let_it_be.chords
+  },
+  {
+    id: "aint-no-sunshine",
+    title: "Ain't No Sunshine",
+    artist: "Bill Withers",
+    genre: "Blues & Jazz",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 78,
+    timeSignature: [4, 4],
+    duration: s_aint_no_sunshine.duration,
+    description: "Bill Withers' Grammy-winning blues soul ballad cycling Am, Em, G, and Dm with iconic 'I know' rhythmic breakdown, verse, and intimate acoustic outro.",
+    key: "A Minor",
+    chordEvents: s_aint_no_sunshine.chords
+  },
+  {
+    id: "sweet-home-alabama",
+    title: "Sweet Home Alabama",
+    artist: "Lynyrd Skynyrd",
+    genre: "Classic Rock",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "lead",
+    bpm: 98,
+    timeSignature: [4, 4],
+    duration: s_sweet_home.duration,
+    description: "Ed King's famous D-C-G fingerpicking intro with southern hammer-on fills, complete verses, vocal chorus, piano-guitar solo licks, and classic outro.",
+    key: "D Major",
+    leadNotes: s_sweet_home.notes
+  },
+  {
+    id: "have-you-ever-seen-the-rain",
+    title: "Have You Ever Seen the Rain?",
+    artist: "Creedence Clearwater Revival",
+    genre: "Classic Rock",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 116,
+    timeSignature: [4, 4],
+    duration: s_have_you_ever.duration,
+    description: "John Fogerty's beloved roots-rock standard using bright C, G, F, and Am changes with full verses, stormy chorus, and resolving acoustic outro.",
+    key: "C Major",
+    chordEvents: s_have_you_ever.chords
+  },
+  {
+    id: "la-bamba",
+    title: "La Bamba",
+    artist: "Ritchie Valens",
+    genre: "Classic Rock",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "lead",
+    bpm: 150,
+    timeSignature: [4, 4],
+    duration: s_la_bamba.duration,
+    description: "Ritchie Valens' high-energy Latin rock pioneer track featuring arpeggiated C-F-G motif, vocal verse groove, fiery lead solo, and jubilant Spanish finale.",
+    key: "C Major",
+    leadNotes: s_la_bamba.notes
+  },
+  {
+    id: "good-riddance",
+    title: "Good Riddance (Time of Your Life)",
+    artist: "Green Day",
+    genre: "Acoustic",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 94,
+    timeSignature: [4, 4],
+    duration: s_good_riddance.duration,
+    description: "Billie Joe Armstrong's acoustic anthem featuring open G, C, D, and Em progression with complete nostalgic verses, sweeping chorus, and gentle fading strums.",
+    key: "G Major",
+    chordEvents: s_good_riddance.chords
+  },
+  {
+    id: "heart-of-gold",
+    title: "Heart of Gold",
+    artist: "Neil Young",
+    genre: "Acoustic",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 86,
+    timeSignature: [4, 4],
+    duration: s_heart_of_gold.duration,
+    description: "Neil Young's timeless country-folk masterpiece cycling Em, C, D, and G with signature acoustic mutes, searching verses, honest choruses, and harmonica coda.",
+    key: "G Major",
+    chordEvents: s_heart_of_gold.chords
+  },
+  {
+    id: "should-i-stay",
+    title: "Should I Stay or Should I Go",
+    artist: "The Clash",
+    genre: "Classic Rock",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 112,
+    timeSignature: [4, 4],
+    duration: s_should_i_stay.duration,
+    description: "Mick Jones' iconic British punk-rock anthem built on snappy D-G-D chord stabs, Spanish backing shouts, driving verses, and roaring high-energy outro.",
+    key: "D Major",
+    chordEvents: s_should_i_stay.chords
+  },
+  {
+    id: "blitzkrieg-bop",
+    title: "Blitzkrieg Bop",
+    artist: "Ramones",
+    genre: "Classic Rock",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 176,
+    timeSignature: [4, 4],
+    duration: s_blitzkrieg_bop.duration,
+    description: "Johnny Ramone's legendary 176 BPM downpicking punk blitz using A, D, and E chords with 'Hey Ho Let's Go' battle cry, relentless verses, and final wall-of-sound crash.",
+    key: "A Major",
+    chordEvents: s_blitzkrieg_bop.chords
+  },
+  {
+    id: "fast-car",
+    title: "Fast Car",
+    artist: "Tracy Chapman",
+    genre: "Acoustic",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "lead",
+    bpm: 104,
+    timeSignature: [4, 4],
+    duration: s_fast_car.duration,
+    description: "Tracy Chapman's Grammy-winning acoustic masterpiece with iconic C-G-Em-D fingerpicking riff, storytelling verses, soaring chorus, and gentle fading conclusion.",
+    key: "C Major",
+    leadNotes: s_fast_car.notes
+  },
+  {
+    id: "sound-of-silence",
+    title: "The Sound of Silence",
+    artist: "Simon & Garfunkel",
+    genre: "Acoustic",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 106,
+    timeSignature: [4, 4],
+    duration: s_sound_of_silence.duration,
+    description: "Paul Simon's poetic acoustic folk-rock landmark with haunting Am and G changes, flowing C and F choruses, and solemn silent resolution.",
+    key: "A Minor",
+    chordEvents: s_sound_of_silence.chords
+  },
+  {
+    id: "hey-jude",
+    title: "Hey Jude",
+    artist: "The Beatles",
+    genre: "Acoustic",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 74,
+    timeSignature: [4, 4],
+    duration: s_hey_jude.duration,
+    description: "Paul McCartney's timeless masterpiece featuring gentle acoustic ballad verses, heartfelt middle bridge, and the 4-minute stadium 'Na-na-na' anthem outro.",
+    key: "F Major",
+    chordEvents: s_hey_jude.chords
+  },
+  {
+    id: "boulevard-of-broken-dreams",
+    title: "Boulevard of Broken Dreams",
+    artist: "Green Day",
+    genre: "Classic Rock",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 84,
+    timeSignature: [4, 4],
+    duration: s_boulevard.duration,
+    description: "Green Day's Grammy Record of the Year featuring tremolo Em-G-D-A verse strums, powerful C-G-D-Em choruses, solo chords, and evocative outro.",
+    key: "E Minor",
+    chordEvents: s_boulevard.chords
+  },
+  {
+    id: "creep",
+    title: "Creep",
+    artist: "Radiohead",
+    genre: "Indie & Pop",
+    difficulty: 2,
+    difficultyLabel: "Level 2: Elementary",
+    mode: "chord",
+    bpm: 92,
+    timeSignature: [4, 4],
+    duration: s_creep.duration,
+    description: "Radiohead's breakthrough alt-rock anthem moving from whisper-quiet G-B-C-Cm arpeggios through Jonny Greenwood's deadened string crunches to massive wall-of-sound chorus.",
+    key: "G Major",
+    chordEvents: s_creep.chords
+  },
+  {
+    id: "wish-you-were-here-lead",
+    title: "Wish You Were Here (Lead)",
+    artist: "Pink Floyd",
+    genre: "Classic Rock",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "lead",
+    bpm: 64,
+    timeSignature: [4, 4],
+    duration: s_wish_lead.duration,
+    description: "David Gilmour's legendary acoustic intro solo with gentle bends, slides, lyrical verse fills, soaring chorus lines, and emotional acoustic outro.",
+    key: "G Major",
+    leadNotes: s_wish_lead.notes
+  },
+  {
+    id: "wish-you-were-here-chords",
+    title: "Wish You Were Here (Chords)",
+    artist: "Pink Floyd",
+    genre: "Acoustic",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "chord",
+    bpm: 64,
+    timeSignature: [4, 4],
+    duration: s_wish_chords.duration,
+    description: "The complete rhythmic accompaniment for Pink Floyd's classic ballad using open G, Em, C, D, and Am with full storytelling verses, choruses, and warm outro.",
+    key: "G Major",
+    chordEvents: s_wish_chords.chords
+  },
+  {
+    id: "californication",
+    title: "Californication",
+    artist: "Red Hot Chili Peppers",
+    genre: "Classic Rock",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "lead",
+    bpm: 96,
+    timeSignature: [4, 4],
+    duration: s_californication.duration,
+    description: "John Frusciante's minimalist masterpiece featuring syncopated Am-F fingerpicking, vocal melody chorus, expressive guitar solo on high frets, and gentle resolving coda.",
+    key: "A Minor",
+    leadNotes: s_californication.notes
+  },
+  {
+    id: "riptide",
+    title: "Riptide",
+    artist: "Vance Joy",
+    genre: "Indie & Pop",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "chord",
+    bpm: 102,
+    timeSignature: [4, 4],
+    duration: s_riptide.duration,
+    description: "Vance Joy's global indie-folk hit driven by energetic Am, G, and C syncopated strums with playful verses, singalong chorus, F-major bridge, and upbeat finish.",
+    key: "C Major",
+    chordEvents: s_riptide.chords
+  },
+  {
+    id: "wonderwall",
+    title: "Wonderwall",
+    artist: "Oasis",
+    genre: "Classic Rock",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "chord",
+    bpm: 88,
+    timeSignature: [4, 4],
+    duration: s_wonderwall.duration,
+    description: "Noel Gallagher's 90s Britpop anthem keeping fingers anchored on strings 1 and 2 across Em7, G, Dsus4, and A7sus4 with verses, pre-chorus build, and massive singalong chorus.",
+    key: "F# Minor",
+    chordEvents: s_wonderwall.chords
+  },
+  {
+    id: "hotel-california-easy",
+    title: "Hotel California",
+    artist: "Eagles",
+    genre: "Classic Rock",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "chord",
+    bpm: 74,
+    timeSignature: [4, 4],
+    duration: s_hotel_california_easy.duration,
+    description: "Don Felder's 12-string acoustic progression cycling Bm, F#, A, E, G, D, Em, and F# (arranged with capo position) complete with dark desert verses, iconic chorus, and harmony solo chords.",
+    key: "B Minor",
+    chordEvents: s_hotel_california_easy.chords
+  },
+  {
+    id: "under-the-bridge",
+    title: "Under the Bridge",
+    artist: "Red Hot Chili Peppers",
+    genre: "Classic Rock",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "chord",
+    bpm: 84,
+    timeSignature: [4, 4],
+    duration: s_under_bridge.duration,
+    description: "John Frusciante's masterwork combining Hendrix-style embellishments, intimate verses, emotional chorus changes, and sweeping choir outro.",
+    key: "E Major",
+    chordEvents: s_under_bridge.chords
+  },
+  {
+    id: "black-pearl-jam",
+    title: "Black",
+    artist: "Pearl Jam",
+    genre: "Classic Rock",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "chord",
+    bpm: 72,
+    timeSignature: [4, 4],
+    duration: s_black_pearl_jam.duration,
+    description: "Eddie Vedder's emotional grunge masterpiece moving between delicate E and A verses, sweeping C and Em choruses, and an unforgettable cathartic outro.",
+    key: "E Major",
+    chordEvents: s_black_pearl_jam.chords
+  },
+  {
+    id: "alive-riff",
+    title: "Alive",
+    artist: "Pearl Jam",
+    genre: "Classic Rock",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "lead",
+    bpm: 75,
+    timeSignature: [4, 4],
+    duration: s_alive_riff.duration,
+    description: "Stone Gossard's anthemic A-minor guitar riff, driving verse groove, soaring vocal chorus hook, screaming pentatonic guitar solo, and rock climax.",
+    key: "A Major",
+    leadNotes: s_alive_riff.notes
+  },
+  {
+    id: "tush",
+    title: "Tush",
+    artist: "ZZ Top",
+    genre: "Blues & Jazz",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "lead",
+    bpm: 144,
+    timeSignature: [4, 4],
+    duration: s_tush.duration,
+    description: "Billy Gibbons' driving 12-bar Texas blues boogie shuffle in G with wicked pinch harmonics, IV-chord modulation, blistering slide solo, and foot-stomping finish.",
+    key: "G Major",
+    leadNotes: s_tush.notes
+  },
+  {
+    id: "you-shook-me-intro",
+    title: "You Shook Me All Night Long",
+    artist: "AC/DC",
+    genre: "Classic Rock",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "lead",
+    bpm: 128,
+    timeSignature: [4, 4],
+    duration: s_you_shook_me.duration,
+    description: "Angus Young's signature open-string lead hook, hard-driving Malcolm rhythm verse, soaring stadium chorus, electrifying solo, and power rock coda.",
+    key: "G Major",
+    leadNotes: s_you_shook_me.notes
+  },
+  {
+    id: "all-along-the-watchtower",
+    title: "All Along the Watchtower",
+    artist: "Jimi Hendrix / Bob Dylan",
+    genre: "Classic Rock",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "chord",
+    bpm: 114,
+    timeSignature: [4, 4],
+    duration: s_watchtower.duration,
+    description: "Hendrix's immortal electric transformation of Bob Dylan's three-chord turnaround (Am, G, F, G) with urgent rhythm drive, explosive solo breaks, and dramatic climax.",
+    key: "A Minor",
+    chordEvents: s_watchtower.chords
+  },
+  {
+    id: "nothing-else-matters",
+    title: "Nothing Else Matters",
+    artist: "Metallica",
+    genre: "Metal & Heavy",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "lead",
+    bpm: 142,
+    timeSignature: [6, 8],
+    duration: s_nothing_else_matters.duration,
+    description: "James Hetfield's power ballad in 6/8 meter featuring the legendary open E-minor arpeggio, natural harmonics, lyrical vocal melody, chorus, and emotive acoustic solo.",
+    key: "E Minor",
+    leadNotes: s_nothing_else_matters.notes
+  },
+  {
+    id: "dont-stop-believin",
+    title: "Don't Stop Believin'",
+    artist: "Journey",
+    genre: "Classic Rock",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "chord",
+    bpm: 118,
+    timeSignature: [4, 4],
+    duration: s_dont_stop_believin.duration,
+    description: "Journey's definitive arena rock anthem featuring the timeless E, B, C#m, A progression complete with small town verses, midnight train build, and triumphant chorus finish.",
+    key: "E Major",
+    chordEvents: s_dont_stop_believin.chords
+  },
+  {
+    id: "crazy-train",
+    title: "Crazy Train",
+    artist: "Ozzy Osbourne",
+    genre: "Metal & Heavy",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "lead",
+    bpm: 138,
+    timeSignature: [4, 4],
+    duration: s_crazy_train.duration,
+    description: "Randy Rhoads' neoclassical metal masterpiece featuring the legendary F#m pedal-point opening riff, power chord verse, chorus hook, neo-classical solo, and train outro.",
+    key: "F# Minor",
+    leadNotes: s_crazy_train.notes
+  },
+  {
+    id: "back-in-black",
+    title: "Back in Black",
+    artist: "AC/DC",
+    genre: "Classic Rock",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "lead",
+    bpm: 94,
+    timeSignature: [4, 4],
+    duration: s_back_in_black.duration,
+    description: "One of the bestselling hard rock songs of all time featuring Angus Young's monumental power chords, pull-off blues run, heavy verse, screaming chorus, and thunderous finish.",
+    key: "E Major",
+    leadNotes: s_back_in_black.notes
+  },
+  {
+    id: "vivaldi-spring",
+    title: "Spring (The Four Seasons)",
+    artist: "Antonio Vivaldi",
+    genre: "Classical",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "lead",
+    bpm: 106,
+    timeSignature: [4, 4],
+    duration: s_vivaldi_spring.duration,
+    description: "Vivaldi's joyous baroque masterpiece arranged for guitar with famous Allegro theme, bird song trills, thunderstorm interlude, and celebratory spring finale.",
+    key: "E Major",
+    leadNotes: s_vivaldi_spring.notes
+  },
+  {
+    id: "mozart-turkish-march",
+    title: "Turkish March (Rondo alla Turca)",
+    artist: "Wolfgang Amadeus Mozart",
+    genre: "Classical",
+    difficulty: 3,
+    difficultyLabel: "Level 3: Intermediate",
+    mode: "lead",
+    bpm: 128,
+    timeSignature: [2, 4],
+    duration: s_mozart_turkish_march.duration,
+    description: "Mozart's virtuosic piano rondo arranged for classical guitar featuring lightning-fast Theme A sixteenth runs, triumphant major-key march, scalar climax, and brilliant Ottoman coda.",
+    key: "A Minor",
+    leadNotes: s_mozart_turkish_march.notes
+  },
+  {
+    id: "black-magic-woman",
+    title: "Black Magic Woman",
+    artist: "Santana / Fleetwood Mac",
+    genre: "Blues & Jazz",
+    difficulty: 4,
+    difficultyLabel: "Level 4: Advanced",
+    mode: "lead",
+    bpm: 126,
+    timeSignature: [4, 4],
+    duration: s_black_magic_woman.duration,
+    description: "Carlos Santana's signature Latin-rock blues tour-de-force featuring vocal neck-pickup sustain, percussion grooves, expressive minor pentatonic soloing, and the fiery Gypsy Queen climax.",
+    key: "D Minor",
+    leadNotes: s_black_magic_woman.notes
+  },
+  {
+    id: "pride-and-joy",
+    title: "Pride and Joy",
+    artist: "Stevie Ray Vaughan",
+    genre: "Blues & Jazz",
+    difficulty: 4,
+    difficultyLabel: "Level 4: Advanced",
+    mode: "lead",
+    bpm: 124,
+    timeSignature: [4, 4],
+    duration: s_pride_and_joy.duration,
+    description: "Stevie Ray Vaughan's legendary Texas blues shuffle in E with percussive muted rakes, 12-bar changes, blistering open-position pentatonic licks, and thunderous turnaround finish.",
+    key: "E Major",
+    leadNotes: s_pride_and_joy.notes
+  },
+  {
+    id: "crossroads",
+    title: "Crossroads (Blues Riff)",
+    artist: "Cream / Eric Clapton",
+    genre: "Blues & Jazz",
+    difficulty: 4,
+    difficultyLabel: "Level 4: Advanced",
+    mode: "lead",
+    bpm: 130,
+    timeSignature: [4, 4],
+    duration: s_crossroads.duration,
+    description: "Eric Clapton's high-octane live blues masterwork with driving Gibson SG tone, 12-bar turnaround changes, fiery blues soloing, and Robert Johnson tribute cadence.",
+    key: "A Major",
+    leadNotes: s_crossroads.notes
+  },
+  {
+    id: "little-wing",
+    title: "Little Wing",
+    artist: "Jimi Hendrix",
+    genre: "Blues & Jazz",
+    difficulty: 4,
+    difficultyLabel: "Level 4: Advanced",
+    mode: "lead",
+    bpm: 71,
+    timeSignature: [4, 4],
+    duration: s_little_wing.duration,
+    description: "Jimi Hendrix's fluid guitar ballad masterpiece weaving thumb-over chords with delicate hammer-ons, soul verses, expressive whammy soloing, and ethereal glockenspiel resolution.",
+    key: "E Minor",
+    leadNotes: s_little_wing.notes
+  },
+  {
+    id: "canon-rock",
+    title: "Canon Rock",
+    artist: "JerryC / Johann Pachelbel",
+    genre: "Classical",
+    difficulty: 4,
+    difficultyLabel: "Level 4: Advanced",
+    mode: "lead",
+    bpm: 132,
+    timeSignature: [4, 4],
+    duration: s_canon_rock.duration,
+    description: "JerryC's sensational neoclassical arrangement of Pachelbel's Canon with gentle classical opening, heavy rock rhythm entry, sweeping arpeggios, tapping solo, and epic finale.",
+    key: "D Major",
+    leadNotes: s_canon_rock.notes
+  },
+  {
+    id: "cliffs-of-dover",
+    title: "Cliffs of Dover",
+    artist: "Eric Johnson",
+    genre: "Classic Rock",
+    difficulty: 5,
+    difficultyLabel: "Level 5: Master",
+    mode: "lead",
+    bpm: 180,
+    timeSignature: [4, 4],
+    duration: s_cliffs.duration,
+    description: "Eric Johnson's Grammy-winning electric instrumental tour-de-force with cascading rubato pentatonic waterfalls, hybrid picking bounce, violin-like tone melody, and blazing coda.",
+    key: "G Major",
+    leadNotes: s_cliffs.notes
+  },
+  {
+    id: "stairway-to-heaven",
+    title: "Stairway to Heaven (Intro & Solo)",
+    artist: "Led Zeppelin",
+    genre: "Classic Rock",
+    difficulty: 5,
+    difficultyLabel: "Level 5: Master",
+    mode: "lead",
+    bpm: 78,
+    timeSignature: [4, 4],
+    duration: s_stairway.duration,
+    description: "Jimmy Page's polyphonic acoustic masterpiece featuring descending chromatic basslines, Renaissance verse picking, 12-string fanfare, screaming rock guitar solo, and whisper outro.",
+    key: "A Minor",
+    leadNotes: s_stairway.notes
+  },
+  {
+    id: "blackbird",
+    title: "Blackbird",
+    artist: "The Beatles",
+    genre: "Acoustic",
+    difficulty: 5,
+    difficultyLabel: "Level 5: Master",
+    mode: "lead",
+    bpm: 94,
+    timeSignature: [3, 4],
+    duration: s_blackbird.duration,
+    description: "Paul McCartney's acoustic fingerstyle tour-de-force inspired by J.S. Bach's Bourr\xE9e in E Minor with simultaneous bass and high 10ths, tapping foot rhythm, and birdsong resolution.",
+    key: "G Major",
+    leadNotes: s_blackbird.notes
+  },
+  {
+    id: "master-of-puppets",
+    title: "Master of Puppets",
+    artist: "Metallica",
+    genre: "Metal & Heavy",
+    difficulty: 5,
+    difficultyLabel: "Level 5: Master",
+    mode: "lead",
+    bpm: 212,
+    timeSignature: [4, 4],
+    duration: s_master_of_puppets.duration,
+    description: "The pinnacle of thrash metal guitar endurance featuring relentless 212 BPM chromatic downpicking, spider-chord verse riffs, shouting choruses, harmonic interlude, and crushing final hits.",
+    key: "E Minor",
+    leadNotes: s_master_of_puppets.notes
+  },
+  {
+    id: "paganini-caprice-24",
+    title: "Caprice No. 24 (Guitar Theme)",
+    artist: "Niccol\xF2 Paganini",
+    genre: "Classical",
+    difficulty: 5,
+    difficultyLabel: "Level 5: Master",
+    mode: "lead",
+    bpm: 134,
+    timeSignature: [2, 4],
+    duration: s_paganini.duration,
+    description: "Niccol\xF2 Paganini's legendary 24th Caprice adapted for classical guitar featuring the immortal Theme Quasi Presto, rapid arpeggio variations, high register virtuoso runs, and grand classical cadence.",
+    key: "A Minor",
+    leadNotes: s_paganini.notes
+  }
+];
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  SONGS_CATALOG
+});

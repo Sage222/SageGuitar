@@ -142,7 +142,7 @@ export const PRACTICE_DRILLS: PracticeDrill[] = [
     title: 'A Minor Pentatonic (Box 1)',
     subtitle: 'The #1 most essential guitar soloing shape in rock & blues',
     category: 'scales',
-    difficulty: 1,
+    difficulty: 2,
     defaultBpm: 75,
     timeSignature: [4, 4],
     key: 'Am',
