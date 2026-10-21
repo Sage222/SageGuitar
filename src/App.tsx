@@ -152,7 +152,7 @@ export default function App() {
         {activeTab === 'catalog' && (
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-slate-850 to-slate-900 border border-slate-800 p-6 md:p-8 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="max-w-xl z-10">
-              <div className="flex items-center gap-2 text-xs font-mono text-amber-400 mb-2">
+              <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 mb-2">
                 <span>SIMPLY GUITAR & YOUSICIAN STYLE</span>
                 <span aria-hidden="true">·</span>
                 <span>REAL-TIME PITCH LISTENING</span>
@@ -167,7 +167,7 @@ export default function App() {
               <div className="flex flex-wrap items-center gap-3 mt-6">
                 <button
                   onClick={() => setActiveTab('studio')}
-                  className="px-5 py-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs flex items-center gap-2 hover:bg-amber-400 transition shadow-lg shadow-amber-500/20 active:scale-95"
+                  className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs flex items-center gap-2 hover:bg-emerald-400 transition shadow-lg shadow-emerald-500/20 active:scale-95"
                 >
                   <Play className="w-4 h-4 fill-slate-950" />
                   <span>Play Runway ({selectedSong.title})</span>
@@ -175,9 +175,9 @@ export default function App() {
 
                 <button
                   onClick={() => setActiveTab('practice')}
-                  className="px-4 py-2.5 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-300 font-bold text-xs hover:bg-amber-500/25 transition flex items-center gap-2 shadow-sm"
+                  className="px-4 py-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-bold text-xs hover:bg-emerald-500/25 transition flex items-center gap-2 shadow-sm"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
                   <span>Practice Scales & Drills</span>
                 </button>
 
@@ -198,7 +198,7 @@ export default function App() {
             </div>
 
             {/* Right Hero Artwork */}
-            <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden shrink-0 border border-amber-500/30 shadow-2xl">
+            <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden shrink-0 border border-emerald-500/30 shadow-2xl">
               <img
                 src={rockAnthemCover}
                 alt="Guitar Trainer Tube Amplifier and Sunburst Guitar"

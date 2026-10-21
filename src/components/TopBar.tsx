@@ -25,7 +25,7 @@ export const TopBar: React.FC<TopBarProps> = ({
           e.preventDefault();
           onTabChange('catalog');
         }}
-        className="text-lg font-extrabold tracking-tight text-white whitespace-nowrap shrink-0 hover:text-amber-400 transition-colors"
+        className="text-lg font-extrabold tracking-tight text-white whitespace-nowrap shrink-0 hover:text-emerald-400 transition-colors"
       >
         StringMaster
       </a>
@@ -35,7 +35,7 @@ export const TopBar: React.FC<TopBarProps> = ({
         <button
           onClick={() => onTabChange('catalog')}
           className={`hover:text-white transition-colors whitespace-nowrap shrink-0 ${
-            activeTab === 'catalog' ? 'text-amber-400 font-bold' : ''
+            activeTab === 'catalog' ? 'text-emerald-400 font-bold' : ''
           }`}
         >
           Songs
@@ -43,7 +43,7 @@ export const TopBar: React.FC<TopBarProps> = ({
         <button
           onClick={() => onTabChange('studio')}
           className={`hover:text-white transition-colors whitespace-nowrap shrink-0 ${
-            activeTab === 'studio' ? 'text-amber-400 font-bold' : ''
+            activeTab === 'studio' ? 'text-emerald-400 font-bold' : ''
           }`}
         >
           Runway
@@ -51,18 +51,18 @@ export const TopBar: React.FC<TopBarProps> = ({
         <button
           onClick={() => onTabChange('practice')}
           className={`hover:text-white transition-colors whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
-            activeTab === 'practice' ? 'text-amber-400 font-bold' : ''
+            activeTab === 'practice' ? 'text-emerald-400 font-bold' : ''
           }`}
         >
           <span>Practice</span>
-          <span className="text-[10px] font-mono bg-amber-500/20 text-amber-300 px-1.5 py-0.2 rounded border border-amber-500/40">
+          <span className="text-[10px] font-mono bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded border border-emerald-500/40">
             Scales
           </span>
         </button>
         <button
           onClick={() => onTabChange('dashboard')}
           className={`hover:text-white transition-colors whitespace-nowrap shrink-0 ${
-            activeTab === 'dashboard' ? 'text-amber-400 font-bold' : ''
+            activeTab === 'dashboard' ? 'text-emerald-400 font-bold' : ''
           }`}
         >
           Dashboard
@@ -70,7 +70,7 @@ export const TopBar: React.FC<TopBarProps> = ({
         <button
           onClick={() => onTabChange('tuner')}
           className={`hover:text-white transition-colors whitespace-nowrap shrink-0 ${
-            activeTab === 'tuner' ? 'text-amber-400 font-bold' : ''
+            activeTab === 'tuner' ? 'text-emerald-400 font-bold' : ''
           }`}
         >
           Tuner
@@ -78,7 +78,7 @@ export const TopBar: React.FC<TopBarProps> = ({
         <button
           onClick={() => onTabChange('chords')}
           className={`hover:text-white transition-colors whitespace-nowrap shrink-0 ${
-            activeTab === 'chords' ? 'text-amber-400 font-bold' : ''
+            activeTab === 'chords' ? 'text-emerald-400 font-bold' : ''
           }`}
         >
           Chords
@@ -92,7 +92,7 @@ export const TopBar: React.FC<TopBarProps> = ({
           className={`px-4 py-2 text-xs font-bold rounded-lg flex items-center gap-2 transition-all whitespace-nowrap shrink-0 ${
             isMicActive
               ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40 hover:bg-rose-500/30'
-              : 'bg-amber-500 text-slate-950 hover:bg-amber-400 shadow-md shadow-amber-500/20'
+              : 'bg-emerald-500 text-slate-950 hover:bg-emerald-400 shadow-md shadow-emerald-500/20'
           }`}
         >
           {isMicActive ? (

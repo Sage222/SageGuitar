@@ -96,7 +96,7 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
           <div>
             <h2 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
-              <Music className="w-5 h-5 text-amber-400" />
+              <Music className="w-5 h-5 text-emerald-400" />
               Guitar Song Catalog ({songs.length} Arrangements)
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
@@ -112,7 +112,7 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
               placeholder="Search by song, artist, classical composer, key..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-9 py-2.5 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+              className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-9 py-2.5 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-emerald-500"
             />
             {searchQuery && (
               <button
@@ -135,7 +135,7 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
               onClick={() => setSelectedDifficulty('all')}
               className={`p-2.5 text-xs font-semibold rounded-xl border text-left transition ${
                 selectedDifficulty === 'all'
-                  ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-sm'
+                  ? 'bg-emerald-500 text-slate-950 border-emerald-400 shadow-sm'
                   : 'bg-slate-950/70 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
               }`}
             >
@@ -152,7 +152,7 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
                   onClick={() => setSelectedDifficulty(lvl.level)}
                   className={`p-2.5 text-xs rounded-xl border text-left transition flex flex-col justify-between ${
                     isSelected
-                      ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-sm font-bold'
+                      ? 'bg-emerald-500 text-slate-950 border-emerald-400 shadow-sm font-bold'
                       : 'bg-slate-950/70 border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
                   }`}
                 >
@@ -183,7 +183,7 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
                 onClick={() => setSelectedMode(mode)}
                 className={`px-3 py-1.5 text-xs font-semibold rounded-md transition capitalize ${
                   selectedMode === mode
-                    ? 'bg-slate-800 text-amber-400 shadow-sm'
+                    ? 'bg-slate-800 text-emerald-400 shadow-sm'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -198,16 +198,16 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
             <select
               value={selectedGenre}
               onChange={(e) => setSelectedGenre(e.target.value)}
-              className="bg-slate-950 border border-slate-800 text-xs text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-amber-500 font-mono"
+              className="bg-slate-950 border border-slate-800 text-xs text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-emerald-500 font-mono"
             >
               <option value="all">All Genres ({songs.length})</option>
+              <option value="Beginner Classics">Beginner Classics</option>
               <option value="Classical">Classical</option>
               <option value="Classic Rock">Classic Rock</option>
               <option value="Acoustic">Acoustic</option>
-              <option value="Indie & Pop">Indie & Pop</option>
+              <option value="Pop & Indie">Pop & Indie</option>
               <option value="Blues & Jazz">Blues & Jazz</option>
               <option value="Metal & Heavy">Metal & Heavy</option>
-              <option value="Folk & Country">Folk & Country</option>
             </select>
           </div>
         </div>
@@ -215,15 +215,15 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
 
       {/* Practice Tools Quick Access Banner */}
       {onNavigateToPractice && (
-        <div className="bg-gradient-to-r from-indigo-950/40 via-slate-900 to-amber-950/30 border border-indigo-500/30 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-lg">
+        <div className="bg-gradient-to-r from-indigo-950/40 via-slate-900 to-emerald-950/30 border border-emerald-500/30 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-lg">
           <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center shrink-0 text-lg">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center shrink-0 text-lg">
               🕷️
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold text-white">Beginner Practice Tools & Scales</span>
-                <span className="text-[10px] font-mono bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40 font-bold">
+                <span className="text-[10px] font-mono bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/40 font-bold">
                   NEW
                 </span>
               </div>
@@ -235,7 +235,7 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
 
           <button
             onClick={onNavigateToPractice}
-            className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-xs font-bold font-sans flex items-center gap-2 transition shrink-0 shadow-md shadow-amber-500/20"
+            className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl text-xs font-bold font-sans flex items-center gap-2 transition shrink-0 shadow-md shadow-emerald-500/20"
           >
             <Sparkles className="w-3.5 h-3.5 fill-slate-950" />
             <span>Open Practice Studio</span>
@@ -295,7 +295,7 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
                 onClick={() => onSelectSong(song)}
                 className={`grid grid-cols-12 gap-4 px-6 py-3.5 items-center transition-colors cursor-pointer group ${
                   isSelected
-                    ? 'bg-amber-500/10'
+                    ? 'bg-emerald-500/10'
                     : 'hover:bg-slate-850/80'
                 }`}
               >
@@ -304,15 +304,15 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
                   <div
                     className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border transition ${
                       isSelected
-                        ? 'bg-amber-500 text-slate-950 border-amber-400'
-                        : 'bg-slate-950 border-slate-800 text-slate-400 group-hover:border-amber-500/40 group-hover:text-amber-400'
+                        ? 'bg-emerald-500 text-slate-950 border-emerald-400'
+                        : 'bg-slate-950 border-slate-800 text-slate-400 group-hover:border-emerald-500/40 group-hover:text-emerald-400'
                     }`}
                   >
                     <Music className="w-4 h-4" />
                   </div>
 
                   <div className="min-w-0">
-                    <h3 className="text-sm font-bold text-white truncate group-hover:text-amber-400 transition-colors">
+                    <h3 className="text-sm font-bold text-white truncate group-hover:text-emerald-400 transition-colors">
                       {song.title}
                     </h3>
                     <div className="text-xs text-slate-400 truncate mt-0.5">{song.artist}</div>
@@ -350,7 +350,7 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
                       e.stopPropagation();
                       onSelectSong(song);
                     }}
-                    className="px-3.5 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 hover:bg-amber-400 transition shadow-sm active:scale-95"
+                    className="px-3.5 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 hover:bg-emerald-400 transition shadow-sm active:scale-95"
                   >
                     <Play className="w-3 h-3 fill-slate-950" />
                     <span>Play</span>

@@ -197,8 +197,8 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
       {/* Top Banner / Hero */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-slate-800 p-6 md:p-8 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="max-w-2xl">
-          <div className="flex items-center gap-2 text-xs font-mono text-amber-400 mb-2">
-            <Flame className="w-4 h-4 text-amber-500" />
+          <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 mb-2">
+            <Flame className="w-4 h-4 text-emerald-500" />
             <span className="font-bold tracking-wider uppercase">Guitar Workout & Scale Trainer</span>
             <span aria-hidden="true">·</span>
             <span>Beginner to Advanced</span>
@@ -214,7 +214,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
 
           <div className="flex flex-wrap items-center gap-3 mt-4 text-xs font-mono text-slate-400">
             <span className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700/60">
-              <Clock className="w-3.5 h-3.5 text-amber-400" />
+              <Clock className="w-3.5 h-3.5 text-emerald-400" />
               Practice Session: {Math.floor(sessionSeconds / 60)}m {sessionSeconds % 60}s
             </span>
             <button
@@ -240,7 +240,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
         <div className="flex flex-col gap-2 shrink-0 self-stretch md:self-auto">
           <button
             onClick={() => onPlayOnRunway(convertDrillToSong(activeDrill))}
-            className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-extrabold text-sm flex items-center justify-center gap-2.5 transition shadow-xl shadow-amber-500/25 active:scale-95"
+            className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-300 text-slate-950 font-extrabold text-sm flex items-center justify-center gap-2.5 transition shadow-xl shadow-emerald-500/25 active:scale-95"
           >
             <Play className="w-4 h-4 fill-slate-950" />
             <span>Play On 3D Runway</span>
@@ -260,7 +260,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-800">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/30">
+                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                     {activeDrill.category.toUpperCase()}
                   </span>
                   <span className="text-[11px] font-mono text-slate-400">
@@ -276,9 +276,9 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
               {/* Direct Runway Action */}
               <button
                 onClick={() => onPlayOnRunway(convertDrillToSong(activeDrill))}
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-750 text-amber-400 hover:text-amber-300 border border-amber-500/30 rounded-xl text-xs font-bold flex items-center gap-2 transition self-start sm:self-auto shrink-0 shadow-md"
+                className="px-4 py-2 bg-slate-800 hover:bg-slate-750 text-emerald-400 hover:text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-bold flex items-center gap-2 transition self-start sm:self-auto shrink-0 shadow-md"
               >
-                <Zap className="w-3.5 h-3.5 fill-amber-400" />
+                <Zap className="w-3.5 h-3.5 fill-emerald-400" />
                 <span>Launch Runway Mode</span>
               </button>
             </div>
@@ -286,10 +286,10 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
             {/* Description & Ergonomics / Technique Callout */}
             <div className="flex flex-col gap-3">
               <p className="text-xs text-slate-300 leading-relaxed">{activeDrill.description}</p>
-              <div className="bg-amber-950/25 border border-amber-500/30 rounded-xl p-3.5 flex items-start gap-3">
-                <HelpCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <div className="bg-emerald-950/25 border border-emerald-500/30 rounded-xl p-3.5 flex items-start gap-3">
+                <HelpCircle className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                 <div className="text-xs leading-relaxed">
-                  <strong className="text-amber-300 font-semibold">Pro Technique & Ergonomics: </strong>
+                  <strong className="text-emerald-300 font-semibold">Pro Technique & Ergonomics: </strong>
                   <span className="text-slate-300">{activeDrill.techniqueTip}</span>
                 </div>
               </div>
@@ -299,7 +299,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
             <div className="flex flex-col gap-3 pt-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-slate-300 flex items-center gap-2">
-                  <Layers className="w-3.5 h-3.5 text-amber-400" />
+                  <Layers className="w-3.5 h-3.5 text-emerald-400" />
                   <span>Fretboard Position Map</span>
                 </span>
                 <span className="text-[11px] text-slate-400 font-mono">
@@ -311,7 +311,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                 <div className="min-w-[760px] relative bg-stone-900 border-2 border-stone-800 rounded-xl p-4 shadow-inner">
                   {/* Fret numbers indicator */}
                   <div className="flex text-[11px] font-mono text-slate-500 mb-2 pl-12 pr-2">
-                    <div className="w-10 text-center font-bold text-amber-500">Nut (0)</div>
+                    <div className="w-10 text-center font-bold text-emerald-500">Nut (0)</div>
                     {Array.from({ length: FRETS_COUNT }, (_, i) => i + 1).map((fret) => (
                       <div key={fret} className="flex-1 text-center">
                         {fret}
@@ -366,8 +366,8 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                                     onClick={() => audioEngine.playGuitarFret(stringIndex, 0, 1.4)}
                                     className={`w-7 h-7 rounded-full flex flex-col items-center justify-center text-[10px] font-bold font-mono transition-transform hover:scale-110 shadow-md ${
                                       isActiveStep
-                                        ? 'bg-amber-400 text-slate-950 ring-4 ring-amber-400/50 animate-pulse'
-                                        : 'bg-amber-500/30 text-amber-300 border border-amber-400'
+                                        ? 'bg-emerald-400 text-slate-950 ring-4 ring-emerald-400/50 animate-pulse'
+                                        : 'bg-emerald-500/30 text-emerald-300 border border-emerald-400'
                                     }`}
                                   >
                                     <span>{openNote.noteName}</span>
@@ -418,12 +418,12 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                                       }
                                       className={`w-7 h-7 rounded-full flex flex-col items-center justify-center text-[10px] font-bold font-mono transition-transform hover:scale-125 shadow-lg ${
                                         isActiveStep
-                                          ? 'bg-amber-400 text-slate-950 ring-4 ring-amber-400/60 scale-110 z-20 font-extrabold animate-bounce'
+                                          ? 'bg-emerald-400 text-slate-950 ring-4 ring-emerald-400/60 scale-110 z-20 font-extrabold animate-bounce'
                                           : noteInDrill.degree?.includes('Root')
-                                          ? 'bg-amber-500 text-slate-950 border-2 border-white font-black'
+                                          ? 'bg-emerald-500 text-slate-950 border-2 border-white font-black'
                                           : noteInDrill.degree?.includes('Blue')
                                           ? 'bg-sky-500 text-slate-950 border-2 border-white font-black'
-                                          : 'bg-slate-800 text-slate-100 border border-slate-600 hover:border-amber-400'
+                                          : 'bg-slate-800 text-slate-100 border border-slate-600 hover:border-emerald-400'
                                       }`}
                                       title={`${noteInDrill.noteName} (Fret ${fret}, Finger ${noteInDrill.finger || 'Open'})`}
                                     >
@@ -458,10 +458,10 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                      <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
+                      <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
                       <span>Note-by-Note Walkthrough:</span>
                     </span>
-                    <span className="text-xs font-mono text-amber-400 font-bold">
+                    <span className="text-xs font-mono text-emerald-400 font-bold">
                       Step {currentStepIndex + 1} of {activeDrill.notes.length}
                     </span>
                   </div>
@@ -480,7 +480,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition ${
                         isAutoWalking
                           ? 'bg-rose-500 text-white hover:bg-rose-600'
-                          : 'bg-amber-500 text-slate-950 hover:bg-amber-400'
+                          : 'bg-emerald-500 text-slate-950 hover:bg-emerald-400'
                       }`}
                     >
                       {isAutoWalking ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
@@ -525,7 +525,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                         </span>
                         <span className="text-[11px] text-slate-400">
                           Finger:{' '}
-                          <strong className="text-amber-400">
+                          <strong className="text-emerald-400">
                             {activeStepNote.finger === 1
                               ? '1 (Index)'
                               : activeStepNote.finger === 2
@@ -559,7 +559,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                       onClick={handlePlayCurrentNote}
                       className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 transition"
                     >
-                      <Volume2 className="w-3.5 h-3.5 text-amber-400" />
+                      <Volume2 className="w-3.5 h-3.5 text-emerald-400" />
                       <span>Hear Note</span>
                     </button>
                   </div>
@@ -571,7 +571,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
             {activeDrill.category === 'chords' && activeDrill.chordProgression && (
               <div className="bg-slate-950/70 border border-slate-800 rounded-xl p-4 flex flex-col gap-3">
                 <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                  <Music className="w-3.5 h-3.5 text-amber-400" />
+                  <Music className="w-3.5 h-3.5 text-emerald-400" />
                   <span>Chord Transition Sequence (Strum each for 4 beats):</span>
                 </span>
                 <div className="flex flex-wrap items-center gap-2">
@@ -585,9 +585,9 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                             audioEngine.playGuitarChord(chordDef.frets, 'down', 2.0);
                           }
                         }}
-                        className="px-4 py-2.5 rounded-xl bg-slate-850 hover:bg-slate-800 border border-slate-700 text-sm font-bold font-mono text-white flex items-center gap-2 hover:border-amber-400 transition"
+                        className="px-4 py-2.5 rounded-xl bg-slate-850 hover:bg-slate-800 border border-slate-700 text-sm font-bold font-mono text-white flex items-center gap-2 hover:border-emerald-400 transition"
                       >
-                        <span className="text-amber-400 text-xs">#{idx + 1}</span>
+                        <span className="text-emerald-400 text-xs">#{idx + 1}</span>
                         <span>{chord}</span>
                         <Volume2 className="w-3 h-3 text-slate-400" />
                       </button>
@@ -605,7 +605,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col gap-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <div className="flex items-center gap-2">
-                <Activity className="w-4 h-4 text-amber-400" />
+                <Activity className="w-4 h-4 text-emerald-400" />
                 <h3 className="text-sm font-bold text-white">Speed Trainer & Metronome</h3>
               </div>
               <button
@@ -613,7 +613,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                 className={`px-3 py-1 rounded-lg text-xs font-bold font-mono transition ${
                   isMetronomeActive
                     ? 'bg-rose-500 text-white animate-pulse'
-                    : 'bg-amber-500 text-slate-950 hover:bg-amber-400'
+                    : 'bg-emerald-500 text-slate-950 hover:bg-emerald-400'
                 }`}
               >
                 {isMetronomeActive ? 'STOP CLICK' : 'START CLICK'}
@@ -632,7 +632,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                     className={`flex-1 flex flex-col items-center justify-center py-2 mx-1 rounded-lg transition-all ${
                       isCurrent
                         ? isAccent
-                          ? 'bg-amber-500 text-slate-950 font-black shadow-lg shadow-amber-500/30 scale-105'
+                          ? 'bg-emerald-400 text-slate-950 font-black shadow-lg shadow-emerald-400/30 scale-105'
                           : 'bg-emerald-500 text-slate-950 font-bold scale-105'
                         : 'bg-slate-900 text-slate-500'
                     }`}
@@ -648,7 +648,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400 font-medium">Tempo:</span>
-                <span className="font-mono text-base font-extrabold text-amber-400">{bpm} BPM</span>
+                <span className="font-mono text-base font-extrabold text-emerald-400">{bpm} BPM</span>
               </div>
               <input
                 type="range"
@@ -656,7 +656,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                 max="200"
                 value={bpm}
                 onChange={(e) => setBpm(Number(e.target.value))}
-                className="w-full accent-amber-500 cursor-pointer h-2 bg-slate-950 rounded-lg"
+                className="w-full accent-emerald-500 cursor-pointer h-2 bg-slate-950 rounded-lg"
               />
 
               {/* Tempo Presets */}
@@ -667,7 +667,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                     onClick={() => setBpm(presetBpm)}
                     className={`px-2 py-1 rounded text-[11px] font-mono transition ${
                       bpm === presetBpm
-                        ? 'bg-amber-500 text-slate-950 font-bold'
+                        ? 'bg-emerald-500 text-slate-950 font-bold'
                         : 'bg-slate-800 hover:bg-slate-750 text-slate-300'
                     }`}
                   >
@@ -681,14 +681,14 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
             <div className="bg-slate-950/80 p-3 rounded-xl border border-slate-800 flex flex-col gap-2">
               <label className="flex items-center justify-between cursor-pointer">
                 <span className="text-xs text-slate-300 font-medium flex items-center gap-1.5">
-                  <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
+                  <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
                   <span>Auto Speed Ramp (+5 BPM / 4 bars)</span>
                 </span>
                 <input
                   type="checkbox"
                   checked={autoSpeedRamp}
                   onChange={(e) => setAutoSpeedRamp(e.target.checked)}
-                  className="rounded accent-amber-500 w-4 h-4 cursor-pointer"
+                  className="rounded accent-emerald-500 w-4 h-4 cursor-pointer"
                 />
               </label>
               {autoSpeedRamp && (
@@ -716,7 +716,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                 placeholder="Search drills, scales, chords..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
               />
             </div>
 
@@ -728,7 +728,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                   onClick={() => setSelectedCategory(cat.id)}
                   className={`px-2.5 py-1 rounded-lg text-xs font-medium transition ${
                     selectedCategory === cat.id
-                      ? 'bg-amber-500 text-slate-950 font-bold shadow-sm'
+                      ? 'bg-emerald-500 text-slate-950 font-bold shadow-sm'
                       : 'bg-slate-800/70 hover:bg-slate-800 text-slate-400 hover:text-slate-200'
                   }`}
                 >
@@ -748,7 +748,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                     onClick={() => handleSelectDrill(drill)}
                     className={`p-3 rounded-xl border text-left cursor-pointer transition flex flex-col gap-1.5 ${
                       isSelected
-                        ? 'bg-amber-500/10 border-amber-500/50 shadow-md ring-1 ring-amber-500/20'
+                        ? 'bg-emerald-500/10 border-emerald-500/50 shadow-md ring-1 ring-emerald-500/20'
                         : 'bg-slate-950/60 hover:bg-slate-850/80 border-slate-800/80 hover:border-slate-700'
                     }`}
                   >
@@ -756,7 +756,7 @@ export const PracticeStudio: React.FC<PracticeStudioProps> = ({
                       <span className="text-xs font-bold text-white flex items-center gap-1.5">
                         {drill.title}
                       </span>
-                      <span className="text-[10px] font-mono text-amber-400">
+                      <span className="text-[10px] font-mono text-emerald-400">
                         {'★'.repeat(drill.difficulty)}
                       </span>
                     </div>

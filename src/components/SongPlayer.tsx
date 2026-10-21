@@ -645,9 +645,9 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
       }
 
       // Draw Target Strike Line (Hit Zone)
-      ctx.strokeStyle = '#F59E0B';
+      ctx.strokeStyle = '#10B981';
       ctx.lineWidth = isNarrow ? 3.5 : 5;
-      ctx.shadowColor = '#F59E0B';
+      ctx.shadowColor = '#10B981';
       ctx.shadowBlur = isNarrow ? 10 : 18;
       ctx.beginPath();
       ctx.moveTo(hitX, trackTop - 6);
@@ -659,13 +659,13 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
       const countInTotalSec = (beatsPerBar * 60) / song.bpm;
       if (t < countInTotalSec) {
         const countBeat = Math.min(beatsPerBar, Math.max(1, Math.floor(t * (song.bpm / 60)) + 1));
-        ctx.fillStyle = '#F59E0B';
+        ctx.fillStyle = '#10B981';
         ctx.font = `bold ${isNarrow ? '10px' : '12px'} JetBrains Mono`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
         ctx.fillText(`COUNT IN: ${countBeat}/${beatsPerBar}`, hitX, trackTop - (isNarrow ? 4 : 8));
       } else {
-        ctx.fillStyle = '#F59E0B';
+        ctx.fillStyle = '#10B981';
         ctx.font = `bold ${isNarrow ? '9px' : '12px'} JetBrains Mono`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
@@ -816,11 +816,11 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
 
         // Chord Card
         ctx.fillStyle = isHit
-          ? 'rgba(16, 185, 129, 0.45)'
+          ? 'rgba(16, 185, 129, 0.5)'
           : isMiss
           ? 'rgba(244, 63, 94, 0.35)'
-          : 'rgba(245, 158, 11, 0.28)';
-        ctx.strokeStyle = isHit ? '#10B981' : isMiss ? '#F43F5E' : '#F59E0B';
+          : 'rgba(16, 185, 129, 0.22)';
+        ctx.strokeStyle = isHit ? '#34D399' : isMiss ? '#F43F5E' : '#10B981';
         ctx.lineWidth = 2.8;
 
         ctx.beginPath();
@@ -838,7 +838,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
 
         // Strum arrow & direction
         const strumFontSize = Math.min(18, Math.max(13, Math.round(laneHeight * 0.065)));
-        ctx.fillStyle = '#F59E0B';
+        ctx.fillStyle = '#34D399';
         ctx.font = `bold ${strumFontSize}px Plus Jakarta Sans`;
         ctx.fillText(
           chord.strumDirection === 'down' ? '↓ STRUM' : '↑ UP',
@@ -969,14 +969,14 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <h2 className="text-base md:text-lg font-bold text-white tracking-tight">{song.title}</h2>
-              <span className="text-[11px] font-semibold text-amber-400 font-mono">
+              <span className="text-[11px] font-semibold text-emerald-400 font-mono">
                 {song.difficultyLabel}
               </span>
             </div>
             <div className="text-[11px] md:text-xs text-slate-400 flex items-center gap-1.5 md:gap-2 mt-0.5 font-mono flex-wrap">
               <span>{song.artist}</span>
               <span>·</span>
-              <span className="text-amber-300 font-bold">{effectiveBpm} BPM</span>
+              <span className="text-emerald-300 font-bold">{effectiveBpm} BPM</span>
               <span>·</span>
               <span className="capitalize">{song.mode}</span>
             </div>
@@ -987,7 +987,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
         <div className="flex items-center gap-3 md:gap-5 px-3 md:px-4 py-1.5 bg-slate-950/80 border border-slate-800 rounded-xl">
           <div className="flex flex-col items-center">
             <span className="text-[9px] md:text-[10px] text-slate-400 font-mono">SCORE</span>
-            <span className="text-sm md:text-base font-black text-amber-400 font-mono tabular-nums">
+            <span className="text-sm md:text-base font-black text-emerald-400 font-mono tabular-nums">
               {score}
             </span>
           </div>
@@ -1015,7 +1015,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
                     activeBeatInBar === b && isPlaying
                       ? b === 0
                         ? 'bg-emerald-400 text-slate-950 scale-125 shadow-md shadow-emerald-400/60 font-black'
-                        : 'bg-amber-400 text-slate-950 scale-110 shadow-sm shadow-amber-400/50 font-black'
+                        : 'bg-emerald-500/80 text-slate-950 scale-110 shadow-sm shadow-emerald-500/50 font-black'
                       : 'bg-slate-900 text-slate-600 border border-slate-800'
                   }`}
                 >
@@ -1047,7 +1047,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
                 onClick={() => setDisplayScale(s)}
                 className={`px-2 py-0.5 md:py-1 text-[10px] md:text-[11px] font-mono font-bold rounded transition ${
                   displayScale === s
-                    ? 'bg-amber-500 text-slate-950'
+                    ? 'bg-emerald-500 text-slate-950'
                     : 'text-slate-400 hover:text-white'
                 }`}
                 title={s === 'tablet' ? 'Tablet XL view (Largest strings & frets)' : `${s} view`}
@@ -1086,11 +1086,11 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
 
         {/* 4-Second Preparation Delay Calm Banner (No loud countdown numbers, peaceful preview of upcoming notes) */}
         {prepDelay !== null && (
-          <div className="absolute top-2 md:top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 md:gap-3 px-3 md:px-5 py-1.5 md:py-2 rounded-full bg-slate-900/95 border border-amber-500/50 shadow-2xl backdrop-blur-md max-w-[95%]">
-            <div className="w-2 md:w-2.5 h-2 md:h-2.5 rounded-full bg-amber-400 animate-ping shrink-0" />
+          <div className="absolute top-2 md:top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 md:gap-3 px-3 md:px-5 py-1.5 md:py-2 rounded-full bg-slate-900/95 border border-emerald-500/50 shadow-2xl backdrop-blur-md max-w-[95%]">
+            <div className="w-2 md:w-2.5 h-2 md:h-2.5 rounded-full bg-emerald-400 animate-ping shrink-0" />
             <div className="flex flex-col text-left truncate">
               <span className="text-[11px] md:text-xs font-bold text-white tracking-wide flex items-center gap-1.5">
-                <span>Previewing notes · Starts in <span className="text-amber-400 font-mono">{prepDelay}s</span></span>
+                <span>Previewing notes · Starts in <span className="text-emerald-400 font-mono">{prepDelay}s</span></span>
               </span>
               <span className="text-[9px] md:text-[11px] text-slate-400 font-mono hidden sm:inline">
                 Inspect frets & strings ahead · Place fingers ready
@@ -1098,7 +1098,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
             </div>
             <button
               onClick={skipDelay}
-              className="ml-1 md:ml-2 px-2.5 md:px-3 py-1 text-[11px] md:text-xs font-bold rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 transition shadow font-mono shrink-0"
+              className="ml-1 md:ml-2 px-2.5 md:px-3 py-1 text-[11px] md:text-xs font-bold rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition shadow font-mono shrink-0"
             >
               Start →
             </button>
@@ -1110,7 +1110,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
           <div className="absolute bottom-3 md:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
             <button
               onClick={startWithDelay}
-              className="px-4 md:px-6 py-2 md:py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs md:text-sm flex items-center gap-2 transition-all shadow-xl shadow-amber-500/40 hover:scale-105 active:scale-95 cursor-pointer border border-amber-300/40"
+              className="px-4 md:px-6 py-2 md:py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs md:text-sm flex items-center gap-2 transition-all shadow-xl shadow-emerald-500/40 hover:scale-105 active:scale-95 cursor-pointer border border-emerald-300/40"
             >
               <Play className="w-3.5 h-3.5 md:w-4 md:h-4 fill-slate-950" />
               <span>{currentTime === 0 ? 'Start Song (4s Delay)' : 'Resume'}</span>
@@ -1145,7 +1145,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
             className={`p-2.5 rounded-lg font-bold transition flex items-center justify-center ${
               isPlaying
                 ? 'bg-slate-800 text-white hover:bg-slate-700'
-                : 'bg-amber-500 text-slate-950 hover:bg-amber-400'
+                : 'bg-emerald-500 text-slate-950 hover:bg-emerald-400'
             }`}
             title={isPlaying ? 'Pause' : 'Play with 4s Preview Delay'}
           >
@@ -1178,7 +1178,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
             >
               -5
             </button>
-            <span className="px-2 text-xs font-mono font-black text-amber-400 tabular-nums min-w-[58px] text-center">
+            <span className="px-2 text-xs font-mono font-black text-emerald-400 tabular-nums min-w-[58px] text-center">
               {effectiveBpm} <span className="text-[10px] text-slate-500 font-normal">BPM</span>
             </span>
             <button
@@ -1191,7 +1191,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
             {customBpm !== song.bpm && (
               <button
                 onClick={() => setCustomBpm(song.bpm)}
-                className="px-1.5 py-0.5 text-[10px] font-mono text-slate-400 hover:text-amber-400 transition underline ml-1"
+                className="px-1.5 py-0.5 text-[10px] font-mono text-slate-400 hover:text-emerald-400 transition underline ml-1"
                 title={`Reset to default ${song.bpm} BPM`}
               >
                 Reset
@@ -1208,7 +1208,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
                 onClick={() => setPlaybackSpeed(speed)}
                 className={`px-2 py-1 text-xs font-mono font-semibold rounded transition ${
                   playbackSpeed === speed
-                    ? 'bg-amber-500 text-slate-950 font-bold'
+                    ? 'bg-emerald-500 text-slate-950 font-bold'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -1224,7 +1224,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
             onClick={() => setIsMetronomeEnabled(!isMetronomeEnabled)}
             className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition ${
               isMetronomeEnabled
-                ? 'bg-slate-800 text-amber-300 border-amber-500/40'
+                ? 'bg-slate-800 text-emerald-300 border-emerald-500/40'
                 : 'bg-slate-950 text-slate-500 border-slate-800'
             }`}
           >
@@ -1257,7 +1257,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
           {/* Virtual Pluck Button for quick on-screen test */}
           <button
             onClick={handleVirtualPluck}
-            className="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20 transition"
+            className="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/20 transition"
           >
             Virtual Pluck
           </button>
@@ -1268,7 +1268,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
       {isFinished && (
         <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 max-w-md w-full shadow-2xl flex flex-col items-center text-center">
-            <div className="w-16 h-16 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mb-4">
+            <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4">
               <Award className="w-8 h-8" />
             </div>
 
@@ -1284,7 +1284,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
                   key={star}
                   className={`w-8 h-8 ${
                     star <= starsEarned
-                      ? 'text-amber-400 fill-amber-400'
+                      ? 'text-emerald-400 fill-emerald-400'
                       : 'text-slate-700'
                   }`}
                 />
@@ -1295,7 +1295,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
             <div className="w-full grid grid-cols-3 gap-2 bg-slate-950 p-4 rounded-xl mb-6 font-mono">
               <div>
                 <div className="text-[10px] text-slate-500">FINAL SCORE</div>
-                <div className="text-lg font-bold text-amber-400">{score}</div>
+                <div className="text-lg font-bold text-emerald-400">{score}</div>
               </div>
               <div>
                 <div className="text-[10px] text-slate-500">ACCURACY</div>
@@ -1323,7 +1323,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
               {onNextSong ? (
                 <button
                   onClick={onNextSong}
-                  className="flex-1 py-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs hover:bg-amber-400 transition flex items-center justify-center gap-1.5"
+                  className="flex-1 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400 transition flex items-center justify-center gap-1.5"
                 >
                   <span>Next Song</span>
                   <ArrowRight className="w-4 h-4" />
@@ -1331,7 +1331,7 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
               ) : (
                 <button
                   onClick={onBackToCatalog}
-                  className="flex-1 py-2.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs hover:bg-amber-400 transition"
+                  className="flex-1 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400 transition"
                 >
                   Song Catalog
                 </button>

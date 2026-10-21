@@ -79,7 +79,7 @@ export const Tuner: React.FC<TunerProps> = ({
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
-            <Music2 className="w-5 h-5 text-amber-400" />
+            <Music2 className="w-5 h-5 text-emerald-400" />
             Standard Guitar Tuner (E A D G B E)
           </h2>
           <p className="text-xs text-slate-400 mt-1">
@@ -138,7 +138,7 @@ export const Tuner: React.FC<TunerProps> = ({
               step="0.002"
               value={noiseThreshold}
               onChange={(e) => handleSensitivityChange(parseFloat(e.target.value))}
-              className="w-full accent-amber-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
+              className="w-full accent-emerald-500 cursor-pointer h-1.5 bg-slate-800 rounded-lg"
             />
             <span className="text-[11px] text-slate-500 block mt-1">
               Lower threshold for quiet acoustic pluck, increase if room noise interferes.
@@ -170,7 +170,7 @@ export const Tuner: React.FC<TunerProps> = ({
             onClick={() => setSelectedStringIndex(null)}
             className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all ${
               selectedStringIndex === null
-                ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
+                ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
                 : 'bg-slate-800/80 text-slate-300 hover:bg-slate-800'
             }`}
           >
@@ -186,9 +186,9 @@ export const Tuner: React.FC<TunerProps> = ({
                 onClick={() => setSelectedStringIndex(str.stringIndex)}
                 className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg flex items-center gap-1.5 border transition-all ${
                   isSelected
-                    ? 'bg-white text-slate-950 border-white shadow-md'
+                    ? 'bg-emerald-500 text-slate-950 border-emerald-400 shadow-md font-bold'
                     : isCurrentTarget
-                    ? 'bg-slate-800 text-amber-400 border-amber-500/40'
+                    ? 'bg-slate-800 text-emerald-400 border-emerald-500/40'
                     : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200 hover:border-slate-700'
                 }`}
               >
@@ -338,14 +338,14 @@ export const Tuner: React.FC<TunerProps> = ({
               <button
                 key={str.stringIndex}
                 onClick={() => handlePlayReference(str)}
-                className="group p-3 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-amber-500/50 hover:bg-slate-800/50 transition-all flex flex-col items-center gap-1.5"
+                className="group p-3 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-emerald-500/50 hover:bg-slate-800/50 transition-all flex flex-col items-center gap-1.5"
               >
                 <div className="flex items-center justify-between w-full">
                   <span
                     className="w-2.5 h-2.5 rounded-full"
                     style={{ backgroundColor: str.color }}
                   />
-                  <Volume2 className="w-3.5 h-3.5 text-slate-500 group-hover:text-amber-400 transition-colors" />
+                  <Volume2 className="w-3.5 h-3.5 text-slate-500 group-hover:text-emerald-400 transition-colors" />
                 </div>
                 <div className="text-lg font-bold text-white font-mono">{str.shortName}</div>
                 <div className="text-[11px] text-slate-500 font-mono">{str.targetFreq} Hz</div>

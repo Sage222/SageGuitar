@@ -59,7 +59,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
           <select
             value={selectedScaleId}
             onChange={(e) => setSelectedScaleId(e.target.value)}
-            className="bg-slate-950 border border-slate-800 text-xs text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-amber-500"
+            className="bg-slate-950 border border-slate-800 text-xs text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-emerald-500"
           >
             <option value="none">None (Standard)</option>
             {GUITAR_SCALES.map((scale) => (
@@ -79,7 +79,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
 
           {/* Fret number indicators on top */}
           <div className="flex text-[11px] font-mono text-slate-500 mb-2 pl-12 pr-2">
-            <div className="w-10 text-center font-bold text-amber-500">Nut (0)</div>
+            <div className="w-10 text-center font-bold text-emerald-500">Nut (0)</div>
             {Array.from({ length: FRETS_COUNT }, (_, i) => i + 1).map((fret) => (
               <div key={fret} className="flex-1 text-center">
                 {fret}
@@ -133,7 +133,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
                               isLiveDetected
                                 ? 'bg-emerald-400 text-slate-950 scale-125 ring-4 ring-emerald-400/40 shadow-lg'
                                 : isTarget
-                                ? 'bg-amber-400 text-slate-950 scale-110 ring-2 ring-amber-400 shadow-md animate-pulse'
+                                ? 'bg-emerald-400 text-slate-950 scale-110 ring-2 ring-emerald-400 shadow-md animate-pulse'
                                 : isChordFret
                                 ? 'bg-sky-400 text-slate-950 ring-2 ring-sky-300 shadow-md'
                                 : 'bg-slate-900/90 text-slate-300 hover:bg-slate-800 border border-slate-700'
@@ -187,13 +187,13 @@ export const Fretboard: React.FC<FretboardProps> = ({
                               isLiveDetected
                                 ? 'bg-emerald-400 text-slate-950 scale-125 ring-4 ring-emerald-400/50 shadow-lg z-20'
                                 : isTarget
-                                ? 'bg-amber-400 text-slate-950 scale-110 ring-2 ring-amber-400 shadow-md animate-pulse z-20'
+                                ? 'bg-emerald-400 text-slate-950 scale-110 ring-2 ring-emerald-400 shadow-md animate-pulse z-20'
                                 : isChordFret
                                 ? 'bg-sky-400 text-slate-950 ring-2 ring-sky-300 font-extrabold z-20'
                                 : isScaleRoot
                                 ? 'bg-rose-500 text-white ring-2 ring-rose-400 shadow'
                                 : isScaleNote
-                                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/50 hover:bg-amber-500/40'
+                                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40'
                                 : 'bg-transparent text-transparent hover:bg-slate-800/80 hover:text-slate-200'
                             }`}
                             title={`Fret ${fret}: ${info.noteName}${info.octave}`}
@@ -221,7 +221,7 @@ export const Fretboard: React.FC<FretboardProps> = ({
             <span>Live Pluck</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-amber-400 inline-block" />
+            <span className="w-3 h-3 rounded-full bg-emerald-500 inline-block" />
             <span>Song Target</span>
           </div>
           <div className="flex items-center gap-1.5">

@@ -66,7 +66,7 @@ export const ChordLibrary: React.FC<ChordLibraryProps> = ({
               onClick={() => setActiveFilter(filter)}
               className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors capitalize ${
                 activeFilter === filter
-                  ? 'bg-amber-500 text-slate-950 shadow-sm'
+                  ? 'bg-emerald-500 text-slate-950 shadow-sm'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -79,11 +79,11 @@ export const ChordLibrary: React.FC<ChordLibraryProps> = ({
           onClick={() => setIsPracticeMode(!isPracticeMode)}
           className={`px-3.5 py-1.5 text-xs font-bold rounded-lg border transition-all flex items-center gap-2 ${
             isPracticeMode
-              ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-sm'
+              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-sm'
               : 'bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-750'
           }`}
         >
-          <Award className="w-4 h-4 text-amber-400" />
+          <Award className="w-4 h-4 text-emerald-400" />
           <span>{isPracticeMode ? 'Exit Chord Drill' : 'Start Chord Drill'}</span>
         </button>
       </div>
@@ -91,12 +91,12 @@ export const ChordLibrary: React.FC<ChordLibraryProps> = ({
       {/* Main Grid: Interactive Diagram & Selector */}
       {isPracticeMode ? (
         /* Chord Switch Trainer / Drill */
-        <div className="bg-slate-900 border border-amber-500/30 rounded-2xl p-8 flex flex-col items-center text-center shadow-2xl relative overflow-hidden">
-          <div className="text-xs text-amber-400 font-bold uppercase tracking-wider mb-2 font-mono">
+        <div className="bg-slate-900 border border-emerald-500/30 rounded-2xl p-8 flex flex-col items-center text-center shadow-2xl relative overflow-hidden">
+          <div className="text-xs text-emerald-400 font-bold uppercase tracking-wider mb-2 font-mono">
             Speed Switch Drill · Score: {practiceScore} pts
           </div>
           <h2 className="text-3xl font-extrabold text-white mb-1">
-            Form and Strum: <span className="text-amber-400 font-mono">{currentPracticeDef.name}</span>
+            Form and Strum: <span className="text-emerald-400 font-mono">{currentPracticeDef.name}</span>
           </h2>
           <p className="text-xs text-slate-400 mb-6">
             Place your fingers according to the diagram below and test your switch.
@@ -111,15 +111,15 @@ export const ChordLibrary: React.FC<ChordLibraryProps> = ({
               onClick={() => handlePlayChord(currentPracticeDef)}
               className="px-4 py-2 text-xs font-bold rounded-lg bg-slate-800 text-white hover:bg-slate-700 transition flex items-center gap-1.5"
             >
-              <Volume2 className="w-4 h-4 text-amber-400" />
+              <Volume2 className="w-4 h-4 text-emerald-400" />
               Listen to Chord
             </button>
             <button
               onClick={handleNextPracticeChord}
               className={`px-5 py-2 text-xs font-bold rounded-lg transition-all flex items-center gap-2 ${
                 practiceSuccess
-                  ? 'bg-emerald-500 text-slate-950 scale-105'
-                  : 'bg-amber-500 text-slate-950 hover:bg-amber-400'
+                  ? 'bg-emerald-400 text-slate-950 scale-105'
+                  : 'bg-emerald-500 text-slate-950 hover:bg-emerald-400'
               }`}
             >
               {practiceSuccess ? (
@@ -148,7 +148,7 @@ export const ChordLibrary: React.FC<ChordLibraryProps> = ({
               </div>
               <button
                 onClick={() => handlePlayChord(currentChord)}
-                className="p-3 bg-amber-500 text-slate-950 rounded-xl hover:bg-amber-400 transition shadow-lg shadow-amber-500/20"
+                className="p-3 bg-emerald-500 text-slate-950 rounded-xl hover:bg-emerald-400 transition shadow-lg shadow-emerald-500/20"
                 title="Strum Chord"
               >
                 <Volume2 className="w-5 h-5" />
@@ -181,7 +181,7 @@ export const ChordLibrary: React.FC<ChordLibraryProps> = ({
                     }}
                     className={`p-3 rounded-xl border text-left transition-all flex flex-col justify-between ${
                       isSelected
-                        ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-md font-bold'
+                        ? 'bg-emerald-500 text-slate-950 border-emerald-400 shadow-md font-bold'
                         : 'bg-slate-950/60 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-800/40'
                     }`}
                   >
@@ -271,7 +271,7 @@ const ChordDiagramBox: React.FC<{ chord: ChordDefinition; onPlay?: () => void }>
                 {/* Finger Dot if pressed */}
                 {fretVal > 0 && (
                   <div
-                    className="absolute w-5 h-5 rounded-full bg-amber-400 text-slate-950 font-black text-[11px] font-mono flex items-center justify-center shadow-md ring-2 ring-amber-300"
+                    className="absolute w-5 h-5 rounded-full bg-emerald-400 text-slate-950 font-black text-[11px] font-mono flex items-center justify-center shadow-md ring-2 ring-emerald-300"
                     style={{
                       top: `${(fretVal - 0.5) * 32 - 10}px`,
                     }}
