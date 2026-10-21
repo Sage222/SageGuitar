@@ -40,6 +40,7 @@ const DEFAULT_PROGRESS: UserProgressData = {
       lastPlayedAt: getYesterdayString(),
     },
   },
+  favoriteSongs: ['smoke-on-the-water', 'stand-by-me'],
   practiceSessionsCount: 6,
   totalNotesHit: 342,
   totalSecondsPracticed: 580, // ~10 mins
@@ -94,6 +95,9 @@ export function loadUserProgress(): UserProgressData {
       return DEFAULT_PROGRESS;
     }
     const parsed = JSON.parse(raw) as UserProgressData;
+    if (!Array.isArray(parsed.favoriteSongs)) {
+      parsed.favoriteSongs = DEFAULT_PROGRESS.favoriteSongs || [];
+    }
     return parsed;
   } catch (err) {
     console.warn('Error reading user progress, using defaults:', err);
@@ -107,6 +111,22 @@ export function saveUserProgress(data: UserProgressData): void {
   } catch (err) {
     console.warn('Error saving user progress to localStorage:', err);
   }
+}
+
+export function toggleFavoriteSong(
+  current: UserProgressData,
+  songId: string
+): UserProgressData {
+  const favs = current.favoriteSongs || [];
+  const exists = favs.includes(songId);
+  const nextFavs = exists ? favs.filter((id) => id !== songId) : [...favs, songId];
+
+  const updated: UserProgressData = {
+    ...current,
+    favoriteSongs: nextFavs,
+  };
+  saveUserProgress(updated);
+  return updated;
 }
 
 export function recordSongCompletion(

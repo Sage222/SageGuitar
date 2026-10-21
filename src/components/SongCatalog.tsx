@@ -8,6 +8,7 @@ import {
   Sparkles,
   ArrowUpDown,
   BookOpen,
+  Heart,
 } from 'lucide-react';
 import { Song, DifficultyLevel, SongMode } from '../types/guitar';
 
@@ -16,6 +17,8 @@ interface SongCatalogProps {
   onSelectSong: (song: Song) => void;
   selectedSongId?: string;
   onNavigateToPractice?: () => void;
+  favoriteSongIds?: string[];
+  onToggleFavorite?: (songId: string) => void;
 }
 
 const DIFFICULTY_LEVELS: { level: DifficultyLevel; name: string; desc: string }[] = [
@@ -31,17 +34,25 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
   onSelectSong,
   selectedSongId,
   onNavigateToPractice,
+  favoriteSongIds = [],
+  onToggleFavorite,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel | 'all'>('all');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel | 'all' | 'favorites'>('all');
   const [selectedMode, setSelectedMode] = useState<SongMode | 'all'>('all');
   const [selectedGenre, setSelectedGenre] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'title' | 'difficulty' | 'bpm' | 'duration'>('difficulty');
   const [sortAsc, setSortAsc] = useState(true);
 
+  const favoriteCount = songs.filter((s) => favoriteSongIds.includes(s.id)).length;
+
   const filteredSongs = songs
     .filter((song) => {
-      if (selectedDifficulty !== 'all' && song.difficulty !== selectedDifficulty) return false;
+      if (selectedDifficulty === 'favorites') {
+        if (!favoriteSongIds.includes(song.id)) return false;
+      } else if (selectedDifficulty !== 'all' && song.difficulty !== selectedDifficulty) {
+        return false;
+      }
       if (selectedMode !== 'all' && song.mode !== selectedMode) return false;
       if (selectedGenre !== 'all' && song.genre !== selectedGenre) return false;
 
@@ -125,22 +136,54 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
           </div>
         </div>
 
-        {/* 5 Difficulty Levels Filter Strip */}
+        {/* 5 Difficulty Levels + Favorites Filter Strip */}
         <div className="flex flex-col gap-2">
           <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider font-mono">
-            Filter by Difficulty Level
+            Filter by Difficulty Level or Favorites
           </span>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
             <button
               onClick={() => setSelectedDifficulty('all')}
-              className={`p-2.5 text-xs font-semibold rounded-xl border text-left transition ${
+              className={`p-2.5 text-xs font-semibold rounded-xl border text-left transition flex flex-col justify-between ${
                 selectedDifficulty === 'all'
-                  ? 'bg-emerald-500 text-slate-950 border-emerald-400 shadow-sm'
+                  ? 'bg-emerald-500 text-slate-950 border-emerald-400 shadow-sm font-bold'
                   : 'bg-slate-950/70 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
               }`}
             >
               <div className="font-bold">All Levels</div>
-              <div className="text-[10px] opacity-80 mt-0.5">{songs.length} Songs</div>
+              <div className="text-[10px] opacity-80 mt-1">{songs.length} Songs</div>
+            </button>
+
+            <button
+              onClick={() =>
+                setSelectedDifficulty(selectedDifficulty === 'favorites' ? 'all' : 'favorites')
+              }
+              className={`p-2.5 text-xs rounded-xl border text-left transition flex flex-col justify-between ${
+                selectedDifficulty === 'favorites'
+                  ? 'bg-emerald-500 text-slate-950 border-emerald-400 shadow-sm font-bold'
+                  : 'bg-slate-950/70 border-slate-800 text-slate-300 hover:text-white hover:border-emerald-500/50'
+              }`}
+            >
+              <div className="font-bold flex items-center justify-between gap-1">
+                <span className="flex items-center gap-1.5">
+                  <Heart
+                    className={`w-3.5 h-3.5 shrink-0 ${
+                      selectedDifficulty === 'favorites'
+                        ? 'fill-slate-950 text-slate-950'
+                        : 'fill-emerald-400 text-emerald-400'
+                    }`}
+                  />
+                  <span>Favorites</span>
+                </span>
+                <span className="text-[10px] font-mono opacity-80">({favoriteCount})</span>
+              </div>
+              <div
+                className={`text-[10px] truncate mt-1 ${
+                  selectedDifficulty === 'favorites' ? 'text-slate-900' : 'text-slate-500'
+                }`}
+              >
+                Your saved favorite songs
+              </div>
             </button>
 
             {DIFFICULTY_LEVELS.map((lvl) => {
@@ -284,6 +327,7 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
         <div className="divide-y divide-slate-800/60 max-h-[720px] overflow-y-auto">
           {filteredSongs.map((song) => {
             const isSelected = selectedSongId === song.id;
+            const isFavorite = favoriteSongIds.includes(song.id);
             const noteCount =
               song.mode === 'lead'
                 ? (song.leadNotes || []).length
@@ -312,8 +356,11 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
                   </div>
 
                   <div className="min-w-0">
-                    <h3 className="text-sm font-bold text-white truncate group-hover:text-emerald-400 transition-colors">
-                      {song.title}
+                    <h3 className="text-sm font-bold text-white truncate group-hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                      <span className="truncate">{song.title}</span>
+                      {isFavorite && (
+                        <Heart className="w-3.5 h-3.5 text-emerald-400 fill-emerald-400 shrink-0" />
+                      )}
                     </h3>
                     <div className="text-xs text-slate-400 truncate mt-0.5">{song.artist}</div>
                   </div>
@@ -345,6 +392,23 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
 
                 {/* Action CTA */}
                 <div className="col-span-5 sm:col-span-3 md:col-span-2 flex items-center justify-end gap-2">
+                  {onToggleFavorite && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onToggleFavorite(song.id);
+                      }}
+                      title={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+                      aria-label={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+                      className={`p-1.5 rounded-lg border transition active:scale-95 ${
+                        isFavorite
+                          ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/30'
+                          : 'bg-slate-950 text-slate-500 border-slate-800 hover:text-emerald-400 hover:border-emerald-500/40'
+                      }`}
+                    >
+                      <Heart className={`w-4 h-4 ${isFavorite ? 'fill-emerald-400' : ''}`} />
+                    </button>
+                  )}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -364,7 +428,9 @@ export const SongCatalog: React.FC<SongCatalogProps> = ({
         {filteredSongs.length === 0 && (
           <div className="p-12 text-center">
             <p className="text-sm text-slate-400 font-mono">
-              No songs match your search query or active filters.
+              {selectedDifficulty === 'favorites'
+                ? 'You have not marked any favorite songs matching these filters yet. Click the heart icon on any song to save it to your Favorites!'
+                : 'No songs match your search query or active filters.'}
             </p>
             <button
               onClick={() => {

@@ -30,7 +30,12 @@ import { PracticeStudio } from './components/PracticeStudio';
 import { SONGS_CATALOG } from './data/songs';
 import { Song, DetectedPitch, UserProgressData } from './types/guitar';
 import { audioEngine } from './utils/audioEngine';
-import { loadUserProgress, recordSongCompletion, recordPracticeMinutes } from './utils/progressStorage';
+import {
+  loadUserProgress,
+  recordSongCompletion,
+  recordPracticeMinutes,
+  toggleFavoriteSong,
+} from './utils/progressStorage';
 
 // Generated image asset
 import rockAnthemCover from './assets/images/song_cover_rock_anthem_1791762641359.jpg';
@@ -107,6 +112,11 @@ export default function App() {
 
   const handleLogPracticeMinutes = (minutes: number) => {
     const updated = recordPracticeMinutes(userProgress, minutes);
+    setUserProgress(updated);
+  };
+
+  const handleToggleFavorite = (songId: string) => {
+    const updated = toggleFavoriteSong(userProgress, songId);
     setUserProgress(updated);
   };
 
@@ -221,6 +231,8 @@ export default function App() {
             onSelectSong={handleSelectSong}
             selectedSongId={selectedSong.id}
             onNavigateToPractice={() => setActiveTab('practice')}
+            favoriteSongIds={userProgress.favoriteSongs || []}
+            onToggleFavorite={handleToggleFavorite}
           />
         )}
 
@@ -233,6 +245,8 @@ export default function App() {
             onBackToCatalog={() => setActiveTab('catalog')}
             onNextSong={handleNextSong}
             onSongComplete={handleSongComplete}
+            isFavorite={(userProgress.favoriteSongs || []).includes(selectedSong.id)}
+            onToggleFavorite={() => handleToggleFavorite(selectedSong.id)}
           />
         )}
 

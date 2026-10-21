@@ -104,6 +104,7 @@ export interface PracticeHistoryEntry {
 
 export interface UserProgressData {
   completedSongs: Record<string, SongProgressRecord>;
+  favoriteSongs?: string[];
   practiceSessionsCount: number;
   totalNotesHit: number;
   totalSecondsPracticed: number;

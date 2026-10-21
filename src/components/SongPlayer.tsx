@@ -14,6 +14,7 @@ import {
   Mic,
   ArrowRight,
   Layers,
+  Heart,
 } from 'lucide-react';
 import { Song, GuitarStringNote, GuitarChordEvent, DetectedPitch, PerformanceStats } from '../types/guitar';
 import { STRING_COLORS, STRING_NAMES, CHORD_LIBRARY } from '../utils/guitarConstants';
@@ -27,6 +28,8 @@ interface SongPlayerProps {
   onBackToCatalog: () => void;
   onNextSong?: () => void;
   onSongComplete?: (score: number, accuracy: number, stars: number, hitsCount: number, duration: number) => void;
+  isFavorite?: boolean;
+  onToggleFavorite?: () => void;
 }
 
 interface Particle {
@@ -47,6 +50,8 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
   onBackToCatalog,
   onNextSong,
   onSongComplete,
+  isFavorite = false,
+  onToggleFavorite,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -969,6 +974,19 @@ export const SongPlayer: React.FC<SongPlayerProps> = ({
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <h2 className="text-base md:text-lg font-bold text-white tracking-tight">{song.title}</h2>
+              {onToggleFavorite && (
+                <button
+                  onClick={onToggleFavorite}
+                  title={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+                  className={`p-1 rounded-lg border transition ${
+                    isFavorite
+                      ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/30'
+                      : 'bg-slate-950 text-slate-500 border-slate-800 hover:text-emerald-400 hover:border-emerald-500/40'
+                  }`}
+                >
+                  <Heart className={`w-3.5 h-3.5 ${isFavorite ? 'fill-emerald-400' : ''}`} />
+                </button>
+              )}
               <span className="text-[11px] font-semibold text-emerald-400 font-mono">
                 {song.difficultyLabel}
               </span>
